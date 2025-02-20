@@ -16,15 +16,18 @@ All commands that you use to use when developing packages...
 fusen::fill_description(
   pkg = here::here(),
   fields = list(
-    Title = "Build A Package From Rmarkdown File",
-    Description = "Use Rmarkdown First method to build your package. Start your package with documentation. Everything can be set from a Rmarkdown file in your project.",
+    Title = "Potato breeding phenotypic data wrangler",
+    Description = "`pbwrangler` is a collection of in-house functions used in
+    curating potato breeding data for analysis and archiving into breeding databases",
     `Authors@R` = c(
-      person("John", "Doe", email = "john@email.me", role = c("aut", "cre"), comment = c(ORCID = "0000-0000-0000-0000"))
+      person("Basil", "Okola", email = "okolabasilowiti@gmail.com", role = c("aut", "cre")
+             # , comment = c(ORCID = "0000-0000-0000-0000")
+             )
     )
   )
 )
 # Define License with use_*_license()
-usethis::use_mit_license("John Doe")
+usethis::use_mit_license("Basil Okola")
 ```
 
 # All-in-one function to deploy publicly on GitHub
@@ -41,11 +44,11 @@ fusen::init_share_on_github()
 # Start using git
 
 ```{r, eval=FALSE}
-usethis::use_git()
-# Deal with classical files to ignore
-usethis::git_vaccinate()
-# Use main for primary branch
-usethis::git_default_branch_rename()
+# usethis::use_git()
+# # Deal with classical files to ignore
+# usethis::git_vaccinate()
+# # Use main for primary branch
+# usethis::git_default_branch_rename()
 ```
 
 # Set extra sources of documentation
@@ -56,7 +59,7 @@ remotes::install_local()
 # README
 usethis::use_readme_rmd()
 # Code of Conduct
-usethis::use_code_of_conduct("contact@fake.com")
+# usethis::use_code_of_conduct("contact@fake.com")
 # NEWS
 usethis::use_news_md()
 # Package structure (add this in a dev/Readme.md file)
@@ -78,12 +81,12 @@ usethis::use_package_doc()
 
 # GitHub
 # Add your credentials for GitHub
-usethis::create_github_token()
-gitcreds::gitcreds_set()
+# usethis::create_github_token()
+# gitcreds::gitcreds_set()
 
 # _Or one step at a time
 # Send your project to a new GitHub project (included in `init_share_on_github()`)
-usethis::use_github()
+# usethis::use_github()
 
 # Set Continuous Integration
 # _GitHub (included in `init_share_on_github()`)
@@ -91,7 +94,7 @@ usethis::use_github_action_check_standard()
 usethis::use_github_action("pkgdown")
 usethis::use_github_action("test-coverage")
 # _GitLab
-gitlabr::use_gitlab_ci(type = "check-coverage-pkgdown")
+# gitlabr::use_gitlab_ci(type = "check-coverage-pkgdown")
 ```
 
 ## Use everytime needed
@@ -107,7 +110,7 @@ attachment::att_amend_desc()
 devtools::check()
 
 # Add a new flat template
-fusen::add_flat_template("add")
+# fusen::add_flat_template("add")
 ```
 
 # Share the package
