@@ -14,10 +14,6 @@ library(usethis)
 library(purrr)
 library(janitor)
 library(readxl)
-usethis::use_package("st4gi")
-usethis::use_package("purrr")
-usethis::use_package("readxl")
-usethis::use_package("here")
 ```
 
 <!--
