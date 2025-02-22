@@ -29,11 +29,3 @@ a list of filedbooks
 \description{
 List design files after designing trial experiments in R
 }
-\examples{
-f <- tempdir()
-tempfile(pattern = "file", tmpdir = f, fileext = ".csv")
-# all files
-list_files(f)
-# subset
-list_files(f, subset = TRUE, n = 1)
-}

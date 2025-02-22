@@ -2,7 +2,7 @@
 % Please edit documentation in R/recode_var.R
 \name{convert_to_character}
 \alias{convert_to_character}
-\title{Title}
+\title{Coerce columns to character}
 \usage{
 convert_to_character(x, to_char = c("obs", "notes"))
 }
@@ -15,5 +15,5 @@ convert_to_character(x, to_char = c("obs", "notes"))
 a dataframe
 }
 \description{
-Title
+Coerce columns to character
 }

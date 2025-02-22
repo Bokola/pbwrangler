@@ -27,7 +27,7 @@ If it is the first time you use {fusen}, after 'description', you can directly r
 pkgload::load_all(export_all = FALSE)
 ```
 
-# Include some data examples in your package
+<!-- # Include some data examples in your package -->
 
 <!-- 
  Store your dataset in a directory named "inst/" at the root of your project.
@@ -69,7 +69,7 @@ pkgload::load_all(path = here::here(), export_all = FALSE)
 ```
 
 
-# The first function of the package: Substring first n elements
+## Substring first n elements
 
 <!--
 Create a chunk for the core of the function
@@ -388,7 +388,7 @@ clean_dir_name_c <- function(x){
 
 
 ```{r function-list_files}
-#' Title
+#' List file in a directory
 #'
 #' @param folder directory with files e.g. "C://users/user/x
 #' @param subset a logical value whether or not to return a subset of files in `folder`
@@ -454,7 +454,7 @@ list_files <- function(folder, subset=FALSE, n = NULL, ...){
 ```
 
 
-```{r}
+```{r function-combine_meta_files}
 
 #' read meta-files from separate trials in a season into 1 file
 #'
@@ -651,7 +651,7 @@ fit_td <- function(x, trait, spatial = FALSE){
 ```
 
 ```{r function-extract_blups}
-#' Title
+#' extract BLUPs from a `REML` model
 #'
 #' @param x an object of class `STA` from `fit_td`
 #' @param pred a character vector of predictors: `c("BLUEs", "seBLUEs)` or `c("BLUPs", "seBLUPs)`
@@ -967,7 +967,7 @@ create_pedigree <- function(x){
 ## clean clone/genotype names
 
 ```{r function-clean_clone_name}
-#' Title
+#' Clean accession names
 #'
 #' @param x a character vector of clone/genotype IDs 
 #'
@@ -1019,8 +1019,7 @@ read_accessions <- function(dir = out_dir){
 ## organize accessions for export
 
 ```{r function-format_accessions}
-# organize accessions to export
-#' Title
+#' organize accessions to export
 #'
 #' @param x a list of trial dataframes for a `season`
 #' @param season trial season
@@ -1115,7 +1114,7 @@ filter_geno <- function(x, pattern = "x|^\\*"){
 
 
 ```{r function-convert_to_factor}
-#' Title
+#' Coerce columns to factors
 #'
 #' @param x a dataframe
 #' @param to_fact a vector of column names to coerce to factor
@@ -1148,7 +1147,7 @@ convert_to_factor <- function(
 
 
 ```{r function-convert_to_character}
-#' Title
+#' Coerce columns to character
 #'
 #' @param x a dataframe
 #' @param to_char column names to coerce to character
@@ -1224,13 +1223,14 @@ select_cols <- function(x, cols){
 
 ## run routine data checks
 
-```{r}
+```{r function-run_checks}
 #' run data quality checks using `{st4gi}` functions
 
 #' @param x a dataframe
 #' @param sz size of farm, here taken to be 10000 sq metres
 #' @param btwn spacing between ridges in metres
 #' @param within spacing between plants in the same ridge in metres
+#' @param ... additional arguments
 #'
 #' @return a dataframe
 #' @export
@@ -1316,7 +1316,7 @@ check_geno <- function(x, season, dir = out_dir){
 ## update accession names
 
 ```{r function-update_geno}
-#' Title
+#' Update accession names to conform to naming convention
 #'
 #' @param x a dataframe
 #'
@@ -1532,7 +1532,7 @@ get_valid_columns <- function(x){
 
 
 ```{r function-get_design_factors}
-#' Title
+#' Get experimental design factors from a trial dataframe/fieldbook
 #'
 #' @return a character vector
 #' @export
@@ -1548,8 +1548,7 @@ get_design_factors <- function(){
 
 
 ```{r function-get_ontology_labels}
-# ontology labels
-#' Title
+#' get ontology labels from `{st4gi}`
 #'
 #' @param x a list of dataframes or a dataframe object 
 #' @param crop  a character vecto - `pt` or `sp`
@@ -1943,30 +1942,6 @@ Each of them will be inflated in a different file, provided that there is a leve
 
 <!-- ## Use sub-functions in the same chunk -->
 
-# ```{r function-my_other_median}
-# #' My Other median
-# #'
-# #' @param x Vector of Numeric values
-# #' @inheritParams stats::median
-# #'
-# #' @return
-# #' Median of vector x
-# #' @export
-# #'
-# #' @examples
-# my_other_median <- function(x, na.rm = TRUE) {
-#   if (!is.numeric(x)) {stop("x should be numeric")}
-#   sub_median(x, na.rm =na.rm)
-# }
-# 
-# #' Core of the median not exported
-# #' @param x Vector of Numeric values
-# #' @inheritParams stats::median
-# sub_median <- function(x, na.rm = TRUE) {
-#   stats::median(x, na.rm)
-# }
-# ```
-
 
 
 <!--
@@ -1990,12 +1965,12 @@ fusen::inflate(flat_file = "dev/flat_full.Rmd", vignette_name = "Get started", o
 ```
 
 
-# Inflate your package
+<!-- # Inflate your package -->
 
-You're one inflate from paper to box.
-Build your package from this very Rmd using `fusen::inflate()`
+<!-- You're one inflate from paper to box. -->
+<!-- Build your package from this very Rmd using `fusen::inflate()` -->
 
-- Verify your `"DESCRIPTION"` file has been updated
-- Verify your function is in `"R/"` directory
-- Verify your test is in `"tests/testthat/"` directory
-- Verify this Rmd appears in `"vignettes/"` directory
+<!-- - Verify your `"DESCRIPTION"` file has been updated -->
+<!-- - Verify your function is in `"R/"` directory -->
+<!-- - Verify your test is in `"tests/testthat/"` directory -->
+<!-- - Verify this Rmd appears in `"vignettes/"` directory -->

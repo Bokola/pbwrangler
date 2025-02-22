@@ -15,6 +15,7 @@ Imports:
     magrittr,
     purrr,
     readr,
+    readxl,
     st4gi,
     statgenSTA,
     stringr,
@@ -22,7 +23,6 @@ Imports:
 Suggests: 
     here,
     knitr,
-    readxl,
     rmarkdown,
     testthat
 VignetteBuilder: 

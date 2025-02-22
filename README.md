@@ -10,8 +10,9 @@
 coverage](https://codecov.io/gh/Bokola/pbwrangler/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Bokola/pbwrangler?branch=main)
 <!-- badges: end -->
 
-The goal of pbwrangler is to curate sweet/potato date for analysis and
-archiving to breedbase.
+The goal of pbwrangler is to curate sweet/potato breeding date for
+analysis and archiving to breedbase. It was developed to help document
+functions used to read, wrangle and write data on a daily.
 
 ## Installation
 
@@ -22,7 +23,7 @@ You can install the development version of pbwrangler from
 # install.packages("devtools")
 
 devtools::install_github("Bokola/pbwrangler")
-#> Skipping install of 'pbwrangler' from a github remote, the SHA1 (2d47422c) has not changed since last install.
+#> Skipping install of 'pbwrangler' from a github remote, the SHA1 (ab5f5bd9) has not changed since last install.
 #>   Use `force = TRUE` to force installation
 library(pbwrangler)
 ```
@@ -42,5 +43,4 @@ my_left(a, 3)
 #> [1] "sdf" "cvb"
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
+<!-- You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. -->

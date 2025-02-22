@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_accessions.R
 \name{format_accessions}
 \alias{format_accessions}
-\title{Title}
+\title{organize accessions to export}
 \usage{
 format_accessions(
   x,
@@ -27,5 +27,5 @@ format_accessions(
 a dataframe
 }
 \description{
-Title
+organize accessions to export
 }

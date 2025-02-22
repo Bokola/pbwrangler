@@ -2,7 +2,7 @@
 % Please edit documentation in R/subset_invalid_cols.R
 \name{get_design_factors}
 \alias{get_design_factors}
-\title{Title}
+\title{Get experimental design factors from a trial dataframe/fieldbook}
 \usage{
 get_design_factors()
 }
@@ -10,5 +10,5 @@ get_design_factors()
 a character vector
 }
 \description{
-Title
+Get experimental design factors from a trial dataframe/fieldbook
 }

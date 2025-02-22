@@ -30,7 +30,7 @@ library(pbwrangler)
 If it is the first time you use {fusen}, after 'description', you can directly run the last chunk of the present file with inflate() inside.
 --> 
 
-# Include some data examples in your package
+<!-- # Include some data examples in your package -->
 
 <!-- 
  Store your dataset in a directory named "inst/" at the root of your project.
@@ -41,7 +41,7 @@ and `system.file()` to read it in your examples.
 -->
 
 
-# The first function of the package: Substring first n elements
+## Substring first n elements
 
 <!--
 Create a chunk for the core of the function
@@ -102,35 +102,6 @@ drop_zeros(df)
 
 
 
-
-```{r}
-
-#' read meta-files from separate trials in a season into 1 file
-#'
-#' @param season trial season such as `"season-2024"`
-#' @param path directory containing meta files
-#'
-#' @return a dataframe
-#' @export
-#'
-#' @examples
-combine_meta_files <- function(season, path=out_dir){
-  csv <- list.files(file.path(path, "data", season, "meta-data"), full.names = TRUE) %>%
-    subset(., grepl(".csv$",.))
-  if(path == m_dir){
-    xls <-  list.files(file.path(path, "meta-data"), full.names = TRUE) %>%
-      subset(., grepl(".xlsx$",.))
-  }
-
-  if(length(csv) > 0){
-    meta <- purrr::map(files, readr::read_csv) %>% bind_rows()
-  }else{
-    sheets <- purrr::map(xls, readxl::excel_sheets)
-    meta <- purrr::map2(xls, sheets, readxl::read_excel) %>% bind_rows()
-  }
-  return(meta)
-}
-```
 
 
 ```{r examples-list_file}
@@ -203,39 +174,6 @@ After inflating the template
 
 
 ## run routine data checks
-```{r}
-#' run data quality checks using `{st4gi}` functions
-
-#' @param x a dataframe
-#' @param sz size of farm, here taken to be 10000 sq metres
-#' @param btwn spacing between ridges in metres
-#' @param within spacing between plants in the same ridge in metres
-#'
-#' @return a dataframe
-#' @export
-#'
-#' @examples
-
-run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3,...){
-  # check names
-  y <- st4gi::check.names(x)
-  # check outliers
-  # check.data.pt(x)
-  
-  # compute traits
-  y <- st4gi::cdt(y, method = "np", sz / (within * btwn))
-  
-  # set missing values to zero
-  #bug: clean.data() converts non-numeric columns to NA
-  y <- st4gi::clean.data(y)
-  # convert to CO names
-  # y <- convert.co(y)
-  
-  return(y)
-}
-
-```
-
 
 ## check accession names
 
@@ -273,30 +211,6 @@ Each of them will be inflated in a different file, provided that there is a leve
 
 <!-- ## Use sub-functions in the same chunk -->
 
-# ```{r function-my_other_median}
-# #' My Other median
-# #'
-# #' @param x Vector of Numeric values
-# #' @inheritParams stats::median
-# #'
-# #' @return
-# #' Median of vector x
-# #' @export
-# #'
-# #' @examples
-# my_other_median <- function(x, na.rm = TRUE) {
-#   if (!is.numeric(x)) {stop("x should be numeric")}
-#   sub_median(x, na.rm =na.rm)
-# }
-# 
-# #' Core of the median not exported
-# #' @param x Vector of Numeric values
-# #' @inheritParams stats::median
-# sub_median <- function(x, na.rm = TRUE) {
-#   stats::median(x, na.rm)
-# }
-# ```
-
 
 
 <!--
@@ -312,12 +226,12 @@ These are only included in the present flat template file, their content will no
 -->
 
 
-# Inflate your package
+<!-- # Inflate your package -->
 
-You're one inflate from paper to box.
-Build your package from this very Rmd using `fusen::inflate()`
+<!-- You're one inflate from paper to box. -->
+<!-- Build your package from this very Rmd using `fusen::inflate()` -->
 
-- Verify your `"DESCRIPTION"` file has been updated
-- Verify your function is in `"R/"` directory
-- Verify your test is in `"tests/testthat/"` directory
-- Verify this Rmd appears in `"vignettes/"` directory
+<!-- - Verify your `"DESCRIPTION"` file has been updated -->
+<!-- - Verify your function is in `"R/"` directory -->
+<!-- - Verify your test is in `"tests/testthat/"` directory -->
+<!-- - Verify this Rmd appears in `"vignettes/"` directory -->

@@ -22,6 +22,7 @@ flat_full.Rmd:
   - R/check_gene_chars.R
   - R/clean_clone_name.R
   - R/clean_file_names.R
+  - R/list_files.R
   - R/compare_df.R
   - R/recode_var.R
   - R/create_family_vars.R
@@ -29,13 +30,13 @@ flat_full.Rmd:
   - R/create_td.R
   - R/format_accessions.R
   - R/subset_invalid_cols.R
-  - R/list_files.R
   - R/merge_note_obs.R
   - R/my_left.R
   - R/pre_process_trials_.R
   - R/read_accessions.R
   - R/read_workbooks.R
   - R/rename_cols.R
+  - R/run_checks.R
   - R/update_geno.R
   - R/write_data.R
   tests: tests/testthat/test-list_files.R

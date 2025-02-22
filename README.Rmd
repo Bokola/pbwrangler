@@ -20,8 +20,8 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/Bokola/pbwrangler/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Bokola/pbwrangler?branch=main)
 <!-- badges: end -->
 
-The goal of pbwrangler is to curate sweet/potato date for analysis and archiving 
-to breedbase.
+The goal of pbwrangler is to curate sweet/potato breeding date for analysis and archiving 
+to breedbase. It was developed to help document functions used to read, wrangle and write data on a daily.
 
 ## Installation
 
@@ -50,5 +50,5 @@ my_left(a, 3)
 ```
 
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+<!-- You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. -->
 

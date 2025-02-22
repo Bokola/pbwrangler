@@ -2,7 +2,7 @@
 % Please edit documentation in R/update_geno.R
 \name{update_geno}
 \alias{update_geno}
-\title{Title}
+\title{Update accession names to conform to naming convention}
 \usage{
 update_geno(x)
 }
@@ -13,5 +13,5 @@ update_geno(x)
 a dataframe
 }
 \description{
-Title
+Update accession names to conform to naming convention
 }

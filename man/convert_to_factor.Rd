@@ -2,7 +2,7 @@
 % Please edit documentation in R/recode_var.R
 \name{convert_to_factor}
 \alias{convert_to_factor}
-\title{Title}
+\title{Coerce columns to factors}
 \usage{
 convert_to_factor(
   x,
@@ -19,5 +19,5 @@ convert_to_factor(
 a dataframe
 }
 \description{
-Title
+Coerce columns to factors
 }

@@ -24,7 +24,7 @@ create_td <-  function(x, design){
   )
 }
 
-#' Title
+#' extract BLUPs from a `REML` model
 #'
 #' @param x an object of class `STA` from `fit_td`
 #' @param pred a character vector of predictors: `c("BLUEs", "seBLUEs)` or `c("BLUPs", "seBLUPs)`

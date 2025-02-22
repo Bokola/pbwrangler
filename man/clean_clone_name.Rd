@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean_clone_name.R
 \name{clean_clone_name}
 \alias{clean_clone_name}
-\title{Title}
+\title{Clean accession names}
 \usage{
 clean_clone_name(x)
 }
@@ -13,5 +13,5 @@ clean_clone_name(x)
 a vector of same length as \code{x}
 }
 \description{
-Title
+Clean accession names
 }

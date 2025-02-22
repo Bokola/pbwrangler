@@ -2,7 +2,7 @@
 % Please edit documentation in R/subset_invalid_cols.R
 \name{get_ontology_labels}
 \alias{get_ontology_labels}
-\title{Title}
+\title{get ontology labels from \code{{st4gi}}}
 \usage{
 get_ontology_labels(x, crop = "pt")
 }
@@ -15,5 +15,5 @@ get_ontology_labels(x, crop = "pt")
 a dataframe
 }
 \description{
-Title
+get ontology labels from \code{{st4gi}}
 }

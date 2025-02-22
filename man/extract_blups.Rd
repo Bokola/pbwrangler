@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_td.R
 \name{extract_blups}
 \alias{extract_blups}
-\title{Title}
+\title{extract BLUPs from a \code{REML} model}
 \usage{
 extract_blups(x, pred)
 }
@@ -15,5 +15,5 @@ extract_blups(x, pred)
 a dataframe
 }
 \description{
-Title
+extract BLUPs from a \code{REML} model
 }

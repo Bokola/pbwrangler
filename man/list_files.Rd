@@ -2,7 +2,7 @@
 % Please edit documentation in R/list_files.R
 \name{list_files}
 \alias{list_files}
-\title{Title}
+\title{List file in a directory}
 \usage{
 list_files(folder, subset = FALSE, n = NULL, ...)
 }
@@ -19,5 +19,5 @@ list_files(folder, subset = FALSE, n = NULL, ...)
 a character vector of listed files
 }
 \description{
-Title
+List file in a directory
 }
