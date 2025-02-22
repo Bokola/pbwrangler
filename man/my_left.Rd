@@ -17,3 +17,15 @@ a character vector
 \description{
 Extract first n elements of a string
 }
+\examples{
+a <- c("asdf", "bnmkk")
+my_left(a, num = 3)
+
+a <- c("asdf", "bnmkk")
+my_right(a, num = 3)
+
+df <- data.frame(a = NA, b = c(1:3, NA), c = 0)
+drop_nas(df)
+drop_zeros(df)
+
+}

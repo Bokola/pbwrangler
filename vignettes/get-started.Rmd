@@ -41,7 +41,7 @@ and `system.file()` to read it in your examples.
 -->
 
 
-# The first function of the package: Calculate the median of a vector
+# The first function of the package: Substring first n elements
 
 <!--
 Create a chunk for the core of the function
@@ -71,7 +71,7 @@ After inflating the template
 -  This example will automatically be added in the '@examples' part of our function above in the "R/" directory
 - This example will automatically be added in the vignette created from this Rmd template
 -->
-```{r examples-my_left}
+```{r examples}
 a <- c("asdf", "bnmkk")
 my_left(a, num = 3)
 ```
@@ -81,6 +81,68 @@ my_left(a, num = 3)
 a <- c("asdf", "bnmkk")
 my_right(a, num = 3)
 ```
+
+
+```{r examples-drop_nas}
+df <- data.frame(a = NA, b = c(1:3, NA), c = 0)
+drop_nas(df)
+drop_zeros(df)
+
+```
+
+
+## clean directory/file names
+
+
+
+
+
+
+## List files
+
+
+
+
+```{r}
+
+#' read meta-files from separate trials in a season into 1 file
+#'
+#' @param season trial season such as `"season-2024"`
+#' @param path directory containing meta files
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+combine_meta_files <- function(season, path=out_dir){
+  csv <- list.files(file.path(path, "data", season, "meta-data"), full.names = TRUE) %>%
+    subset(., grepl(".csv$",.))
+  if(path == m_dir){
+    xls <-  list.files(file.path(path, "meta-data"), full.names = TRUE) %>%
+      subset(., grepl(".xlsx$",.))
+  }
+
+  if(length(csv) > 0){
+    meta <- purrr::map(files, readr::read_csv) %>% bind_rows()
+  }else{
+    sheets <- purrr::map(xls, readxl::excel_sheets)
+    meta <- purrr::map2(xls, sheets, readxl::read_excel) %>% bind_rows()
+  }
+  return(meta)
+}
+```
+
+
+```{r examples-list_file}
+f <- tempdir()
+tempfile(pattern = "file", tmpdir = f, fileext = ".csv")
+# all files
+list_files(f)
+# subset
+list_files(f, subset = TRUE, n = 1)
+```
+
+
 
 
 <!--
@@ -96,7 +158,113 @@ After inflating the template
 -  This test code will automatically be added in the "tests/testthat/" directory
 -->
 
-# Calculate the mean of a vector
+## Compare dataframes to find shared columns 
+
+
+## Merge notes/obs to one column
+
+## Create a trial design object for row-col design
+
+
+
+
+## Create a meta-data file for each experiment designed during a season
+
+## Capture trial location
+
+
+
+
+
+## write data
+
+
+
+
+
+## create genotype family codes
+
+
+## clean clone/genotype names
+
+## read accession files that have been fixed and confirmed correct
+
+
+
+## organize accessions for export
+
+# recode variables
+
+
+
+
+
+
+
+
+## run routine data checks
+```{r}
+#' run data quality checks using `{st4gi}` functions
+
+#' @param x a dataframe
+#' @param sz size of farm, here taken to be 10000 sq metres
+#' @param btwn spacing between ridges in metres
+#' @param within spacing between plants in the same ridge in metres
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+
+run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3,...){
+  # check names
+  y <- st4gi::check.names(x)
+  # check outliers
+  # check.data.pt(x)
+  
+  # compute traits
+  y <- st4gi::cdt(y, method = "np", sz / (within * btwn))
+  
+  # set missing values to zero
+  #bug: clean.data() converts non-numeric columns to NA
+  y <- st4gi::clean.data(y)
+  # convert to CO names
+  # y <- convert.co(y)
+  
+  return(y)
+}
+
+```
+
+
+## check accession names
+
+
+
+## update accession names
+
+## rename columns
+
+## process trial data
+
+
+
+
+
+## get in/valid column names 
+
+
+
+
+## tissue culture helpers
+
+
+
+
+## read trial data files
+
+
+<!-- # Calculate the mean of a vector -->
 
 <!--
 There can be other functions, examples and tests in your flat template.

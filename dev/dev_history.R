@@ -16,7 +16,4 @@ attachment::att_amend_desc(update.config = T)
 
 # Remotes field - packages not in cran
 
-?set_remotes_to_desc()
-
-att_amend_desc() %>%
-  set_remotes_to_desc()
+att_amend_desc()

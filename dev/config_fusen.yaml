@@ -12,11 +12,33 @@ data_doc.Rmd:
     document: true
     overwrite: 'yes'
     clean: ask
+    codecov: false
 flat_full.Rmd:
   path: dev/flat_full.Rmd
   state: active
-  R: R/my_left.R
-  tests: tests/testthat/test-my_left.R
+  R:
+  - R/duplicate_row.R
+  - R/capture_location.R
+  - R/check_gene_chars.R
+  - R/clean_clone_name.R
+  - R/clean_file_names.R
+  - R/compare_df.R
+  - R/recode_var.R
+  - R/create_family_vars.R
+  - R/create_meta_file.R
+  - R/create_td.R
+  - R/format_accessions.R
+  - R/subset_invalid_cols.R
+  - R/list_files.R
+  - R/merge_note_obs.R
+  - R/my_left.R
+  - R/pre_process_trials_.R
+  - R/read_accessions.R
+  - R/read_workbooks.R
+  - R/rename_cols.R
+  - R/update_geno.R
+  - R/write_data.R
+  tests: tests/testthat/test-list_files.R
   vignettes: vignettes/get-started.Rmd
   inflate:
     flat_file: dev/flat_full.Rmd
@@ -26,3 +48,4 @@ flat_full.Rmd:
     document: true
     overwrite: 'yes'
     clean: ask
+    codecov: false

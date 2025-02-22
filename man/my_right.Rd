@@ -17,10 +17,3 @@ a character vector
 \description{
 Extract last n elements of a string
 }
-\examples{
-a <- c("asdf", "bnmkk")
-my_left(a, num = 3)
-
-a <- c("asdf", "bnmkk")
-my_right(a, num = 3)
-}

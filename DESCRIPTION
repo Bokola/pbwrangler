@@ -8,17 +8,28 @@ Description: `pbwrangler` is a collection of in-house functions used in
     databases.
 License: MIT + file LICENSE
 Imports: 
+    dplyr,
+    ids,
+    janitor,
+    lubridate,
     magrittr,
-    stringr
+    purrr,
+    readr,
+    st4gi,
+    statgenSTA,
+    stringr,
+    utils
 Suggests: 
+    here,
     knitr,
+    readxl,
     rmarkdown,
     testthat
 VignetteBuilder: 
     knitr
 Remotes: 
     reyzaguirre/st4gi
-Config/fusen/version: 0.6.0
+Config/fusen/version: 0.7.1
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
