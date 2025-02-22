@@ -77,6 +77,32 @@
     <p>a character vector</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asdf"</span>, <span class="st">"bnmkk"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">my_left</span><span class="op">(</span><span class="va">a</span>, num <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "asd" "bnm"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asdf"</span>, <span class="st">"bnmkk"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="my_right.html">my_right</a></span><span class="op">(</span><span class="va">a</span>, num <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sdf" "mkk"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="cn">NA</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="cn">NA</span><span class="op">)</span>, c <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="drop_nas.html">drop_nas</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    b c</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  3 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 NA 0</span>
+<span class="r-in"><span><span class="fu"><a href="drop_zeros.html">drop_zeros</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    a  b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 NA  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 NA  2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 NA  3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 NA NA</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
