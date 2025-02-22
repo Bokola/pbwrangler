@@ -95,23 +95,6 @@
     <p>a list of filedbooks</p>
     </div>
 
-    <div id="ref-examples">
-    <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"file"</span>, tmpdir <span class="op">=</span> <span class="va">f</span>, fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpzft1VC/file1ff115b6e36e.csv"</span>
-<span class="r-in"><span><span class="co"># all files</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="list_files.html">list_files</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpzft1VC/downlit"                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "/tmp/Rtmpzft1VC/file1ff117ece1de"               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "/tmp/Rtmpzft1VC/file1ff1244e5f6f"               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "/tmp/Rtmpzft1VC/libloc_177_ba49d10276946614.rds"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "/tmp/Rtmpzft1VC/libloc_239_f23dd06176c9f7db.rds"</span>
-<span class="r-in"><span><span class="co"># subset</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="list_files.html">list_files</a></span><span class="op">(</span><span class="va">f</span>, subset <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/Rtmpzft1VC/downlit"</span>
-</code></pre></div>
-    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

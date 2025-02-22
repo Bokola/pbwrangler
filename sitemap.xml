@@ -17,6 +17,7 @@
 <url><loc>/reference/clean_dir_name_c.html</loc></url>
 <url><loc>/reference/clean_file_names.html</loc></url>
 <url><loc>/reference/clean_var_names.html</loc></url>
+<url><loc>/reference/combine_meta_files.html</loc></url>
 <url><loc>/reference/compare_df.html</loc></url>
 <url><loc>/reference/compute_cols.html</loc></url>
 <url><loc>/reference/convert_to_character.html</loc></url>
@@ -66,6 +67,7 @@
 <url><loc>/reference/read_workbooks.html</loc></url>
 <url><loc>/reference/recode_var.html</loc></url>
 <url><loc>/reference/rename_cols.html</loc></url>
+<url><loc>/reference/run_checks.html</loc></url>
 <url><loc>/reference/run_data_processes.html</loc></url>
 <url><loc>/reference/select_cols.html</loc></url>
 <url><loc>/reference/subset_invalid_cols.html</loc></url>

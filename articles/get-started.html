@@ -90,9 +90,7 @@
 
 If it is the first time you use {fusen}, after 'description', you can directly run the last chunk of the present file with inflate() inside.
 -->
-<div class="section level2">
-<h2 id="include-some-data-examples-in-your-package">Include some data examples in your package<a class="anchor" aria-label="anchor" href="#include-some-data-examples-in-your-package"></a>
-</h2>
+<!-- # Include some data examples in your package -->
 <!-- 
  Store your dataset in a directory named "inst/" at the root of your project.
  Use it for your tests in this Rmd thanks to `pkgload::load_all()` to make it available
@@ -100,10 +98,9 @@ and `system.file()` to read it in your examples.
 
 - There already is a dataset in the "inst/" directory to be used in the examples below
 -->
-</div>
-<div class="section level2">
-<h2 id="the-first-function-of-the-package-substring-first-n-elements">The first function of the package: Substring first n elements<a class="anchor" aria-label="anchor" href="#the-first-function-of-the-package-substring-first-n-elements"></a>
-</h2>
+<div class="section level3">
+<h3 id="substring-first-n-elements">Substring first n elements<a class="anchor" aria-label="anchor" href="#substring-first-n-elements"></a>
+</h3>
 <!--
 Create a chunk for the core of the function
 
@@ -152,6 +149,7 @@ After inflating the template
 <span><span class="co">#&gt; 2 NA  2</span></span>
 <span><span class="co">#&gt; 3 NA  3</span></span>
 <span><span class="co">#&gt; 4 NA NA</span></span></code></pre></div>
+</div>
 <div class="section level3">
 <h3 id="clean-directoryfile-names">clean directory/file names<a class="anchor" aria-label="anchor" href="#clean-directoryfile-names"></a>
 </h3>
@@ -160,50 +158,22 @@ After inflating the template
 <h3 id="list-files">List files<a class="anchor" aria-label="anchor" href="#list-files"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co">#' read meta-files from separate trials in a season into 1 file</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' @param season trial season such as `"season-2024"`</span></span>
-<span><span class="co">#' @param path directory containing meta files</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' @return a dataframe</span></span>
-<span><span class="co">#' @export</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' @examples</span></span>
-<span><span class="va">combine_meta_files</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">season</span>, <span class="va">path</span><span class="op">=</span><span class="va">out_dir</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="va">csv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"data"</span>, <span class="va">season</span>, <span class="st">"meta-data"</span><span class="op">)</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">".csv$"</span>,<span class="va">.</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="kw">if</span><span class="op">(</span><span class="va">path</span> <span class="op">==</span> <span class="va">m_dir</span><span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="va">xls</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"meta-data"</span><span class="op">)</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">.</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">".xlsx$"</span>,<span class="va">.</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span></span>
-<span>  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">csv</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">files</span>, <span class="fu">readr</span><span class="fu">::</span><span class="va"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">bind_rows</span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="kw">else</span><span class="op">{</span></span>
-<span>    <span class="va">sheets</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">xls</span>, <span class="fu">readxl</span><span class="fu">::</span><span class="va"><a href="https://readxl.tidyverse.org/reference/excel_sheets.html" class="external-link">excel_sheets</a></span><span class="op">)</span></span>
-<span>    <span class="va">meta</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html" class="external-link">map2</a></span><span class="op">(</span><span class="va">xls</span>, <span class="va">sheets</span>, <span class="fu">readxl</span><span class="fu">::</span><span class="va"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">bind_rows</span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">meta</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"file"</span>, tmpdir <span class="op">=</span> <span class="va">f</span>, fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmpazhaff/file23c8536e2fd3.csv"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpB6F6Nz/file23a847342799.csv"</span></span>
 <span><span class="co"># all files</span></span>
 <span><span class="fu"><a href="../reference/list_files.html">list_files</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmpazhaff/file23c8134d9659"               </span></span>
-<span><span class="co">#&gt; [2] "/tmp/Rtmpazhaff/file23c8429ed6fe"               </span></span>
-<span><span class="co">#&gt; [3] "/tmp/Rtmpazhaff/file23c852419e40"               </span></span>
-<span><span class="co">#&gt; [4] "/tmp/Rtmpazhaff/file23c86a68376d"               </span></span>
-<span><span class="co">#&gt; [5] "/tmp/Rtmpazhaff/file23c8776c57e1"               </span></span>
-<span><span class="co">#&gt; [6] "/tmp/Rtmpazhaff/file23c8bf615e6"                </span></span>
-<span><span class="co">#&gt; [7] "/tmp/Rtmpazhaff/libloc_177_ba49d10276946614.rds"</span></span>
-<span><span class="co">#&gt; [8] "/tmp/Rtmpazhaff/libloc_239_f23dd06176c9f7db.rds"</span></span>
-<span><span class="co">#&gt; [9] "/tmp/Rtmpazhaff/rmarkdown-str23c8637da55e.html"</span></span>
+<span><span class="co">#&gt; [1] "/tmp/RtmpB6F6Nz/file23a825b7146b"               </span></span>
+<span><span class="co">#&gt; [2] "/tmp/RtmpB6F6Nz/file23a82a36812d"               </span></span>
+<span><span class="co">#&gt; [3] "/tmp/RtmpB6F6Nz/file23a850c493f8"               </span></span>
+<span><span class="co">#&gt; [4] "/tmp/RtmpB6F6Nz/file23a85373efd6"               </span></span>
+<span><span class="co">#&gt; [5] "/tmp/RtmpB6F6Nz/file23a8d1400f8"                </span></span>
+<span><span class="co">#&gt; [6] "/tmp/RtmpB6F6Nz/libloc_177_ba49d10276946614.rds"</span></span>
+<span><span class="co">#&gt; [7] "/tmp/RtmpB6F6Nz/libloc_239_f23dd06176c9f7db.rds"</span></span>
+<span><span class="co">#&gt; [8] "/tmp/RtmpB6F6Nz/rmarkdown-str23a85f098f09.html"</span></span>
 <span><span class="co"># subset</span></span>
 <span><span class="fu"><a href="../reference/list_files.html">list_files</a></span><span class="op">(</span><span class="va">f</span>, subset <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmpazhaff/file23c8134d9659"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "/tmp/RtmpB6F6Nz/file23a825b7146b"</span></span></code></pre></div>
 <!--
 Create a chunk with a test of use for your function
 
@@ -258,43 +228,12 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <h3 id="organize-accessions-for-export">organize accessions for export<a class="anchor" aria-label="anchor" href="#organize-accessions-for-export"></a>
 </h3>
 </div>
-</div>
 <div class="section level2">
 <h2 id="recode-variables">recode variables<a class="anchor" aria-label="anchor" href="#recode-variables"></a>
 </h2>
 <div class="section level3">
 <h3 id="run-routine-data-checks">run routine data checks<a class="anchor" aria-label="anchor" href="#run-routine-data-checks"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#' run data quality checks using `{st4gi}` functions</span></span>
-<span></span>
-<span><span class="co">#' @param x a dataframe</span></span>
-<span><span class="co">#' @param sz size of farm, here taken to be 10000 sq metres</span></span>
-<span><span class="co">#' @param btwn spacing between ridges in metres</span></span>
-<span><span class="co">#' @param within spacing between plants in the same ridge in metres</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' @return a dataframe</span></span>
-<span><span class="co">#' @export</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' @examples</span></span>
-<span></span>
-<span><span class="va">run_checks</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>,<span class="va">sz</span> <span class="op">=</span> <span class="fl">10000</span>, <span class="va">btwn</span> <span class="op">=</span> <span class="fl">0.75</span>, <span class="va">within</span> <span class="op">=</span> <span class="fl">0.3</span>,<span class="va">...</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="co"># check names</span></span>
-<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">st4gi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/st4gi/man/check.names.html" class="external-link">check.names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span>  <span class="co"># check outliers</span></span>
-<span>  <span class="co"># check.data.pt(x)</span></span>
-<span>  </span>
-<span>  <span class="co"># compute traits</span></span>
-<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">st4gi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/st4gi/man/cdt.html" class="external-link">cdt</a></span><span class="op">(</span><span class="va">y</span>, method <span class="op">=</span> <span class="st">"np"</span>, <span class="va">sz</span> <span class="op">/</span> <span class="op">(</span><span class="va">within</span> <span class="op">*</span> <span class="va">btwn</span><span class="op">)</span><span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="co"># set missing values to zero</span></span>
-<span>  <span class="co">#bug: clean.data() converts non-numeric columns to NA</span></span>
-<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">st4gi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/st4gi/man/clean.data.html" class="external-link">clean.data</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span>  <span class="co"># convert to CO names</span></span>
-<span>  <span class="co"># y &lt;- convert.co(y)</span></span>
-<span>  </span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="check-accession-names">check accession names<a class="anchor" aria-label="anchor" href="#check-accession-names"></a>
@@ -329,12 +268,6 @@ There can be other functions, examples and tests in your flat template.
 Each of them will be inflated in a different file, provided that there is a level-1 or level-2 section title to separate from previous functions.
 -->
 <!-- ## Use sub-functions in the same chunk -->
-</div>
-</div>
-<div class="section level2">
-<h2 id="r-function-my_other_median-my-other-median-param-x-vector-of-numeric-values-inheritparams-statsmedian-return-median-of-vector-x-export-examples-my_other_median---functionx-na-rm-true-if-is-numericx-stopx-should-be-numeric-sub_medianx-na-rm-na-rm-core-of-the-median-not-exported-param-x-vector-of-numeric-values-inheritparams-statsmedian-sub_median---functionx-na-rm-true-statsmedianx-na-rm">
-<code>{r function-my_other_median} # #' My Other median # #' # #' @param x Vector of Numeric values # #' @inheritParams stats::median # #' # #' @return # #' Median of vector x # #' @export # #' # #' @examples # my_other_median &lt;- function(x, na.rm = TRUE) { #   if (!is.numeric(x)) {stop("x should be numeric")} #   sub_median(x, na.rm =na.rm) # } #  # #' Core of the median not exported # #' @param x Vector of Numeric values # #' @inheritParams stats::median # sub_median &lt;- function(x, na.rm = TRUE) { #   stats::median(x, na.rm) # } #</code><a class="anchor" aria-label="anchor" href="#r-function-my_other_median-my-other-median-param-x-vector-of-numeric-values-inheritparams-statsmedian-return-median-of-vector-x-export-examples-my_other_median---functionx-na-rm-true-if-is-numericx-stopx-should-be-numeric-sub_medianx-na-rm-na-rm-core-of-the-median-not-exported-param-x-vector-of-numeric-values-inheritparams-statsmedian-sub_median---functionx-na-rm-true-statsmedianx-na-rm"></a>
-</h2>
 <!--
 # There can be development actions
 
@@ -346,18 +279,14 @@ Create a chunk with 'development' actions
 
 These are only included in the present flat template file, their content will not be part of the package anywhere else.
 -->
+<!-- # Inflate your package -->
+<!-- You're one inflate from paper to box. -->
+<!-- Build your package from this very Rmd using `fusen::inflate()` -->
+<!-- - Verify your `"DESCRIPTION"` file has been updated -->
+<!-- - Verify your function is in `"R/"` directory -->
+<!-- - Verify your test is in `"tests/testthat/"` directory -->
+<!-- - Verify this Rmd appears in `"vignettes/"` directory -->
 </div>
-<div class="section level2">
-<h2 id="inflate-your-package">Inflate your package<a class="anchor" aria-label="anchor" href="#inflate-your-package"></a>
-</h2>
-<p>You’re one inflate from paper to box. Build your package from this
-very Rmd using <code>fusen::inflate()</code></p>
-<ul>
-<li>Verify your <code>"DESCRIPTION"</code> file has been updated</li>
-<li>Verify your function is in <code>"R/"</code> directory</li>
-<li>Verify your test is in <code>"tests/testthat/"</code> directory</li>
-<li>Verify this Rmd appears in <code>"vignettes/"</code> directory</li>
-</ul>
 </div>
   </div>
 
