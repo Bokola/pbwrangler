@@ -158,22 +158,13 @@ After inflating the template
 <h3 id="list-files">List files<a class="anchor" aria-label="anchor" href="#list-files"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"file"</span>, tmpdir <span class="op">=</span> <span class="va">f</span>, fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpB6F6Nz/file23a847342799.csv"</span></span>
-<span><span class="co"># all files</span></span>
-<span><span class="fu"><a href="../reference/list_files.html">list_files</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpB6F6Nz/file23a825b7146b"               </span></span>
-<span><span class="co">#&gt; [2] "/tmp/RtmpB6F6Nz/file23a82a36812d"               </span></span>
-<span><span class="co">#&gt; [3] "/tmp/RtmpB6F6Nz/file23a850c493f8"               </span></span>
-<span><span class="co">#&gt; [4] "/tmp/RtmpB6F6Nz/file23a85373efd6"               </span></span>
-<span><span class="co">#&gt; [5] "/tmp/RtmpB6F6Nz/file23a8d1400f8"                </span></span>
-<span><span class="co">#&gt; [6] "/tmp/RtmpB6F6Nz/libloc_177_ba49d10276946614.rds"</span></span>
-<span><span class="co">#&gt; [7] "/tmp/RtmpB6F6Nz/libloc_239_f23dd06176c9f7db.rds"</span></span>
-<span><span class="co">#&gt; [8] "/tmp/RtmpB6F6Nz/rmarkdown-str23a85f098f09.html"</span></span>
-<span><span class="co"># subset</span></span>
-<span><span class="fu"><a href="../reference/list_files.html">list_files</a></span><span class="op">(</span><span class="va">f</span>, subset <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/tmp/RtmpB6F6Nz/file23a825b7146b"</span></span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="../reference/list_files.html">list_files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "/home/runner/.cache/R/renv/library/pbwrangler-a799f0e5/linux-ubuntu-noble/R-4.4/x86_64-pc-linux-gnu/pbwrangler/data"       </span></span>
+<span><span class="co">#&gt; [2] "/home/runner/.cache/R/renv/library/pbwrangler-a799f0e5/linux-ubuntu-noble/R-4.4/x86_64-pc-linux-gnu/pbwrangler/DESCRIPTION"</span></span>
+<span><span class="co">#&gt; [3] "/home/runner/.cache/R/renv/library/pbwrangler-a799f0e5/linux-ubuntu-noble/R-4.4/x86_64-pc-linux-gnu/pbwrangler/help"       </span></span>
+<span><span class="co">#&gt; [4] "/home/runner/.cache/R/renv/library/pbwrangler-a799f0e5/linux-ubuntu-noble/R-4.4/x86_64-pc-linux-gnu/pbwrangler/html"       </span></span>
+<span><span class="co">#&gt; [5] "/home/runner/.cache/R/renv/library/pbwrangler-a799f0e5/linux-ubuntu-noble/R-4.4/x86_64-pc-linux-gnu/pbwrangler/INDEX"</span></span></code></pre></div>
 <!--
 Create a chunk with a test of use for your function
 
@@ -262,6 +253,61 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <div class="section level3">
 <h3 id="read-trial-data-files">read trial data files<a class="anchor" aria-label="anchor" href="#read-trial-data-files"></a>
 </h3>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">head</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`uon-trial-1`</span></span>
+<span><span class="co">#&gt;           unique plot          geno entry row col rep ntp npe growth_speed pgh</span></span>
+<span><span class="co">#&gt; 1 1CIP317004.001    1 CIP317004.001    12   1   1   1  20  20            7   2</span></span>
+<span><span class="co">#&gt; 2 2CIP317005.036    2 CIP317005.036    14   2   1   1  20  20            7   2</span></span>
+<span><span class="co">#&gt; 3 3CIP317007.103    3 CIP317007.103    20   3   1   1  20  19            7   2</span></span>
+<span><span class="co">#&gt; 4 4CIP317013.120    4 CIP317013.120    23   4   1   1  20  20            7   2</span></span>
+<span><span class="co">#&gt; 5 5CIP317026.004    5 CIP317026.004    28   5   1   1  20  10            7   2</span></span>
+<span><span class="co">#&gt; 6 6CIP317005.089    6 CIP317005.089    17   6   1   1  20  20            5   2</span></span>
+<span><span class="co">#&gt;   plant_unif plant_vigor flowering flowering_date flower_colour</span></span>
+<span><span class="co">#&gt; 1          9           7         5     12/31/2023  Light purple</span></span>
+<span><span class="co">#&gt; 2          9           7         5     12/31/2023        Purple</span></span>
+<span><span class="co">#&gt; 3          9           9         5           &lt;NA&gt;          &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4          9           7         5       1/4/2024        Purple</span></span>
+<span><span class="co">#&gt; 5          7           7         5       1/4/2024  Light purple</span></span>
+<span><span class="co">#&gt; 6          7           7         5       1/3/2024         White</span></span>
+<span><span class="co">#&gt;   overall_impression se tuber_apper tub_unif tub_size flesh_colour  skin_colour</span></span>
+<span><span class="co">#&gt; 1                  7  7           7        7        5        creme          Red</span></span>
+<span><span class="co">#&gt; 2                  8  5           9        7        7  dark yellow    Light red</span></span>
+<span><span class="co">#&gt; 3                  9  5           9        7        5       yellow Light yellow</span></span>
+<span><span class="co">#&gt; 4                  8  7           7        7        5  dark yellow Light yellow</span></span>
+<span><span class="co">#&gt; 5                  8  5           9        7        5  dark yellow    Light red</span></span>
+<span><span class="co">#&gt; 6                  7  9           9        5        5  dark yellow       Yellow</span></span>
+<span><span class="co">#&gt;   nmtci nmtcii nnomtp mtwci mtwcii nomtwp late_blight_60_days</span></span>
+<span><span class="co">#&gt; 1    NA    166     68    NA  10.92   1.26                   5</span></span>
+<span><span class="co">#&gt; 2    11    250     87  2.16  16.92   1.34                   5</span></span>
+<span><span class="co">#&gt; 3    NA    219    119    NA  11.74   1.52                   0</span></span>
+<span><span class="co">#&gt; 4    NA    200     85    NA  14.12   1.46                  10</span></span>
+<span><span class="co">#&gt; 5     6    205     36  2.24  12.58   0.38                  10</span></span>
+<span><span class="co">#&gt; 6     4    167     68  0.62   8.56   0.74                  10</span></span>
+<span><span class="co">#&gt;                     notes</span></span>
+<span><span class="co">#&gt; 1 long oblong,,good yield</span></span>
+<span><span class="co">#&gt; 2         very good yield</span></span>
+<span><span class="co">#&gt; 3      buds, pinkish eyes</span></span>
+<span><span class="co">#&gt; 4              good yield</span></span>
+<span><span class="co">#&gt; 5                    &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 6               low yield</span></span>
+<span><span class="co">#&gt;                                                                                                                                                                                                                      photo</span></span>
+<span><span class="co">#&gt; 1 content://com.android.externalstorage.documents/tree/primary%3AfieldBook%2Ffield_import/document/primary%3AfieldBook%2Ffield_import%2Fplot_data%2FUoN-Trial%201%2FPhoto%2F1CIP317004.001_Photo_1_2024-03-08-11-27-47.jpg</span></span>
+<span><span class="co">#&gt; 2 content://com.android.externalstorage.documents/tree/primary%3AfieldBook%2Ffield_import/document/primary%3AfieldBook%2Ffield_import%2Fplot_data%2FUoN-Trial%201%2FPhoto%2F2CIP317005.036_Photo_1_2024-03-08-11-28-34.jpg</span></span>
+<span><span class="co">#&gt; 3 content://com.android.externalstorage.documents/tree/primary%3AfieldBook%2Ffield_import/document/primary%3AfieldBook%2Ffield_import%2Fplot_data%2FUoN-Trial%201%2FPhoto%2F3CIP317007.103_Photo_1_2024-03-08-11-29-37.jpg</span></span>
+<span><span class="co">#&gt; 4 content://com.android.externalstorage.documents/tree/primary%3AfieldBook%2Ffield_import/document/primary%3AfieldBook%2Ffield_import%2Fplot_data%2FUoN-Trial%201%2FPhoto%2F4CIP317013.120_Photo_1_2024-03-08-11-30-52.jpg</span></span>
+<span><span class="co">#&gt; 5 content://com.android.externalstorage.documents/tree/primary%3AfieldBook%2Ffield_import/document/primary%3AfieldBook%2Ffield_import%2Fplot_data%2FUoN-Trial%201%2FPhoto%2F5CIP317026.004_Photo_1_2024-03-08-11-32-12.jpg</span></span>
+<span><span class="co">#&gt; 6 content://com.android.externalstorage.documents/tree/primary%3AfieldBook%2Ffield_import/document/primary%3AfieldBook%2Ffield_import%2Fplot_data%2FUoN-Trial%201%2FPhoto%2F6CIP317005.089_Photo_1_2024-03-08-11-33-20.jpg</span></span></code></pre></div>
 <!-- # Calculate the mean of a vector -->
 <!--
 There can be other functions, examples and tests in your flat template.
