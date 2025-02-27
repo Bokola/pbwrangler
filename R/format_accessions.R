@@ -46,7 +46,7 @@ format_accessions <- function(
   accessions_b <- accessions %>% dplyr::filter(
     old_family_code %in% df$old_family_code
   ) %>% dplyr::arrange(old_family_code, geno)
-  out_a <- list(accessions_a, accessions_b) %>% set_names(c("acc_miss", "acc_available"))
+  out_a <- list(accessions_a, accessions_b) %>% magrittr::set_names(c("acc_miss", "acc_available"))
   if(dim(out_a[[1]])[1] > 0){
     readr::write_csv(out_a[["acc_miss"]], file.path(dir, sub_dir, paste0(filename, "_", season, ".csv")))
   }

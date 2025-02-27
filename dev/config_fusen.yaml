@@ -39,7 +39,9 @@ flat_full.Rmd:
   - R/run_checks.R
   - R/update_geno.R
   - R/write_data.R
-  tests: tests/testthat/test-list_files.R
+  tests:
+  - tests/testthat/test-list_files.R
+  - tests/testthat/test-read_workbooks.R
   vignettes: vignettes/get-started.Rmd
   inflate:
     flat_file: dev/flat_full.Rmd

@@ -10,12 +10,8 @@
 #' @export
 #'
 #' @examples
-#' f <- tempdir()
-#' tempfile(pattern = "file", tmpdir = f, fileext = ".csv")
-#' # all files
-#' list_files(f)
-#' # subset
-#' list_files(f, subset = TRUE, n = 1)
+#'
+#' list_files(system.file(package = "pbwrangler"))[1:5]
 combine_meta_files <- function(season, path=out_dir){
   csv <- list.files(file.path(path, "data", season, "meta-data"), full.names = TRUE) %>%
     subset(., grepl(".csv$",.))

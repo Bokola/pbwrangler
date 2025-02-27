@@ -18,10 +18,6 @@ a dataframe
 read meta-files from separate trials in a season into 1 file
 }
 \examples{
-f <- tempdir()
-tempfile(pattern = "file", tmpdir = f, fileext = ".csv")
-# all files
-list_files(f)
-# subset
-list_files(f, subset = TRUE, n = 1)
+
+list_files(system.file(package = "pbwrangler"))[1:5]
 }

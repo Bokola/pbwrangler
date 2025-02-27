@@ -105,12 +105,8 @@ drop_zeros(df)
 
 
 ```{r examples-list_file}
-f <- tempdir()
-tempfile(pattern = "file", tmpdir = f, fileext = ".csv")
-# all files
-list_files(f)
-# subset
-list_files(f, subset = TRUE, n = 1)
+
+list_files(system.file(package = "pbwrangler"))[1:5]
 ```
 
 
@@ -200,6 +196,14 @@ After inflating the template
 
 
 ## read trial data files
+
+```{r examples-read_workbooks}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+d <- read_workbooks(dir = NULL, file_to_read = f)
+lapply(d, head)
+```
+
+
 
 
 <!-- # Calculate the mean of a vector -->
