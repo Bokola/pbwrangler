@@ -7,6 +7,10 @@
 #' @return a dataframe
 #' @export
 #'
+#' @examples
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' df <- read_workbooks(dir=NULL, file_to_read = f)[[1]]
+#' merge_note_obs(df)[1:5, "obs"]
 merge_note_obs <- function(x){
   if("obs"%in%  names(x) & "notes" %in% names(x)){
     out <- x %>% dplyr::rowwise() %>%

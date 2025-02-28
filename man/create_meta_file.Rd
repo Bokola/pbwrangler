@@ -13,6 +13,14 @@ create_meta_file(x, season, d_dir = out_dir)
 
 \item{d_dir}{folder directory to write the meta-data e.g., \code{"C://Users/Documents"}}
 }
+\value{
+a list of dataframes
+}
 \description{
 create a meta-data file with design factors, planting dates etc
+}
+\examples{
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f)
+create_meta_file(df, season = "season-2024", d_dir = tempdir())
 }

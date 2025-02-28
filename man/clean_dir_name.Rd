@@ -15,3 +15,8 @@ a character vector
 \description{
 clean file name using \code{gsub}
 }
+\examples{
+
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+clean_dir_name(f)
+}

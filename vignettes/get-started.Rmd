@@ -94,6 +94,15 @@ drop_zeros(df)
 ## clean directory/file names
 
 
+```{r examples-clean_dir_name}
+#| message: no
+
+
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+clean_dir_name(f)
+```
+
+
 
 
 
@@ -127,15 +136,42 @@ After inflating the template
 
 ## Compare dataframes to find shared columns 
 
+```{r examples-compare_df}
+#| message: no
+
+
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir=NULL, file_to_read = f)[[1]]
+f1 <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+df1 <- read_workbooks(dir=NULL, file_to_read = f, sheet_name = "Sheet1")[[1]]
+compare_df(df, df1)
+```
+
+
 
 ## Merge notes/obs to one column
 
-## Create a trial design object for row-col design
+```{r examples-merge_note_obs}
+#| message: no
 
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir=NULL, file_to_read = f)[[1]]
+merge_note_obs(df)[1:5, "obs"]
+```
 
 
 
 ## Create a meta-data file for each experiment designed during a season
+
+```{r examples-create_meta_file}
+#| message: no
+
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f)
+create_meta_file(df, season = "season-2024", d_dir = tempdir())
+```
+
+
 
 ## Capture trial location
 
@@ -185,6 +221,12 @@ After inflating the template
 
 
 
+## Create a trial design object for row-col design
+
+
+
+
+
 ## get in/valid column names 
 
 
@@ -202,7 +244,7 @@ After inflating the template
 
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 d <- read_workbooks(dir = NULL, file_to_read = f)
-lapply(d, head)
+lapply(d, function(x) x[1:5, 1:5])
 ```
 
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_workbooks.R
 \name{read_workbooks}
 \alias{read_workbooks}
-\title{Title}
+\title{A wrapper for \code{readr}'s \code{read_csv} & \code{readxl}'s \code{read_excel} for reading trial data}
 \usage{
 read_workbooks(
   dir = t_dir,
@@ -45,10 +45,10 @@ read_workbooks(
 a list of trial dataframes
 }
 \description{
-Title
+A wrapper for \code{readr}'s \code{read_csv} & \code{readxl}'s \code{read_excel} for reading trial data
 }
 \examples{
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 d <- read_workbooks(dir = NULL, file_to_read = f)
-lapply(d, head)
+lapply(d, function(x) x[1:5, 1:5])
 }

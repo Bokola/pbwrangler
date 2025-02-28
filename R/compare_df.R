@@ -8,6 +8,13 @@
 #' @return a dataframe with difference/similarities btwn `x`, `y`
 #' @export
 #'
+#' @examples
+#'
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' df <- read_workbooks(dir=NULL, file_to_read = f)[[1]]
+#' f1 <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+#' df1 <- read_workbooks(dir=NULL, file_to_read = f, sheet_name = "Sheet1")[[1]]
+#' compare_df(df, df1)
 compare_df <- function(
     x, 
     y 

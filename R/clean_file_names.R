@@ -7,6 +7,10 @@
 #' @return a character vector
 #' @export
 #'
+#' @examples
+#'
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' clean_dir_name(f)
 clean_dir_name <- function(x){
   # delete all b4 and including /, 
   # all b4 & including dd-dd_, all after  & including.

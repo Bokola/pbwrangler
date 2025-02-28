@@ -6,9 +6,13 @@
 #' @param season trial season e.g `"season-2024"`
 #' @param d_dir folder directory to write the meta-data e.g., `"C://Users/Documents"`
 #'
-#' @return NULL
+#' @return a list of dataframes 
 #' @export
 #'
+#' @examples
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' df <- read_workbooks(dir = NULL, file_to_read = f)
+#' create_meta_file(df, season = "season-2024", d_dir = tempdir())
   create_meta_file <- function(x, season, d_dir = out_dir) {
   # x  is a list of trials to generate metadata for
   # season given in the form "season-2023" for example
@@ -25,14 +29,14 @@
       # first season planting on April 1, second season planting on Nov 1
       
       planting_date = dplyr::case_when(
-        str_count(s, "-") < 2 ~ as.Date(paste0("01-04-", sub("^([^-]*-[^-]*).*", "\\1", s) %>%
+        stringr::str_count(s, "-") < 2 ~ as.Date(paste0("01-04-", sub("^([^-]*-[^-]*).*", "\\1", s) %>%
                                                  gsub(".*-", "",.)), format = "%d-%m-%Y"),
         TRUE ~ as.Date(paste0("01-11-", sub("^([^-]*-[^-]*).*", "\\1", s) %>%
                                 gsub(".*-", "",.)), format = "%d-%m-%Y")
       ),
       # Harvesting date is 100 days post planting
       harvest_date =  dplyr::case_when(
-        str_count(s, "-") < 2 ~ as.Date(paste0("01-04-",sub("^([^-]*-[^-]*).*", "\\1", s) %>%
+        stringr::str_count(s, "-") < 2 ~ as.Date(paste0("01-04-",sub("^([^-]*-[^-]*).*", "\\1", s) %>%
                                                  gsub(".*-", "",.)), format = "%d-%m-%Y") + 100,
         TRUE ~ as.Date(paste0("01-11-", sub("^([^-]*-[^-]*).*", "\\1", s) %>%
                                 gsub(".*-", "",.)), format = "%d-%m-%Y") + 100
@@ -40,7 +44,13 @@
     )
   )
   
-  out <- purrr::map(out, ~ .x %>% dplyr::mutate(location = sub("hybrid", "", sub("_.*", "", .y))))
+  if(length(out) > 1){
+    out <- purrr::map(out, ~ .x %>% dplyr::mutate(location = sub("hybrid", "", sub("_.*", "", .y))))
+  }else{
+    out <- out %>% purrr::map(
+      ., function(x) dplyr::mutate(x, location = sub("hybrid", "", sub("_.*", "", location)))
+    )
+  }
   
 
   # p <- file.path(out_dir, "data", season,  "meta-data")
@@ -49,19 +59,16 @@
   if (!dir.exists(p)) {
     dir.create(p, recursive = TRUE)
     paths <- file.path(p, paste0(names(x), ".csv"))
-    walk2(out, paths, write_csv)
+    purrr::walk2(out, paths, readr::write_csv)
   } else{
     # get new files
     p_sub <- setdiff(names(x), gsub("\\..*", "", list.files(p)))
     if (length(p_sub) > 0 ) {
       paths <- file.path(p, paste0(p_sub, ".csv"))
       # paths_d <- file.path(p_data, names(x), ".csv")
-      walk2(out[p_sub], paths, write_csv)
+      purrr::walk2(out[p_sub], paths, readr::write_csv)
     }
     
   }
-  # if (!dir.exists(p_data)) {
-  #   dir.create(p_data, recursive = TRUE)
-  # }
-  # walk2(x, paths_d, write_csv)
+  return(out)
   }
