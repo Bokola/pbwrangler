@@ -76,7 +76,37 @@
 <dd><p>folder directory to write the meta-data e.g., <code>"C://Users/Documents"</code></p></dd>
 
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    <p>a list of dataframes</p>
+    </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Delimiter:</span> ","</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
+<span class="r-in"><span><span class="fu">create_meta_file</span><span class="op">(</span><span class="va">df</span>, season <span class="op">=</span> <span class="st">"season-2024"</span>, d_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`uon-trial-1`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 17</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   trial_name breeding_program location year  transplanting_date design_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>               <span style="color: #BB0000;">NA</span>       2024  <span style="color: #BB0000;">NA</span>                 <span style="color: #BB0000;">NA</span>         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 11 more variables: description &lt;lgl&gt;, trial_type &lt;lgl&gt;, plot_width &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   plot_length &lt;lgl&gt;, planting_date &lt;date&gt;, harvest_date &lt;date&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   number_of_plants_per_ridge &lt;lgl&gt;, number_of_ridges_per_plot &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   space_between_ridges &lt;lgl&gt;, space_between_plants_in_ridges &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   number_of_plants_per_plot &lt;lgl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
