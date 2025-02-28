@@ -198,6 +198,8 @@ After inflating the template
 ## read trial data files
 
 ```{r examples-read_workbooks}
+#| message: no
+
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 d <- read_workbooks(dir = NULL, file_to_read = f)
 lapply(d, head)

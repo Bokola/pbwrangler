@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_workbooks.R
 \name{read_workbooks}
 \alias{read_workbooks}
-\title{A wrapper for \code{readr}'s \code{read_csv} & \code{readxl}'s \code{read_excel} for reading trial data}
+\title{Title}
 \usage{
 read_workbooks(
   dir = t_dir,
@@ -29,10 +29,9 @@ read_workbooks(
 
 \item{sub_folder}{character of subfolder containing data e.g \code{"Data/Curated Data"}}
 
-\item{subset}{logical. \code{TRUE} if you want to read just a subset of files}
+\item{subset}{ogical. \code{TRUE} if you want to read just a subset of files}
 
-\item{n}{integer. Number of files to subset e.g, \code{1}, \code{-1} \code{1:4}.
-negative prefix if you want to exclude a file at a specific index}
+\item{n}{integer. Number of files to subset e.g, \code{1}, \code{-1} \code{1:4}.}
 
 \item{multiple}{logical. \code{TRUE} if you want to read nultiple excel sheets from the same workbook}
 
@@ -46,7 +45,7 @@ negative prefix if you want to exclude a file at a specific index}
 a list of trial dataframes
 }
 \description{
-A wrapper for \code{readr}'s \code{read_csv} & \code{readxl}'s \code{read_excel} for reading trial data
+Title
 }
 \examples{
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
