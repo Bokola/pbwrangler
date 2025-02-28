@@ -27,7 +27,7 @@ to breedbase. It was developed to help document functions used to read, wrangle 
 
 You can install the development version of pbwrangler from [GitHub](https://github.com/) with:
 
-```{r}
+```{r, message=FALSE}
 # install.packages("devtools")
 
 devtools::install_github("Bokola/pbwrangler")

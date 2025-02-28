@@ -29,9 +29,9 @@ get_ontology_labels <- function(x, crop = "pt"){
   }
   # df$label_local <- df$label
   if(crop == "pt"){
-    df_ont <- st4gi::pt.ont() %>% janitor::clean_names()
+    df_ont <- st4gi::ptont() %>% janitor::clean_names()
   }else{
-    df_ont <- st4gi::sp.ont() %>% janitor::clean_names()
+    df_ont <- st4gi::spont() %>% janitor::clean_names()
   }
   out <- df %>% dplyr::left_join(df_ont) %>% dplyr::filter(is.na(full_name))
   out <- dplyr::filter(out, !label %in% get_design_factors())
@@ -46,7 +46,7 @@ get_ontology_labels <- function(x, crop = "pt"){
 #' @export
 #'
 get_valid_columns <- function(x){
-  x[, names(x) %nin% st4gi::get_invalid_names(x)]
+  x[, names(x) %nin% st4gi::get.invalid.names(x)]
 }
 
 #' get invalid names (labels not in ontology) & add geno
@@ -57,5 +57,5 @@ get_valid_columns <- function(x){
 #' @export
 #'
 subset_invalid_cols <- function(x){
-  x[,c("geno", st4gi::get_invalid_names(x))]
+  x[,c("geno", st4gi::get.invalid.names(x))]
 }
