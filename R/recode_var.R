@@ -99,6 +99,10 @@ filter_geno <- function(x, pattern = "x|^\\*"){
 #' @return a dataframe
 #' @export
 #'
+#' @examples
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' df <- read_workbooks(dir = NULL, file_to_read = f) %>% `[[`(1)
+#' df_c <- recode_var(df)
 recode_var <- function(x,
                        to_num = c("plot", "tuber_size_mm", "rep", "row", "col", "yield"),
                        to_char = c("flowering_date|obs|^note")) {

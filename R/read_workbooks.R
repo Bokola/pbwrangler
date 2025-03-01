@@ -98,7 +98,7 @@ read_workbooks <- function(dir = t_dir
       }
       
       if(isTRUE(multiple)){
-        sheets <- purrr::map(f_xls, excel_sheets)
+        sheets <- purrr::map(f_xls, readxl::excel_sheets)
         sheets <- purrr::map(sheets, drop_sheets)
 
         
@@ -111,21 +111,21 @@ read_workbooks <- function(dir = t_dir
         
         # read multiple sheets 
         out_xls <- sheets %>%  unlist() %>% 
-          purrr::map(~read_excel(path = f_xls, skip = skip)) %>% magrittr::set_names(., unlist(sheets))
+          purrr::map(~readxl::read_excel(path = f_xls, skip = skip)) %>% magrittr::set_names(., unlist(sheets))
       }
       # check if reading multiple sheets from same workbook and sheet_name specified
       
       if (!isTRUE(multiple)){
         if(!is.null(sheet_name)){
-          sheets = purrr::map(f_xls, excel_sheets) %>%
+          sheets = purrr::map(f_xls, readxl::excel_sheets) %>%
             purrr::map(., function(x) grep(sheet_name, x, ignore.case = T, value = T))
 
         }else {
-          sheets = purrr::map(f_xls, excel_sheets) %>% purrr::map(., drop_sheets)
+          sheets = purrr::map(f_xls, readxl::excel_sheets) %>% purrr::map(., drop_sheets)
 
         }
         
-        out_xls <- purrr::map2(f_xls, sheets, read_excel, skip = skip) %>% magrittr::set_names(., f_names)
+        out_xls <- purrr::map2(f_xls, sheets, readxl::read_excel, skip = skip) %>% magrittr::set_names(., f_names)
       }
 
       out_xls <- purrr::map(out_xls, drop_nas) #%>% set_names(., f_names)

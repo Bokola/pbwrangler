@@ -19,3 +19,8 @@ a data frame
 \description{
 get accession names that do not conform to required protocol
 }
+\examples{
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) 
+df_checked <- check_geno(df)
+}

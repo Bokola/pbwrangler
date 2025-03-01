@@ -93,6 +93,8 @@ drop_zeros(df)
 
 ## clean directory/file names
 
+Clean file names from a directory using `clean_dir_name()`
+
 
 ```{r examples-clean_dir_name}
 #| message: no
@@ -109,6 +111,7 @@ clean_dir_name(f)
 
 ## List files
 
+List files in a directory using `list_files()`
 
 
 
@@ -135,6 +138,8 @@ After inflating the template
 -->
 
 ## Compare dataframes to find shared columns 
+
+If you suspect two fieldbooks to be similar, you can compare them.
 
 ```{r examples-compare_df}
 #| message: no
@@ -163,6 +168,8 @@ merge_note_obs(df)[1:5, "obs"]
 
 ## Create a meta-data file for each experiment designed during a season
 
+Create a meta-data to accompany filebooks.
+
 ```{r examples-create_meta_file}
 #| message: no
 
@@ -175,17 +182,62 @@ create_meta_file(df, season = "season-2024", d_dir = tempdir())
 
 ## Capture trial location
 
+You could try capture trial location from file names:
+
+```{r examples-capture_location}
+#| message: no
+
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
+
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1")
+df1 <- read_workbooks(dir = NULL, file_to_read = f1)
+
+dat <- c(df, df1)
+# this has a loc variable
+dat_loc <- capture_location(dat)
+lapply(dat_loc, function(x) x$loc[1:5])
+```
+
+
 
 
 
 
 ## write data
 
+You can write trial data using `write_data()`:
+
+```{r examples-write_data}
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
+
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1")
+df1 <- read_workbooks(dir = NULL, file_to_read = f1)
+dat <- c(df, df1)
+
+write_data(dir = tempdir(), data_list = dat, season = "season-2024")
+```
+
+
+
 
 
 
 
 ## create genotype family codes
+
+You can also create family codes from accession names using `create_family_vars()`.
+
+```{r examples-create_family_vars}
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1") %>%
+  capture_location(.) %>% `[[`(1)
+
+create_family_vars(df)[1:5, ]
+
+```
+
 
 
 ## clean clone/genotype names
@@ -196,7 +248,16 @@ create_meta_file(df, season = "season-2024", d_dir = tempdir())
 
 ## organize accessions for export
 
-# recode variables
+## recode variables
+
+Parse variables from one type to another using `recode_var()`.
+
+```{r examples-recode_var}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>% `[[`(1)
+df_c <- recode_var(df)
+```
+
 
 
 
@@ -207,27 +268,129 @@ create_meta_file(df, season = "season-2024", d_dir = tempdir())
 
 ## run routine data checks
 
+Run data checks using and compute derived columns st4gi package
+
+```{r examples-run_checks}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  `[[`(1)
+df_checked <- run_checks(df)
+```
+
+
+
 ## check accession names
+
+Check accession names using `check_geno()`.
+
+
+
+
+```{r examples-check_geno}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) 
+df_checked <- check_geno(df)
+```
+
 
 
 
 ## update accession names
 
+Update accession names with `update_geno()`
+
+```{r examples-update_geno}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  `[[`(1)
+df_checked <- update_geno(df)
+```
+
+
+
 ## rename columns
+
+Rename variables to match ontology lables with `rename_cols()`
+
+```{r examples-rename_cols}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  `[[`(1)
+df <- rename_cols(df)
+```
+
+
 
 ## process trial data
 
+Apply a number of data cleaning functions to trial data with `pre_process_trials()`
+
+
+
+
+A number of computed columns are generated in the process.
+```{r examples-pre_process_trials}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) 
+df_out <- pre_process_trials(df) |> process_trials() %>%
+  purrr::map(., run_data_processes)
+purrr::map(df_out, names_df)
+```
 
 
 
 
 ## Create a trial design object for row-col design
 
+Create a trial design object, fit model and extract predictions
+
+
+
+
+
+```{r examples-create_td}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  purrr::map(
+    ., ~dplyr::mutate(
+      ., year = "2024", loc = "UON", trial = "lbht"
+    )
+  )
+df_out <- pre_process_trials(df) |> process_trials() %>%
+  purrr::map(., run_data_processes) %>% `[[`(1) 
+# trial design object
+TD <- create_td(df_out, design = "rowcol")
+# fit 
+fit_TD <- fit_td(TD, trait = "atw")
+# extract predictions
+
+pred_TD <- extract_blups(fit_TD, pred = c("BLUEs", "seBLUEs"))
+
+pred_TD[[1]][1:5,]
+
+```
 
 
 
 
 ## get in/valid column names 
+
+Get invalid columns (labels not defined in ontology)
+
+```{r examples-subset_invalid_cols}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  purrr::map(
+    ., ~dplyr::mutate(
+      ., year = "2024", loc = "UON", trial = "lbht"
+    )
+  )
+df_out <- pre_process_trials(df) |> process_trials() %>%
+  purrr::map(., run_data_processes) %>% `[[`(1) 
+
+subset_invalid_cols(df_out) %>% colnames(.)
+```
+
 
 
 

@@ -69,6 +69,26 @@ fit_td <- function(x, trait, spatial = FALSE){
 #' @return a dataframe
 #' @export
 #'
+#' @examples
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+#'   purrr::map(
+#'     ., ~dplyr::mutate(
+#'       ., year = "2024", loc = "UON", trial = "lbht"
+#'     )
+#'   )
+#' df_out <- pre_process_trials(df) |> process_trials() %>%
+#'   purrr::map(., run_data_processes) %>% `[[`(1) 
+#' # trial design object
+#' TD <- create_td(df_out, design = "rowcol")
+#' # fit 
+#' fit_TD <- fit_td(TD, trait = "atw")
+#' # extract predictions
+#'
+#' pred_TD <- extract_blups(fit_TD, pred = c("BLUEs", "seBLUEs"))
+#'
+#' pred_TD[[1]][1:5,]
+#'
 join_by_keys <- function(x, y){
   keys <- unique(c(names(x), names(y)))
   out <- purrr::map2(

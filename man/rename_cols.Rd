@@ -15,3 +15,9 @@ a dataframe
 \description{
 rename data columns to conform to ontology labels
 }
+\examples{
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) \%>\%
+  `[[`(1)
+df <- rename_cols(df)
+}

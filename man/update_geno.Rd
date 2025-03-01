@@ -15,3 +15,9 @@ a dataframe
 \description{
 Update accession names to conform to naming convention
 }
+\examples{
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) \%>\%
+  `[[`(1)
+df_checked <- update_geno(df)
+}

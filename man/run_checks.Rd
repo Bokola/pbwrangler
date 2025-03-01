@@ -23,3 +23,9 @@ a dataframe
 \description{
 run data quality checks using \code{{st4gi}} functions
 }
+\examples{
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) \%>\%
+  `[[`(1)
+df_checked <- run_checks(df)
+}

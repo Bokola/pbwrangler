@@ -80,6 +80,12 @@ process_trials <- function(x){
 #' @return a dataframe
 #' @export
 #'
+#' @examples
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' df <- read_workbooks(dir = NULL, file_to_read = f) 
+#' df_out <- pre_process_trials(df) |> process_trials() %>%
+#'   purrr::map(., run_data_processes)
+#' purrr::map(df_out, names_df)
 run_data_processes <- function(x, sz = 10000, btwn = 0.75, within = 0.3){
   x %>%  as.data.frame() %>%  st4gi::cdt(., 'np', sz/btwn/within) %>%
     st4gi::clean.data() %>% st4gi::cdt(., 'np', sz/btwn/within) %>%

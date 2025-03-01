@@ -17,3 +17,15 @@ a vector of same length as \code{lst}
 use \code{purrr::imap} to capture location of a trial from trial file
 ipurrr::map applies a function to each element of a vector and its index
 }
+\examples{
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
+
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1")
+df1 <- read_workbooks(dir = NULL, file_to_read = f1)
+
+dat <- c(df, df1)
+# this has a loc variable
+dat_loc <- capture_location(dat)
+lapply(dat_loc, function(x) x$loc[1:5])
+}

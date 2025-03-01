@@ -13,6 +13,10 @@
 #'
 #' @examples
 
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+#'   `[[`(1)
+#' df_checked <- run_checks(df)
 run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3,...){
   # check names
   y <- st4gi::check.names(x)

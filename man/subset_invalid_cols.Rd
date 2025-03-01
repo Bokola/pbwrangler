@@ -15,3 +15,16 @@ a dataframe
 \description{
 get invalid names (labels not in ontology) & add geno
 }
+\examples{
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) \%>\%
+  purrr::map(
+    ., ~dplyr::mutate(
+      ., year = "2024", loc = "UON", trial = "lbht"
+    )
+  )
+df_out <- pre_process_trials(df) |> process_trials() \%>\%
+  purrr::map(., run_data_processes) \%>\% `[[`(1) 
+
+subset_invalid_cols(df_out) \%>\% colnames(.)
+}

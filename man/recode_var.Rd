@@ -23,3 +23,8 @@ a dataframe
 \description{
 Coarce variable to numeric or character
 }
+\examples{
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) \%>\% `[[`(1)
+df_c <- recode_var(df)
+}

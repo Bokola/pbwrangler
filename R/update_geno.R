@@ -7,10 +7,15 @@
 #' @return a dataframe
 #' @export
 #'
+#' @examples
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+#'   `[[`(1)
+#' df_checked <- update_geno(df)
 update_geno <- function(x){
   data("family_code", envir = environment())
-  family <- family_code
-  f_code <- familly %>% dplyr::select(old_family_code, new_family_code)
+  # family_code <- pbwrangler::family_code
+  f_code <- family_code %>% dplyr::select(old_family_code, new_family_code)
     # filter(old_family_code != "NA")
   y <- x %>% dplyr::mutate(
     old_family_code = gen_familycode(geno)

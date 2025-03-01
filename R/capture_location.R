@@ -8,6 +8,17 @@
 #' @return a vector of same length as `lst`
 #' @export
 #'
+#' @examples
+#' f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+#' f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#'
+#' df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1")
+#' df1 <- read_workbooks(dir = NULL, file_to_read = f1)
+#'
+#' dat <- c(df, df1)
+#' # this has a loc variable
+#' dat_loc <- capture_location(dat)
+#' lapply(dat_loc, function(x) x$loc[1:5])
 capture_location <- function(lst){
   lst <- purrr::imap(
     lst, ~.x %>% dplyr::mutate(loc = gsub(

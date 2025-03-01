@@ -16,3 +16,13 @@ write_data(dir = b_out_dir, data_list, season)
 \description{
 write processed trial data to a directory
 }
+\examples{
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
+
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1")
+df1 <- read_workbooks(dir = NULL, file_to_read = f1)
+dat <- c(df, df1)
+
+write_data(dir = tempdir(), data_list = dat, season = "season-2024")
+}

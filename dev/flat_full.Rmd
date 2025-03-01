@@ -332,6 +332,8 @@ drop_zeros(df)
 
 ## clean directory/file names
 
+Clean file names from a directory using `clean_dir_name()`
+
 ```{r function-clean_file_names}
 #' clean file names using `gsub`
 #'
@@ -396,6 +398,7 @@ clean_dir_name_c <- function(x){
 
 ## List files
 
+List files in a directory using `list_files()`
 
 
 ```{r function-list_files}
@@ -539,6 +542,8 @@ test_that("my_left works properly and show error if needed", {
 
 ## Compare dataframes to find shared columns 
 
+If you suspect two fieldbooks to be similar, you can compare them.
+
 ```{r function-compare_df}
 #' Compare field experiment data to see if they share designs, variables, etc.
 #'
@@ -623,6 +628,8 @@ merge_note_obs(df)[1:5, "obs"]
 
 ## Create a meta-data file for each experiment designed during a season
 
+Create a meta-data to accompany filebooks.
+
 ```{r function-create_meta_file}
 #' create a meta-data file with design factors, planting dates etc
 #'
@@ -704,6 +711,8 @@ create_meta_file(df, season = "season-2024", d_dir = tempdir())
 
 ## Capture trial location
 
+You could try capture trial location from file names:
+
 ```{r function-capture_location}
 #'  use `purrr::imap` to capture location of a trial from trial file
 #'  ipurrr::map applies a function to each element of a vector and its index
@@ -721,6 +730,20 @@ capture_location <- function(lst){
     ))
   )
 }
+```
+
+
+```{r examples-capture_location, message=FALSE}
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
+
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1")
+df1 <- read_workbooks(dir = NULL, file_to_read = f1)
+
+dat <- c(df, df1)
+# this has a loc variable
+dat_loc <- capture_location(dat)
+lapply(dat_loc, function(x) x$loc[1:5])
 ```
 
 
@@ -757,6 +780,8 @@ gen_familycode <- function(x){
 
 ## write data
 
+You can write trial data using `write_data()`:
+
 ```{r function-write_data}
 #' write processed trial data to a directory
 #'
@@ -775,6 +800,18 @@ write_data <- function(dir = b_out_dir, data_list, season){
   purrr::walk2(data_list, paths, readr::write_csv)
 }
 ```
+
+```{r examples-write_data}
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
+
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1")
+df1 <- read_workbooks(dir = NULL, file_to_read = f1)
+dat <- c(df, df1)
+
+write_data(dir = tempdir(), data_list = dat, season = "season-2024")
+```
+
 
 
 ```{r function-write_trials}
@@ -849,6 +886,8 @@ write_season_data <- function(list_df, season){
 
 ## create genotype family codes
 
+You can also create family codes from accession names using `create_family_vars()`.
+
 ```{r function-create_new_family_vars}
 #' create new family code per new naming convention
 #'
@@ -886,6 +925,16 @@ create_family_vars <- function(x){
     )
 }
 ```
+
+```{r examples-create_family_vars}
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1") %>%
+  capture_location(.) %>% `[[`(1)
+
+create_family_vars(df)[1:5, ]
+
+```
+
 
 ```{r function-create_pedigree}
 
@@ -1016,7 +1065,9 @@ format_accessions <- function(
 }
 ```
 
-# recode variables
+## recode variables
+
+Parse variables from one type to another using `recode_var()`.
 
 ```{r function-recode_var}
 #' Coarce variable to numeric or character
@@ -1037,6 +1088,14 @@ recode_var <- function(x,
                dplyr::across(dplyr::any_of(to_num), ~ as.numeric(.)))
 }
 ```
+
+
+```{r examples-recode_var}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>% `[[`(1)
+df_c <- recode_var(df)
+```
+
 
 ```{r function-filter_geno}
 #' Filter clone ids to rid of non-compliant formats
@@ -1165,6 +1224,8 @@ select_cols <- function(x, cols){
 
 ## run routine data checks
 
+Run data checks using and compute derived columns st4gi package
+
 ```{r function-run_checks}
 #' run data quality checks using `{st4gi}` functions
 
@@ -1199,7 +1260,18 @@ run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3,...){
 
 ```
 
+
+```{r examples-run_checks}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  `[[`(1)
+df_checked <- run_checks(df)
+```
+
+
 ## check accession names
+
+Check accession names using `check_geno()`.
 
 ```{r function-check_gene_chars}
 #' check length of accession family name - should be 9
@@ -1229,6 +1301,8 @@ check_gene_chars <- function(x){
 ```
 
 
+
+
 ```{r function-check_geno}
 #' get accession names that do not conform to required protocol
 #'
@@ -1255,7 +1329,17 @@ check_geno <- function(x, season, dir = out_dir){
 ```
 
 
+```{r examples-check_geno}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) 
+df_checked <- check_geno(df)
+```
+
+
+
 ## update accession names
+
+Update accession names with `update_geno()`
 
 ```{r function-update_geno}
 #' Update accession names to conform to naming convention
@@ -1268,8 +1352,8 @@ check_geno <- function(x, season, dir = out_dir){
 #' @examples
 update_geno <- function(x){
   data("family_code", envir = environment())
-  family <- family_code
-  f_code <- familly %>% dplyr::select(old_family_code, new_family_code)
+  # family_code <- pbwrangler::family_code
+  f_code <- family_code %>% dplyr::select(old_family_code, new_family_code)
     # filter(old_family_code != "NA")
   y <- x %>% dplyr::mutate(
     old_family_code = gen_familycode(geno)
@@ -1286,7 +1370,18 @@ update_geno <- function(x){
 }
 ```
 
+
+```{r examples-update_geno}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  `[[`(1)
+df_checked <- update_geno(df)
+```
+
+
 ## rename columns
+
+Rename variables to match ontology lables with `rename_cols()`
 
 ```{r function-rename_cols}
 #' rename data columns to conform to ontology labels
@@ -1337,7 +1432,18 @@ rename_cols <- function(x) {
 }
 ```
 
+
+```{r examples-rename_cols}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  `[[`(1)
+df <- rename_cols(df)
+```
+
+
 ## process trial data
+
+Apply a number of data cleaning functions to trial data with `pre_process_trials()`
 
 ```{r function-pre_process_trials_}
 #' run a number of checks & transformations to pre-process a list of trial data 
@@ -1440,8 +1546,22 @@ run_data_processes <- function(x, sz = 10000, btwn = 0.75, within = 0.3){
 }
 ```
 
+A number of computed columns are generated in the process.
+
+```{r examples-pre_process_trials}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) 
+df_out <- pre_process_trials(df) |> process_trials() %>%
+  purrr::map(., run_data_processes)
+purrr::map(df_out, names_df)
+```
+
+
 
 ## Create a trial design object for row-col design
+
+Create a trial design object, fit model and extract predictions
+
 
 ```{r function-create_td}
 #' A wrapper for `statgenSTA::createTD` for a `row-col` design model fitting
@@ -1534,7 +1654,33 @@ join_by_keys <- function(x, y){
 ```
 
 
+```{r examples-create_td}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  purrr::map(
+    ., ~dplyr::mutate(
+      ., year = "2024", loc = "UON", trial = "lbht"
+    )
+  )
+df_out <- pre_process_trials(df) |> process_trials() %>%
+  purrr::map(., run_data_processes) %>% `[[`(1) 
+# trial design object
+TD <- create_td(df_out, design = "rowcol")
+# fit 
+fit_TD <- fit_td(TD, trait = "atw")
+# extract predictions
+
+pred_TD <- extract_blups(fit_TD, pred = c("BLUEs", "seBLUEs"))
+
+pred_TD[[1]][1:5,]
+
+```
+
+
+
 ## get in/valid column names 
+
+Get invalid columns (labels not defined in ontology)
 
 ```{r function-subset_invalid_cols}
 #' get invalid names (labels not in ontology) & add geno
@@ -1548,6 +1694,21 @@ join_by_keys <- function(x, y){
 subset_invalid_cols <- function(x){
   x[,c("geno", st4gi::get.invalid.names(x))]
 }
+```
+
+
+```{r examples-subset_invalid_cols}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  purrr::map(
+    ., ~dplyr::mutate(
+      ., year = "2024", loc = "UON", trial = "lbht"
+    )
+  )
+df_out <- pre_process_trials(df) |> process_trials() %>%
+  purrr::map(., run_data_processes) %>% `[[`(1) 
+
+subset_invalid_cols(df_out) %>% colnames(.)
 ```
 
 
@@ -1890,7 +2051,7 @@ read_workbooks <- function(dir = t_dir
       }
       
       if(isTRUE(multiple)){
-        sheets <- purrr::map(f_xls, excel_sheets)
+        sheets <- purrr::map(f_xls, readxl::excel_sheets)
         sheets <- purrr::map(sheets, drop_sheets)
 
         
@@ -1903,21 +2064,21 @@ read_workbooks <- function(dir = t_dir
         
         # read multiple sheets 
         out_xls <- sheets %>%  unlist() %>% 
-          purrr::map(~read_excel(path = f_xls, skip = skip)) %>% magrittr::set_names(., unlist(sheets))
+          purrr::map(~readxl::read_excel(path = f_xls, skip = skip)) %>% magrittr::set_names(., unlist(sheets))
       }
       # check if reading multiple sheets from same workbook and sheet_name specified
       
       if (!isTRUE(multiple)){
         if(!is.null(sheet_name)){
-          sheets = purrr::map(f_xls, excel_sheets) %>%
+          sheets = purrr::map(f_xls, readxl::excel_sheets) %>%
             purrr::map(., function(x) grep(sheet_name, x, ignore.case = T, value = T))
 
         }else {
-          sheets = purrr::map(f_xls, excel_sheets) %>% purrr::map(., drop_sheets)
+          sheets = purrr::map(f_xls, readxl::excel_sheets) %>% purrr::map(., drop_sheets)
 
         }
         
-        out_xls <- purrr::map2(f_xls, sheets, read_excel, skip = skip) %>% magrittr::set_names(., f_names)
+        out_xls <- purrr::map2(f_xls, sheets, readxl::read_excel, skip = skip) %>% magrittr::set_names(., f_names)
       }
 
       out_xls <- purrr::map(out_xls, drop_nas) #%>% set_names(., f_names)

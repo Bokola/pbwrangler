@@ -33,6 +33,10 @@ check_gene_chars <- function(x){
 #' @return a data frame
 #' @export
 #'
+#' @examples
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' df <- read_workbooks(dir = NULL, file_to_read = f) 
+#' df_checked <- check_geno(df)
 check_geno <- function(x, season, dir = out_dir){
   out <- purrr::map(x, check_gene_chars) %>% drop_null_dfs()
   if(length(out) > 0){

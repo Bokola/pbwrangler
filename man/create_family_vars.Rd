@@ -15,3 +15,11 @@ a dataframe
 \description{
 create new family code per new naming convention
 }
+\examples{
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1") \%>\%
+  capture_location(.) \%>\% `[[`(1)
+
+create_family_vars(df)[1:5, ]
+
+}

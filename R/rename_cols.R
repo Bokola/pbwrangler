@@ -7,6 +7,11 @@
 #' @return a dataframe
 #' @export
 #'
+#' @examples
+#' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+#' df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+#'   `[[`(1)
+#' df <- rename_cols(df)
 rename_cols <- function(x) {
   x <- x %>%  dplyr::rename_with(
     ~ dplyr::case_when(
