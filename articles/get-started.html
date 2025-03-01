@@ -216,7 +216,7 @@ them.</p>
 <h2 id="create-a-meta-data-file-for-each-experiment-designed-during-a-season">Create a meta-data file for each experiment designed during a
 season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-each-experiment-designed-during-a-season"></a>
 </h2>
-<p>Create a meta-data to accompany filebooks.</p>
+<p>Create a meta-data to accompany fieldbooks.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span></span>
@@ -316,7 +316,7 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <div class="section level2">
 <h2 id="run-routine-data-checks">run routine data checks<a class="anchor" aria-label="anchor" href="#run-routine-data-checks"></a>
 </h2>
-<p>Run data checks using and compute derived columns st4gi package</p>
+<p>Run data checks using st4gi package and compute derived columns</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
