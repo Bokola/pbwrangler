@@ -98,9 +98,9 @@ and `system.file()` to read it in your examples.
 
 - There already is a dataset in the "inst/" directory to be used in the examples below
 -->
-<div class="section level3">
-<h3 id="substring-first-n-elements">Substring first n elements<a class="anchor" aria-label="anchor" href="#substring-first-n-elements"></a>
-</h3>
+<div class="section level2">
+<h2 id="substring-first-n-elements">Substring first n elements<a class="anchor" aria-label="anchor" href="#substring-first-n-elements"></a>
+</h2>
 <!--
 Create a chunk for the core of the function
 
@@ -150,18 +150,21 @@ After inflating the template
 <span><span class="co">#&gt; 3 NA  3</span></span>
 <span><span class="co">#&gt; 4 NA NA</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="clean-directoryfile-names">clean directory/file names<a class="anchor" aria-label="anchor" href="#clean-directoryfile-names"></a>
-</h3>
+<div class="section level2">
+<h2 id="clean-directoryfile-names">clean directory/file names<a class="anchor" aria-label="anchor" href="#clean-directoryfile-names"></a>
+</h2>
+<p>Clean file names from a directory using
+<code><a href="../reference/clean_dir_name.html">clean_dir_name()</a></code></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/clean_dir_name.html">clean_dir_name</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "uon-trial-1"</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="list-files">List files<a class="anchor" aria-label="anchor" href="#list-files"></a>
-</h3>
+<div class="section level2">
+<h2 id="list-files">List files<a class="anchor" aria-label="anchor" href="#list-files"></a>
+</h2>
+<p>List files in a directory using <code><a href="../reference/list_files.html">list_files()</a></code></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/list_files.html">list_files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
@@ -183,9 +186,11 @@ After inflating the template
 -  This test code will automatically be added in the "tests/testthat/" directory
 -->
 </div>
-<div class="section level3">
-<h3 id="compare-dataframes-to-find-shared-columns">Compare dataframes to find shared columns<a class="anchor" aria-label="anchor" href="#compare-dataframes-to-find-shared-columns"></a>
-</h3>
+<div class="section level2">
+<h2 id="compare-dataframes-to-find-shared-columns">Compare dataframes to find shared columns<a class="anchor" aria-label="anchor" href="#compare-dataframes-to-find-shared-columns"></a>
+</h2>
+<p>If you suspect two fieldbooks to be similar, you can compare
+them.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
@@ -196,9 +201,9 @@ After inflating the template
 <span><span class="co">#&gt;    dim_X  dim_Y design_X design_Y cols_not_X cols_not_Y</span></span>
 <span><span class="co">#&gt; 1 108,32 108,32     6*18     6*18</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="merge-notesobs-to-one-column">Merge notes/obs to one column<a class="anchor" aria-label="anchor" href="#merge-notesobs-to-one-column"></a>
-</h3>
+<div class="section level2">
+<h2 id="merge-notesobs-to-one-column">Merge notes/obs to one column<a class="anchor" aria-label="anchor" href="#merge-notesobs-to-one-column"></a>
+</h2>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir<span class="op">=</span><span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -207,10 +212,11 @@ After inflating the template
 <span><span class="co">#&gt; [3] "buds, pinkish eyes"      "good yield"             </span></span>
 <span><span class="co">#&gt; [5] NA</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="create-a-meta-data-file-for-each-experiment-designed-during-a-season">Create a meta-data file for each experiment designed during a
+<div class="section level2">
+<h2 id="create-a-meta-data-file-for-each-experiment-designed-during-a-season">Create a meta-data file for each experiment designed during a
 season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-each-experiment-designed-during-a-season"></a>
-</h3>
+</h2>
+<p>Create a meta-data to accompany filebooks.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span></span>
@@ -226,69 +232,510 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <span><span class="co">#&gt; <span style="color: #949494;">#   space_between_ridges &lt;lgl&gt;, space_between_plants_in_ridges &lt;lgl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   number_of_plants_per_plot &lt;lgl&gt;</span></span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="capture-trial-location">Capture trial location<a class="anchor" aria-label="anchor" href="#capture-trial-location"></a>
-</h3>
+<div class="section level2">
+<h2 id="capture-trial-location">Capture trial location<a class="anchor" aria-label="anchor" href="#capture-trial-location"></a>
+</h2>
+<p>You could try capture trial location from file names:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.xlsx"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span>, sheet_name <span class="op">=</span> <span class="st">"Sheet 1"</span><span class="op">)</span></span>
+<span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">df1</span><span class="op">)</span></span>
+<span><span class="co"># this has a loc variable</span></span>
+<span><span class="va">dat_loc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/capture_location.html">capture_location</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">dat_loc</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">$</span><span class="va">loc</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`uon-trial-1`</span></span>
+<span><span class="co">#&gt; [1] "uon-trial-1" "uon-trial-1" "uon-trial-1" "uon-trial-1" "uon-trial-1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`uon-trial-1`</span></span>
+<span><span class="co">#&gt; [1] "uon-trial-1" "uon-trial-1" "uon-trial-1" "uon-trial-1" "uon-trial-1"</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="write-data">write data<a class="anchor" aria-label="anchor" href="#write-data"></a>
-</h3>
+<div class="section level2">
+<h2 id="write-data">write data<a class="anchor" aria-label="anchor" href="#write-data"></a>
+</h2>
+<p>You can write trial data using <code><a href="../reference/write_data.html">write_data()</a></code>:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.xlsx"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">f1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span>, sheet_name <span class="op">=</span> <span class="st">"Sheet 1"</span><span class="op">)</span></span>
+<span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">df1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/write_data.html">write_data</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, data_list <span class="op">=</span> <span class="va">dat</span>, season <span class="op">=</span> <span class="st">"season-2024"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="create-genotype-family-codes">create genotype family codes<a class="anchor" aria-label="anchor" href="#create-genotype-family-codes"></a>
-</h3>
+<div class="section level2">
+<h2 id="create-genotype-family-codes">create genotype family codes<a class="anchor" aria-label="anchor" href="#create-genotype-family-codes"></a>
+</h2>
+<p>You can also create family codes from accession names using
+<code><a href="../reference/create_family_vars.html">create_family_vars()</a></code>.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.xlsx"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span>, sheet_name <span class="op">=</span> <span class="st">"Sheet 1"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/capture_location.html">capture_location</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">`[[`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/create_family_vars.html">create_family_vars</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt; Warning: There were 9 warnings in `dplyr::mutate()`.</span></span>
+<span><span class="co">#&gt; The first warning was:</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `old_year_of_cross = ifelse(...)`.</span></span>
+<span><span class="co">#&gt; Caused by warning in `ifelse()`:</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 8 remaining warnings.</span></span>
+<span><span class="co">#&gt;            geno         loc old_family_code old_year_of_cross year_of_cross</span></span>
+<span><span class="co">#&gt; 1 CIP317004.001 uon-trial-1       CIP317004              2017          2021</span></span>
+<span><span class="co">#&gt; 2 CIP317005.036 uon-trial-1       CIP317005              2017          2021</span></span>
+<span><span class="co">#&gt; 3 CIP317007.103 uon-trial-1       CIP317007              2017          2021</span></span>
+<span><span class="co">#&gt; 4 CIP317013.120 uon-trial-1       CIP317013              2017          2021</span></span>
+<span><span class="co">#&gt; 5 CIP317026.004 uon-trial-1       CIP317026              2017          2021</span></span>
+<span><span class="co">#&gt;   new_family_code  new_clone_id</span></span>
+<span><span class="co">#&gt; 1       CIP321004 CIP321004.001</span></span>
+<span><span class="co">#&gt; 2       CIP321005 CIP321005.036</span></span>
+<span><span class="co">#&gt; 3       CIP321007 CIP321007.103</span></span>
+<span><span class="co">#&gt; 4       CIP321013 CIP321013.120</span></span>
+<span><span class="co">#&gt; 5       CIP321026 CIP321026.004</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="clean-clonegenotype-names">clean clone/genotype names<a class="anchor" aria-label="anchor" href="#clean-clonegenotype-names"></a>
-</h3>
+<div class="section level2">
+<h2 id="clean-clonegenotype-names">clean clone/genotype names<a class="anchor" aria-label="anchor" href="#clean-clonegenotype-names"></a>
+</h2>
 </div>
-<div class="section level3">
-<h3 id="read-accession-files-that-have-been-fixed-and-confirmed-correct">read accession files that have been fixed and confirmed correct<a class="anchor" aria-label="anchor" href="#read-accession-files-that-have-been-fixed-and-confirmed-correct"></a>
-</h3>
+<div class="section level2">
+<h2 id="read-accession-files-that-have-been-fixed-and-confirmed-correct">read accession files that have been fixed and confirmed correct<a class="anchor" aria-label="anchor" href="#read-accession-files-that-have-been-fixed-and-confirmed-correct"></a>
+</h2>
 </div>
-<div class="section level3">
-<h3 id="organize-accessions-for-export">organize accessions for export<a class="anchor" aria-label="anchor" href="#organize-accessions-for-export"></a>
-</h3>
+<div class="section level2">
+<h2 id="organize-accessions-for-export">organize accessions for export<a class="anchor" aria-label="anchor" href="#organize-accessions-for-export"></a>
+</h2>
 </div>
 <div class="section level2">
 <h2 id="recode-variables">recode variables<a class="anchor" aria-label="anchor" href="#recode-variables"></a>
 </h2>
-<div class="section level3">
-<h3 id="run-routine-data-checks">run routine data checks<a class="anchor" aria-label="anchor" href="#run-routine-data-checks"></a>
-</h3>
+<p>Parse variables from one type to another using
+<code><a href="../reference/recode_var.html">recode_var()</a></code>.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">`[[`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">df_c</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/recode_var.html">recode_var</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="check-accession-names">check accession names<a class="anchor" aria-label="anchor" href="#check-accession-names"></a>
-</h3>
+<div class="section level2">
+<h2 id="run-routine-data-checks">run routine data checks<a class="anchor" aria-label="anchor" href="#run-routine-data-checks"></a>
+</h2>
+<p>Run data checks using and compute derived columns st4gi package</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">`[[`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">df_checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_checks.html">run_checks</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "notes", "photo")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "notes", "photo")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "notes", "photo")</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtci: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtcii: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable tntp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable atmw: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable atw: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtwp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtwcii: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtyna: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable ttwp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable ttyna: 54</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="update-accession-names">update accession names<a class="anchor" aria-label="anchor" href="#update-accession-names"></a>
-</h3>
+<div class="section level2">
+<h2 id="check-accession-names">check accession names<a class="anchor" aria-label="anchor" href="#check-accession-names"></a>
+</h2>
+<p>Check accession names using <code><a href="../reference/check_geno.html">check_geno()</a></code>.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">df_checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/check_geno.html">check_geno</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; All accession names in order</span></span>
+<span><span class="co">#&gt; All accession names in order</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="rename-columns">rename columns<a class="anchor" aria-label="anchor" href="#rename-columns"></a>
-</h3>
+<div class="section level2">
+<h2 id="update-accession-names">update accession names<a class="anchor" aria-label="anchor" href="#update-accession-names"></a>
+</h2>
+<p>Update accession names with <code><a href="../reference/update_geno.html">update_geno()</a></code></p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">`[[`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">df_checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/update_geno.html">update_geno</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(old_family_code)`</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="process-trial-data">process trial data<a class="anchor" aria-label="anchor" href="#process-trial-data"></a>
-</h3>
+<div class="section level2">
+<h2 id="rename-columns">rename columns<a class="anchor" aria-label="anchor" href="#rename-columns"></a>
+</h2>
+<p>Rename variables to match ontology lables with
+<code><a href="../reference/rename_cols.html">rename_cols()</a></code></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">`[[`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_cols.html">rename_cols</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="create-a-trial-design-object-for-row-col-design">Create a trial design object for row-col design<a class="anchor" aria-label="anchor" href="#create-a-trial-design-object-for-row-col-design"></a>
-</h3>
+<div class="section level2">
+<h2 id="process-trial-data">process trial data<a class="anchor" aria-label="anchor" href="#process-trial-data"></a>
+</h2>
+<p>Apply a number of data cleaning functions to trial data with
+<code><a href="../reference/pre_process_trials.html">pre_process_trials()</a></code></p>
+<p>A number of computed columns are generated in the process.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">df_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre_process_trials.html">pre_process_trials</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/process_trials.html">process_trials</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">run_data_processes</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(old_family_code)`</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "obs", "photo")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "obs", "photo")</span></span>
+<span><span class="co">#&gt; Warning: Some variables have been overwritten: c("mtwp", "nmtp")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "obs", "photo")</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtci: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtcii: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable tntp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable atmw: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable atw: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtwp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtwcii: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtyna: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable ttwp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable ttyna: 54</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo")</span></span>
+<span><span class="co">#&gt; Warning: Some variables have been overwritten: c("mtwp", "ttwp", "nmtp",</span></span>
+<span><span class="co">#&gt; "tntp", "atmw", "atw", "ppe", "mtyna", "ttyna")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo")</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable tbfsh1: 1</span></span>
+<span><span class="co">#&gt; 2 3 4 5 6 19 20 21 22 23 24 37 38 39 40 41 42 55 56 57 58 59 60 73 74 75 76 77</span></span>
+<span><span class="co">#&gt; 78 91 92 93 94 95 96</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable tbskn1: 1</span></span>
+<span><span class="co">#&gt; 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30</span></span>
+<span><span class="co">#&gt; 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56</span></span>
+<span><span class="co">#&gt; 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82</span></span>
+<span><span class="co">#&gt; 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106</span></span>
+<span><span class="co">#&gt; 107 108</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo")</span></span>
+<span><span class="co">#&gt; Warning: Some variables have been overwritten: c("mtwp", "ttwp", "nmtp",</span></span>
+<span><span class="co">#&gt; "tntp", "atmw", "atw", "ppe", "mtyna", "ttyna")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo")</span></span>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">df_out</span>, <span class="va">names_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`uon-trial-1`</span></span>
+<span><span class="co">#&gt;  [1] "atmw"                "atw"                 "col"                </span></span>
+<span><span class="co">#&gt;  [4] "entry"               "flower_colour"       "flowering"          </span></span>
+<span><span class="co">#&gt;  [7] "flowering_date"      "geno"                "growth_speed"       </span></span>
+<span><span class="co">#&gt; [10] "late_blight_60_days" "mtwci"               "mtwcii"             </span></span>
+<span><span class="co">#&gt; [13] "mtwp"                "mtyna"               "nmtci"              </span></span>
+<span><span class="co">#&gt; [16] "nmtcii"              "nmtp"                "nnomtp"             </span></span>
+<span><span class="co">#&gt; [19] "nomtwp"              "npe"                 "ntp"                </span></span>
+<span><span class="co">#&gt; [22] "obs"                 "overall_impression"  "pgh"                </span></span>
+<span><span class="co">#&gt; [25] "photo"               "plant_unif"          "plant_vigor"        </span></span>
+<span><span class="co">#&gt; [28] "plot"                "ppe"                 "rep"                </span></span>
+<span><span class="co">#&gt; [31] "row"                 "se"                  "tbfsh1"             </span></span>
+<span><span class="co">#&gt; [34] "tbskn1"              "tntp"                "ttwp"               </span></span>
+<span><span class="co">#&gt; [37] "ttyna"               "tub_size"            "tub_unif"           </span></span>
+<span><span class="co">#&gt; [40] "tuber_apper"         "unique"</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="get-invalid-column-names">get in/valid column names<a class="anchor" aria-label="anchor" href="#get-invalid-column-names"></a>
-</h3>
+<div class="section level2">
+<h2 id="create-a-trial-design-object-for-row-col-design">Create a trial design object for row-col design<a class="anchor" aria-label="anchor" href="#create-a-trial-design-object-for-row-col-design"></a>
+</h2>
+<p>Create a trial design object, fit model and extract predictions</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
+<span>    <span class="va">.</span>, <span class="op">~</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      <span class="va">.</span>, year <span class="op">=</span> <span class="st">"2024"</span>, loc <span class="op">=</span> <span class="st">"UON"</span>, trial <span class="op">=</span> <span class="st">"lbht"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">df_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre_process_trials.html">pre_process_trials</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/process_trials.html">process_trials</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">run_data_processes</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">`[[`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(old_family_code)`</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: Some variables have been overwritten: c("mtwp", "nmtp")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtci: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtcii: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable tntp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable atmw: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable atw: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtwp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtwcii: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtyna: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable ttwp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable ttyna: 54</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: Some variables have been overwritten: c("mtwp", "ttwp", "nmtp",</span></span>
+<span><span class="co">#&gt; "tntp", "atmw", "atw", "ppe", "mtyna", "ttyna")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable tbfsh1: 1</span></span>
+<span><span class="co">#&gt; 2 3 4 5 6 19 20 21 22 23 24 37 38 39 40 41 42 55 56 57 58 59 60 73 74 75 76 77</span></span>
+<span><span class="co">#&gt; 78 91 92 93 94 95 96</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable tbskn1: 1</span></span>
+<span><span class="co">#&gt; 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30</span></span>
+<span><span class="co">#&gt; 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56</span></span>
+<span><span class="co">#&gt; 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82</span></span>
+<span><span class="co">#&gt; 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106</span></span>
+<span><span class="co">#&gt; 107 108</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: Some variables have been overwritten: c("mtwp", "ttwp", "nmtp",</span></span>
+<span><span class="co">#&gt; "tntp", "atmw", "atw", "ppe", "mtyna", "ttyna")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo", "trial")</span></span>
+<span><span class="co"># trial design object</span></span>
+<span><span class="va">TD</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_td.html">create_td</a></span><span class="op">(</span><span class="va">df_out</span>, design <span class="op">=</span> <span class="st">"rowcol"</span><span class="op">)</span></span>
+<span><span class="co"># fit </span></span>
+<span><span class="va">fit_TD</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_td.html">fit_td</a></span><span class="op">(</span><span class="va">TD</span>, trait <span class="op">=</span> <span class="st">"atw"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Using SpATS for fitting models.</span></span>
+<span><span class="co"># extract predictions</span></span>
+<span></span>
+<span><span class="va">pred_TD</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_blups.html">extract_blups</a></span><span class="op">(</span><span class="va">fit_TD</span>, pred <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLUEs"</span>, <span class="st">"seBLUEs"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pred_TD</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;         genotype trial BLUEs_atw seBLUEs_atw</span></span>
+<span><span class="co">#&gt; 1  CIP312084.731  lbht  75.65480    12.07916</span></span>
+<span><span class="co">#&gt; 2 CIP3177011.028  lbht  55.71897    14.87543</span></span>
+<span><span class="co">#&gt; 3 CIP3177023.046  lbht  32.51392    12.41670</span></span>
+<span><span class="co">#&gt; 4 CIP3177038.001  lbht  44.15915    21.54864</span></span>
+<span><span class="co">#&gt; 5 CIP3217003.001  lbht  58.02190    14.43223</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="tissue-culture-helpers">tissue culture helpers<a class="anchor" aria-label="anchor" href="#tissue-culture-helpers"></a>
-</h3>
+<div class="section level2">
+<h2 id="get-invalid-column-names">get in/valid column names<a class="anchor" aria-label="anchor" href="#get-invalid-column-names"></a>
+</h2>
+<p>Get invalid columns (labels not defined in ontology)</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
+<span>    <span class="va">.</span>, <span class="op">~</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      <span class="va">.</span>, year <span class="op">=</span> <span class="st">"2024"</span>, loc <span class="op">=</span> <span class="st">"UON"</span>, trial <span class="op">=</span> <span class="st">"lbht"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">108</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">32</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Column specification</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Delimiter:</span> ","</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">chr</span>  (8): unique, geno, flowering_date, flower_colour, flesh_colour, skin_co...</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">dbl</span> (24): plot, entry, row, col, rep, ntp, npe, growth_speed, pgh, plant_uni...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span><span class="va">df_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre_process_trials.html">pre_process_trials</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/process_trials.html">process_trials</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">run_data_processes</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">`[[`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span></span>
+<span><span class="co">#&gt; Joining with `by = join_by(old_family_code)`</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: Some variables have been overwritten: c("mtwp", "nmtp")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "flesh_colour",</span></span>
+<span><span class="co">#&gt; "skin_colour", "late_blight_60_days", "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtci: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable nmtcii: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable tntp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable atmw: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable atw: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtwp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtwcii: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable mtyna: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable ttwp: 54</span></span>
+<span><span class="co">#&gt; Warning: Rows with extreme values replaced with NA for variable ttyna: 54</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: Some variables have been overwritten: c("mtwp", "ttwp", "nmtp",</span></span>
+<span><span class="co">#&gt; "tntp", "atmw", "atw", "ppe", "mtyna", "ttyna")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable tbfsh1: 1</span></span>
+<span><span class="co">#&gt; 2 3 4 5 6 19 20 21 22 23 24 37 38 39 40 41 42 55 56 57 58 59 60 73 74 75 76 77</span></span>
+<span><span class="co">#&gt; 78 91 92 93 94 95 96</span></span>
+<span><span class="co">#&gt; Warning: Rows with out of scale values replaced with NA for variable tbskn1: 1</span></span>
+<span><span class="co">#&gt; 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30</span></span>
+<span><span class="co">#&gt; 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56</span></span>
+<span><span class="co">#&gt; 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82</span></span>
+<span><span class="co">#&gt; 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106</span></span>
+<span><span class="co">#&gt; 107 108</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo", "trial")</span></span>
+<span><span class="co">#&gt; Warning: Some variables have been overwritten: c("mtwp", "ttwp", "nmtp",</span></span>
+<span><span class="co">#&gt; "tntp", "atmw", "atw", "ppe", "mtyna", "ttyna")</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt; Warning: Some columns with invalid names: c("unique", "entry", "growth_speed",</span></span>
+<span><span class="co">#&gt; "flowering_date", "flower_colour", "overall_impression", "late_blight_60_days",</span></span>
+<span><span class="co">#&gt; "obs", "photo", "trial")</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/subset_invalid_cols.html">subset_invalid_cols</a></span><span class="op">(</span><span class="va">df_out</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: pt crop detected</span></span>
+<span><span class="co">#&gt;  [1] "geno"                "unique"              "entry"              </span></span>
+<span><span class="co">#&gt;  [4] "growth_speed"        "flowering_date"      "flower_colour"      </span></span>
+<span><span class="co">#&gt;  [7] "overall_impression"  "late_blight_60_days" "obs"                </span></span>
+<span><span class="co">#&gt; [10] "photo"               "trial"</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="read-trial-data-files">read trial data files<a class="anchor" aria-label="anchor" href="#read-trial-data-files"></a>
-</h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="section level2">
+<h2 id="tissue-culture-helpers">tissue culture helpers<a class="anchor" aria-label="anchor" href="#tissue-culture-helpers"></a>
+</h2>
+</div>
+<div class="section level2">
+<h2 id="read-trial-data-files">read trial data files<a class="anchor" aria-label="anchor" href="#read-trial-data-files"></a>
+</h2>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">d</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
@@ -323,7 +770,6 @@ These are only included in the present flat template file, their content will no
 <!-- - Verify your function is in `"R/"` directory -->
 <!-- - Verify your test is in `"tests/testthat/"` directory -->
 <!-- - Verify this Rmd appears in `"vignettes/"` directory -->
-</div>
 </div>
   </div>
 
