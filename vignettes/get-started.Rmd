@@ -183,7 +183,7 @@ merge_note_obs(df)[1:5, "obs"]
 
 ## Create a meta-data file for each experiment designed during a season
 
-Create a meta-data to accompany filebooks.
+Create a meta-data to accompany fieldbooks.
 
 ```{r examples-create_meta_file}
 #| message: no
@@ -294,7 +294,7 @@ df_c <- recode_var(df)
 
 ## run routine data checks
 
-Run data checks using and compute derived columns st4gi package
+Run data checks using st4gi package and compute derived columns 
 
 ```{r examples-run_checks}
 #| message: no

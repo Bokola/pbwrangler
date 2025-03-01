@@ -628,7 +628,7 @@ merge_note_obs(df)[1:5, "obs"]
 
 ## Create a meta-data file for each experiment designed during a season
 
-Create a meta-data to accompany filebooks.
+Create a meta-data to accompany fieldbooks.
 
 ```{r function-create_meta_file}
 #' create a meta-data file with design factors, planting dates etc
@@ -1224,7 +1224,7 @@ select_cols <- function(x, cols){
 
 ## run routine data checks
 
-Run data checks using and compute derived columns st4gi package
+Run data checks using st4gi package and compute derived columns 
 
 ```{r function-run_checks}
 #' run data quality checks using `{st4gi}` functions
