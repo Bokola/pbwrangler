@@ -72,18 +72,27 @@ After inflating the template
 - This example will automatically be added in the vignette created from this Rmd template
 -->
 ```{r examples}
+#| message: no
+#| warning: no
+
 a <- c("asdf", "bnmkk")
 my_left(a, num = 3)
 ```
 
 
 ```{r examples-my_right}
+#| message: no
+#| warning: no
+
 a <- c("asdf", "bnmkk")
 my_right(a, num = 3)
 ```
 
 
 ```{r examples-drop_nas}
+#| message: no
+#| warning: no
+
 df <- data.frame(a = NA, b = c(1:3, NA), c = 0)
 drop_nas(df)
 drop_zeros(df)
@@ -98,6 +107,7 @@ Clean file names from a directory using `clean_dir_name()`
 
 ```{r examples-clean_dir_name}
 #| message: no
+#| warning: no
 
 
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
@@ -117,6 +127,9 @@ List files in a directory using `list_files()`
 
 
 ```{r examples-list_file}
+#| message: no
+#| warning: no
+
 
 list_files(system.file(package = "pbwrangler"))[1:5]
 ```
@@ -143,6 +156,7 @@ If you suspect two fieldbooks to be similar, you can compare them.
 
 ```{r examples-compare_df}
 #| message: no
+#| warning: no
 
 
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
@@ -158,6 +172,7 @@ compare_df(df, df1)
 
 ```{r examples-merge_note_obs}
 #| message: no
+#| warning: no
 
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir=NULL, file_to_read = f)[[1]]
@@ -172,6 +187,7 @@ Create a meta-data to accompany filebooks.
 
 ```{r examples-create_meta_file}
 #| message: no
+#| warning: no
 
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f)
@@ -186,6 +202,7 @@ You could try capture trial location from file names:
 
 ```{r examples-capture_location}
 #| message: no
+#| warning: no
 
 f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
 f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
@@ -209,6 +226,9 @@ lapply(dat_loc, function(x) x$loc[1:5])
 You can write trial data using `write_data()`:
 
 ```{r examples-write_data}
+#| message: no
+#| warning: no
+
 f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
 f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
 
@@ -230,6 +250,9 @@ write_data(dir = tempdir(), data_list = dat, season = "season-2024")
 You can also create family codes from accession names using `create_family_vars()`.
 
 ```{r examples-create_family_vars}
+#| message: no
+#| warning: no
+
 f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1") %>%
   capture_location(.) %>% `[[`(1)
@@ -253,6 +276,9 @@ create_family_vars(df)[1:5, ]
 Parse variables from one type to another using `recode_var()`.
 
 ```{r examples-recode_var}
+#| message: no
+#| warning: no
+
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>% `[[`(1)
 df_c <- recode_var(df)
@@ -271,6 +297,9 @@ df_c <- recode_var(df)
 Run data checks using and compute derived columns st4gi package
 
 ```{r examples-run_checks}
+#| message: no
+#| warning: no
+
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   `[[`(1)
@@ -287,6 +316,9 @@ Check accession names using `check_geno()`.
 
 
 ```{r examples-check_geno}
+#| message: no
+#| warning: no
+
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) 
 df_checked <- check_geno(df)
@@ -300,6 +332,9 @@ df_checked <- check_geno(df)
 Update accession names with `update_geno()`
 
 ```{r examples-update_geno}
+#| message: no
+#| warning: no
+
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   `[[`(1)
@@ -313,6 +348,9 @@ df_checked <- update_geno(df)
 Rename variables to match ontology lables with `rename_cols()`
 
 ```{r examples-rename_cols}
+#| message: no
+#| warning: no
+
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   `[[`(1)
@@ -330,6 +368,9 @@ Apply a number of data cleaning functions to trial data with `pre_process_trials
 
 A number of computed columns are generated in the process.
 ```{r examples-pre_process_trials}
+#| message: no
+#| warning: no
+
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) 
 df_out <- pre_process_trials(df) |> process_trials() %>%
@@ -349,6 +390,9 @@ Create a trial design object, fit model and extract predictions
 
 
 ```{r examples-create_td}
+#| message: no
+#| warning: no
+
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   purrr::map(
@@ -378,6 +422,9 @@ pred_TD[[1]][1:5,]
 Get invalid columns (labels not defined in ontology)
 
 ```{r examples-subset_invalid_cols}
+#| message: no
+#| warning: no
+
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   purrr::map(
@@ -404,6 +451,7 @@ subset_invalid_cols(df_out) %>% colnames(.)
 
 ```{r examples-read_workbooks}
 #| message: no
+#| warning: no
 
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 d <- read_workbooks(dir = NULL, file_to_read = f)

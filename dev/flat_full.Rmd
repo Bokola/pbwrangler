@@ -313,17 +313,17 @@ After inflating the template
 - This example will automatically be added in the vignette created from this Rmd template
 -->
 
-```{r examples}
+```{r examples, message=FALSE, warning=FALSE}
 a <- c("asdf", "bnmkk")
 my_left(a, num = 3)
 ```
 
-```{r examples-my_right}
+```{r examples-my_right, message=FALSE, warning=FALSE}
 a <- c("asdf", "bnmkk")
 my_right(a, num = 3)
 ```
 
-```{r examples-drop_nas}
+```{r examples-drop_nas, message=FALSE, warning=FALSE}
 df <- data.frame(a = NA, b = c(1:3, NA), c = 0)
 drop_nas(df)
 drop_zeros(df)
@@ -370,7 +370,7 @@ clean_dir_name <- function(x){
 }
 ```
 
-```{r examples-clean_dir_name, message=FALSE}
+```{r examples-clean_dir_name, message=FALSE, warning=FALSE}
 
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 clean_dir_name(f)
@@ -498,7 +498,7 @@ combine_meta_files <- function(season, path=out_dir){
 ```
 
 
-```{r examples-list_file}
+```{r examples-list_file, message=FALSE, warning=FALSE}
 
 list_files(system.file(package = "pbwrangler"))[1:5]
 ```
@@ -575,7 +575,7 @@ compare_df <- function(
 ```
 
 
-```{r examples-compare_df, message=FALSE}
+```{r examples-compare_df, message=FALSE, warning=FALSE}
 
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir=NULL, file_to_read = f)[[1]]
@@ -619,7 +619,7 @@ merge_note_obs <- function(x){
 }
 ```
 
-```{r examples-merge_note_obs, message=FALSE}
+```{r examples-merge_note_obs, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir=NULL, file_to_read = f)[[1]]
 merge_note_obs(df)[1:5, "obs"]
@@ -702,7 +702,7 @@ Create a meta-data to accompany filebooks.
   }
 ```
 
-```{r examples-create_meta_file, message=FALSE}
+```{r examples-create_meta_file, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f)
 create_meta_file(df, season = "season-2024", d_dir = tempdir())
@@ -733,7 +733,7 @@ capture_location <- function(lst){
 ```
 
 
-```{r examples-capture_location, message=FALSE}
+```{r examples-capture_location, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
 f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
 
@@ -801,7 +801,7 @@ write_data <- function(dir = b_out_dir, data_list, season){
 }
 ```
 
-```{r examples-write_data}
+```{r examples-write_data, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
 f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
 
@@ -926,7 +926,7 @@ create_family_vars <- function(x){
 }
 ```
 
-```{r examples-create_family_vars}
+```{r examples-create_family_vars, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1") %>%
   capture_location(.) %>% `[[`(1)
@@ -1090,7 +1090,7 @@ recode_var <- function(x,
 ```
 
 
-```{r examples-recode_var}
+```{r examples-recode_var, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>% `[[`(1)
 df_c <- recode_var(df)
@@ -1261,7 +1261,7 @@ run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3,...){
 ```
 
 
-```{r examples-run_checks}
+```{r examples-run_checks, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   `[[`(1)
@@ -1329,7 +1329,7 @@ check_geno <- function(x, season, dir = out_dir){
 ```
 
 
-```{r examples-check_geno}
+```{r examples-check_geno, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) 
 df_checked <- check_geno(df)
@@ -1371,7 +1371,7 @@ update_geno <- function(x){
 ```
 
 
-```{r examples-update_geno}
+```{r examples-update_geno, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   `[[`(1)
@@ -1433,7 +1433,7 @@ rename_cols <- function(x) {
 ```
 
 
-```{r examples-rename_cols}
+```{r examples-rename_cols, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   `[[`(1)
@@ -1548,7 +1548,7 @@ run_data_processes <- function(x, sz = 10000, btwn = 0.75, within = 0.3){
 
 A number of computed columns are generated in the process.
 
-```{r examples-pre_process_trials}
+```{r examples-pre_process_trials, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) 
 df_out <- pre_process_trials(df) |> process_trials() %>%
@@ -1654,7 +1654,7 @@ join_by_keys <- function(x, y){
 ```
 
 
-```{r examples-create_td}
+```{r examples-create_td, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   purrr::map(
@@ -1697,7 +1697,7 @@ subset_invalid_cols <- function(x){
 ```
 
 
-```{r examples-subset_invalid_cols}
+```{r examples-subset_invalid_cols, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   purrr::map(
@@ -2144,7 +2144,7 @@ read_workbooks <- function(dir = t_dir
 }
 ```
 
-```{r examples-read_workbooks, message=FALSE}
+```{r examples-read_workbooks, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 d <- read_workbooks(dir = NULL, file_to_read = f)
 lapply(d, function(x) x[1:5, 1:5])
