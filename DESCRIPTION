@@ -1,15 +1,35 @@
 Package: pbwrangler
-Version: 0.0.0.9000
 Title: Potato Breeding Phenotypic Data Wrangler
+Version: 0.0.0.9000
+Authors@R: 
+    person("Basil", "Okola", , "okolabasilowiti@gmail.com", role = c("aut", "cre"))
 Description: `pbwrangler` is a collection of in-house functions used in
-    curating potato breeding data for analysis and archiving into breeding databases.
-Authors@R: person(given = "Basil",
-       family = "Okola",
-       role = c("aut", "cre"),
-       email = "okolabasilowiti@gmail.com")
+    curating potato breeding data for analysis and archiving into breeding
+    databases.
 License: MIT + file LICENSE
+URL: https://github.com/Bokola/pbwrangler
+BugReports: https://github.com/Bokola/pbwrangler/issues
+Imports: 
+    DiGGer,
+    dplyr,
+    ids,
+    janitor,
+    lubridate,
+    magrittr,
+    purrr,
+    readr,
+    readxl,
+    st4gi,
+    statgenSTA,
+    stringr
+Suggests: 
+    here,
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: 
+    knitr
+Config/fusen/version: 0.7.1
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-URL: https://github.com/Bokola/pbwrangler
-BugReports: https://github.com/Bokola/pbwrangler/issues

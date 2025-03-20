@@ -1,0 +1,56 @@
+data_doc.Rmd:
+  path: dev/data_doc.Rmd
+  state: active
+  R: R/included-datasets.R
+  tests: []
+  vignettes: vignettes/get-started.Rmd
+  inflate:
+    flat_file: dev/data_doc.Rmd
+    vignette_name: Get started
+    open_vignette: true
+    check: true
+    document: true
+    overwrite: 'yes'
+    clean: ask
+    codecov: false
+flat_full.Rmd:
+  path: dev/flat_full.Rmd
+  state: active
+  R:
+  - R/duplicate_row.R
+  - R/capture_location.R
+  - R/check_gene_chars.R
+  - R/clean_clone_name.R
+  - R/clean_file_names.R
+  - R/list_files.R
+  - R/compare_df.R
+  - R/recode_var.R
+  - R/create_family_vars.R
+  - R/create_meta_file.R
+  - R/create_td.R
+  - R/format_accessions.R
+  - R/rand_prep.R
+  - R/subset_invalid_cols.R
+  - R/merge_note_obs.R
+  - R/my_left.R
+  - R/pre_process_trials_.R
+  - R/randomize_row_col.R
+  - R/read_accessions.R
+  - R/read_workbooks.R
+  - R/rename_cols.R
+  - R/run_checks.R
+  - R/update_geno.R
+  - R/write_data.R
+  tests:
+  - tests/testthat/test-list_files.R
+  - tests/testthat/test-read_workbooks.R
+  vignettes: vignettes/get-started.Rmd
+  inflate:
+    flat_file: dev/flat_full.Rmd
+    vignette_name: Get started
+    open_vignette: true
+    check: true
+    document: true
+    overwrite: 'yes'
+    clean: ask
+    codecov: false

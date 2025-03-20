@@ -10,6 +10,13 @@ editor_options:
 
 ```{r development, include=FALSE}
 library(testthat)
+library(usethis)
+library(purrr)
+library(janitor)
+library(readxl)
+library(dplyr)
+library(st4gi)
+library(readr)
 ```
 
 <!--
@@ -23,7 +30,7 @@ If it is the first time you use {fusen}, after 'description', you can directly r
 pkgload::load_all(export_all = FALSE)
 ```
 
-# Include some data examples in your package
+<!-- # Include some data examples in your package -->
 
 <!-- 
  Store your dataset in a directory named "inst/" at the root of your project.
@@ -38,16 +45,35 @@ and `system.file()` to read it in your examples.
 # There already is a dataset in the "inst/" directory
 # Make the dataset file available to the current Rmd during development
 pkgload::load_all(path = here::here(), export_all = FALSE)
+# 
+# # You will be able to read your example data file in each of your function examples and tests as follows - see chunks below
+# datafile <- system.file("Pedigree_advanced_clones_SSA.xlsx", package = "pbwrangler")
+# sheet_name <- readxl::excel_sheets(datafile)
+# df_c <- purrr::map2(datafile,sheet_name, read_excel) %>%
+#   magrittr::set_names(tolower(gsub("\\s+", "_", sheet_name))) %>%
+#     purrr::map(., janitor::clean_names)
+# 
+# adv_clones <- df_c[["adv_clones"]]
+# adv_clones
+# family_code <- df_c[["family_code"]]
+# family_code
+# # meta-file data
+# 
+# meta_file <- system.file("meta-data.xlsx", package = "pbwrangler")
+# sheet <- readxl::excel_sheets(meta_file)
+# meta <- readxl::read_excel(meta_file, sheet = sheet)
+# meta
+# ./data takes .rda files accessed by data()
+# save(meta, file = file.path(here::here(), "data", paste0("meta", ".rda")))
+# save(adv_clones, file = file.path(here::here(), "data", paste0("adv_clones", ".rda")))
+# save(family_code, file = file.path(here::here(), "data", paste0("family_code", ".rda")))
 
-# You will be able to read your example data file in each of your function examples and tests as follows - see chunks below
-datafile <- system.file("nyc_squirrels_sample.csv", package = "pbwrangler")
-nyc_squirrels <- read.csv(datafile, encoding = "UTF-8")
 
-nyc_squirrels
+
 ```
 
 
-# The first function of the package: Calculate the median of a vector
+## Substring first n elements
 
 <!--
 Create a chunk for the core of the function
@@ -63,28 +89,216 @@ After inflating the template
 -  This function code will automatically be added in a new file in the "R/" directory
 -->
 
-```{r development-function}
-# Prepare the code of your function here
-```
-
 ```{r function}
-#' My median
+
+#' Extract first n elements of a string
 #'
-#' @param x Vector of Numeric values
-#' @inheritParams stats::median
+#' @param x a character vector of any length
+#' @param num an integer - the number of elements to extract
 #'
-#' @return
-#' Median of vector x
+#' @return a character vector
 #' @export
 #'
 #' @examples
-my_median <- function(x, na.rm = TRUE) {
-  if (!is.numeric(x)) {
-    stop("x should be numeric")
-  }
-  stats::median(x, na.rm = na.rm)
+my_left <- function(x,num){
+  if(!is.character(x)) stop("x should be a character")
+  stringr::str_sub(x, end = num)
+}
+
+#' `%nin%` returns a logical vector if there is a match or not for left operand
+#'
+#' @param x a vector
+#' @param table a vector matching the mode of `x`
+#'
+#' @return logical vector
+#' @export
+#'
+#' @examples
+`%nin%` <- function(x, table){
+  match(x,table, nomatch = 0) == 0
+}
+
+
+#' Extract last n elements of a string
+#'
+#'
+#' @param x a character vector of any length
+#' @param num an integer - the number of elements to extract
+#'
+#' @return a character vector
+#' @export
+#'
+#' @examples
+my_right <- function(x, num){
+  if(!is.character(x)) stop("x should be a character")
+  stringr::str_sub(x, start = stringr::str_length(x)-num+1)
+}
+
+#' delete columns with all values missing(`NA`)
+#'
+#' @param x a dataframe
+#'
+#' @return A dataframe without completely missing columns
+#' @export
+#'
+#' @examples
+drop_nas <- function(x){
+
+  x[colSums(is.na(x)) < nrow(x)]
+}
+
+#' delete columns with all values 0
+#'
+#' @param x a dataframe
+#'
+#' @return a dataframe with columns with all values zero deleted
+#' @export
+#'
+#' @examples
+drop_zeros <- function(x){
+  x[colSums(x == 0, na.rm = T) < nrow(x)]
+} 
+
+#' drop from a list dataframes with no dimension or  columns having all `NA`
+#'
+#' @param x a list of dataframes
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+drop_empty_dfs <- function(x){
+  out <- purrr::keep(x, \(y) dim(y)[1] > 0)
+  out <- purrr::map(out, drop_nas)
+  return(out)
+}
+#' drop null dataframes from a list of dataframes
+#'
+#' @param x a list of dataframes
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+drop_null_dfs <- function(x){
+  purrr::keep(x, \(y) !is.null(y))
+}
+
+#' drop dfs w/o geno column
+#'
+#' @param x a list of dataframes
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+keep_geno <- function(x){
+  purrr::keep(x, \(y) "geno" %in% names(y))
+}
+
+#' drop dfs without ttyna as a column
+#'
+#' @param x a list
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+keep_ttyna <- function(x){
+  purrr::keep(x, \(y) "ttyna" %in% names(y))
+}
+
+
+#' drop workbook sheets not of interest
+#'
+#' @param x a list of excel sheets
+#' @param pattern patern to exclude
+#'
+#' @return a character vector
+#' @export
+#'
+#' @examples
+drop_sheets <- function(x, pattern = "min|pivot|sheet|weather|soil|all|unse|sele"){
+  x <- unlist(x) %>% subset(., !grepl(pattern, ., ignore.case = TRUE))
+  return(x)
+}
+
+#'  clean variable names
+#'
+#' @param x a character vector of variable names
+#'
+#' @return a character vector
+#' @export
+#'
+#' @examples
+clean_var_names <- function(x){
+  x <- tolower(x) %>% trimws(.) %>% gsub("\\s", "_",.)
+  x
+}
+
+
+#' sort names in ascending order
+#'
+#' @param x named object 
+#'
+#' @return null
+#' @export
+#'
+#' @examples
+names_df <- function(x){
+  sort(names(x))
+}
+
+
+#' find variables in df
+#'
+#' @param x dataframe
+#' @param var column name
+#'
+#' @return a character vector
+#' @export
+#'
+#' @examples
+find_var <- function(x, var){
+  grep(paste0(var, collapse = "|"), names(x), value = TRUE)
+}
+# 
+#' dplyr::rowwise sum target columns
+#'
+#' @param x a dataframe
+#' @param target_cols  character vector of column names
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+sum_rowwise <- function(x, target_cols){
+  x %>% dplyr::rowwise() %>% dplyr::mutate(
+    y = sum(dplyr::c_across(colnames(.)[colnames(.) %in% target_cols]),na.rm=T)
+  ) %>% dplyr::pull(y)
+}
+
+
+#' Compute nmtp, mtwp (no/marketable tuber weight per plot)
+#'
+#' @param x a list of dataframes
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+compute_cols <- function(x){
+  purrr::map(
+    x, ~dplyr::mutate(
+      # marketable tuber weight
+      .,mtwp = sum_rowwise(., target_cols = c("mtwci", "mtwcii")),
+      # number of marketable tubers
+        nmtp = sum_rowwise(., target_cols = c("nmtci", "nmtcii"))
+    )
+  )
 }
 ```
+
 
 <!--
 Create a chunk with an example of use for your function
@@ -100,15 +314,204 @@ After inflating the template
 - This example will automatically be added in the vignette created from this Rmd template
 -->
 
-```{r examples}
-my_median(1:12)
-
-# Example with your dataset in "inst/"
-datafile <- system.file("nyc_squirrels_sample.csv", package = "pbwrangler")
-nyc_squirrels <- read.csv(datafile, encoding = "UTF-8")
-# Apply my function
-my_median(nyc_squirrels[, "hectare_squirrel_number"])
+```{r examples, message=FALSE, warning=FALSE}
+a <- c("asdf", "bnmkk")
+my_left(a, num = 3)
 ```
+
+```{r examples-my_right, message=FALSE, warning=FALSE}
+a <- c("asdf", "bnmkk")
+my_right(a, num = 3)
+```
+
+```{r examples-drop_nas, message=FALSE, warning=FALSE}
+df <- data.frame(a = NA, b = c(1:3, NA), c = 0)
+drop_nas(df)
+drop_zeros(df)
+
+```
+
+## clean directory/file names
+
+Clean file names from a directory using `clean_dir_name()`
+
+```{r function-clean_file_names}
+#' clean file names using `gsub`
+#'
+#' @param out a list of trial dataframes
+#'
+#' @return a list with names cleaned
+#' @export
+#'
+#' @examples
+clean_file_names <- function(out){
+  names(out) <- gsub(".*\\/", "", names(out))
+  return(out)
+}
+```
+
+
+```{r function-clean_dir_name}
+#' clean file name using `gsub`
+#'
+#' @param x a character vector of file directory or file name
+#'
+#' @return a character vector
+#' @export
+#'
+#' @examples
+clean_dir_name <- function(x){
+  # delete all b4 and including /, 
+  # all b4 & including dd-dd_, all after  & including.
+  gsub(".*\\/", "", x) %>% gsub(".*\\d+{2}-\\d+{2}_", "", .) %>% 
+    gsub("\\..*", "", .) %>% gsub("final_table|_table", "", .) %>%  
+    trimws(.) %>% gsub("\\s", "-", .) %>% gsub("-{2,}", "-", .) %>%
+    tolower(.) %>% gsub("-\\d{4}|_\\d{4}", "", .) %>% gsub("final-data_", "", .)
+   
+}
+```
+
+```{r examples-clean_dir_name, message=FALSE, warning=FALSE}
+
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+clean_dir_name(f)
+```
+
+
+```{r function-clean_dir_name_c}
+#'  clean file name using `gsub`
+#'
+#' @param x a character vector of file directory or file name
+#'
+#' @return a character vector
+#' @export
+#'
+#' @examples
+clean_dir_name_c <- function(x){
+  gsub(".*\\/", "", x) %>% gsub("\\..*", "", .) %>% tolower(.) %>%
+    gsub("-\\s+", "-",.) %>% gsub("\\s+", "-",.)
+}
+
+```
+
+
+
+
+## List files
+
+List files in a directory using `list_files()`
+
+
+```{r function-list_files}
+#' List file in a directory
+#'
+#' @param folder directory with files e.g. "C://users/user/x
+#' @param subset a logical value whether or not to return a subset of files in `folder`
+#' @param n integer. number of files to return if subsetting
+#' @param ... any other parameters to specify
+#'
+#' @return a character vector of listed files
+#' @export
+#'
+#' @examples
+list_files <- function(folder, subset=FALSE, n = NULL, ...){
+  # if(dir == t_dir){
+  #   folders <- list.files(dir, full.names = TRUE) %>%
+  #     # look at this subsetting `[`
+  #     subset(., grepl("season", ., ignore.case = TRUE)) %>% #`[`(1:11) %>%
+  #     subset(grepl(paste0(season, "$"), .))
+  # }else{
+  #   folders <- file <- list.files(file.path(dir, season), full.names = TRUE) 
+  # }
+  if(isTRUE(subset)){
+    if(is.null(n)){
+      stop("no of files to subset: n is NULL!")
+    }else{
+      files <- list.files(folder, full.names = TRUE) %>% `[`(n)
+    }
+
+  } else{
+    files <- list.files(folder, full.names = TRUE)
+  }
+  return(files)
+}
+```
+
+
+```{r function-list_design_files}
+#' List design files after designing trial experiments in R
+#'
+#' @param dir directory containing the fieldboooks
+#' @param season trial seasom
+#' @param s a vector of charcter string to grep e.g `s = ".csv|.xlsx"`
+#' @param sub_dir sub-directory if filedbooks are nested in a sub-directory
+#' @param ... any other argument
+#'
+#' @return a list of filedbooks
+#' @export
+#'
+#' @examples
+  list_design_files <- function(dir = rand_dir
+                                ,season = "season-2024-2025"
+                                ,s = ".csv|.xlsx"
+                                ,sub_dir = NULL
+                                ,...) {
+    if(!is.null(sub_dir)){
+      files <- list.files(file.path(dir, season, sub_dir)) %>% 
+        subset(., grepl(s, .)) %>% clean_dir_name_c(.) #%>% list()
+    }else{
+      files <- list.files(file.path(dir, season))  %>% 
+        subset(., grepl(s, .)) %>% clean_dir_name_c(.) #%>% list()
+    }
+    out <- purrr::map(files, list) %>% magrittr::set_names(files)
+    return(out)
+  }
+```
+
+
+```{r function-combine_meta_files}
+
+#' read meta-files from separate trials in a season into 1 file
+#'
+#' @param season trial season such as `"season-2024"`
+#' @param path directory containing meta files
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+combine_meta_files <- function(season, path=out_dir){
+  csv <- list.files(file.path(path, "data", season, "meta-data"), full.names = TRUE) %>%
+    subset(., grepl(".csv$",.))
+  if(path == m_dir){
+    xls <-  list.files(file.path(path, "meta-data"), full.names = TRUE) %>%
+      subset(., grepl(".xlsx$",.))
+  }
+
+  if(length(csv) > 0){
+    meta <- purrr::map(files, readr::read_csv) %>% bind_rows()
+  }else{
+    sheets <- purrr::map(xls, readxl::excel_sheets)
+    meta <- purrr::map2(xls, sheets, readxl::read_excel) %>% bind_rows()
+  }
+  return(meta)
+}
+```
+
+
+```{r examples-list_file, message=FALSE, warning=FALSE}
+
+list_files(system.file(package = "pbwrangler"))[1:5]
+```
+
+
+```{r tests-list_files}
+test_that("my_left works properly and show error if needed", {
+  expect_true(length(list_files(here::here(), subset = TRUE, n = 1)) == 1)
+  expect_error(list_files(here::here(), subset = TRUE))
+})
+```
+
 
 <!--
 Create a chunk with a test of use for your function
@@ -123,66 +526,1962 @@ After inflating the template
 -  This test code will automatically be added in the "tests/testthat/" directory
 -->
 
-```{r tests}
-test_that("my_median works properly and show error if needed", {
-  expect_true(my_median(1:12) == 6.5)
-  expect_error(my_median("text"))
+```{r tests-my_left}
+test_that("my_left works properly and show error if needed", {
+  expect_true(my_left("absd", 2) == "ab")
+  expect_error(my_left(112,3))
 })
 
 # Test with your dataset in "inst/"
-datafile <- system.file("nyc_squirrels_sample.csv", package = "pbwrangler")
-nyc_squirrels <- read.csv(datafile, encoding = "UTF-8")
-# Apply test on my function
-test_that("my_median works properly with internal dataset", {
-  expect_equal(my_median(nyc_squirrels[, "hectare_squirrel_number"]), 3)
+# datafile <- system.file("nyc_squirrels_sample.csv", package = "pbwrangler")
+# nyc_squirrels <- read.csv(datafile, encoding = "UTF-8")
+# # Apply test on my function
+# test_that("my_median works properly with internal dataset", {
+#   expect_equal(my_median(nyc_squirrels[,"hectare_squirrel_number"]), 3)
+# })
+```
+
+## Compare dataframes to find shared columns 
+
+If you suspect two fieldbooks to be similar, you can compare them.
+
+```{r function-compare_df}
+#' Compare field experiment data to see if they share designs, variables, etc.
+#'
+#' @param x first dataframe 
+#' @param y second dataframe
+#'
+#' @return a dataframe with difference/similarities btwn `x`, `y`
+#' @export
+#'
+#' @examples
+compare_df <- function(
+    x, 
+    y 
+){
+  out <- data.frame(
+    dim_X = paste0(dim(x), collapse = ","),
+    dim_Y = paste0(dim(y), collapse = ","),
+    design_X = paste(max(table(x$row)), max(table(x$col)), sep = "*"),
+    design_Y = paste(max(table(y$row)), max(table(y$col)), sep = "*"),
+    cols_not_X = paste0(setdiff(
+      union(names(x), names(y)), names(x)
+    ), collapse = ","),
+    cols_not_Y = paste0(setdiff(
+      union(names(x), names(y)), names(y)
+    ), collapse = ",")
+  )
+  return(out)
+}
+```
+
+
+```{r examples-compare_df, message=FALSE, warning=FALSE}
+
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir=NULL, file_to_read = f)[[1]]
+f1 <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+df1 <- read_workbooks(dir=NULL, file_to_read = f, sheet_name = "Sheet1")[[1]]
+compare_df(df, df1)
+```
+
+
+## Merge notes/obs to one column
+
+```{r function-merge_note_obs}
+#' Merge notes & obs to one column
+#'
+#' @param x a dataframe
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+merge_note_obs <- function(x){
+  if("obs"%in%  names(x) & "notes" %in% names(x)){
+    out <- x %>% dplyr::rowwise() %>%
+      dplyr::mutate(
+        obs = paste(obs, notes, sep = ",")
+      ) %>% dplyr::select(-notes)
+  }
+  if("obs" %in% names(x) & "notes" %nin% names(x)){
+    out <- x
+  }
+  if("obs" %nin% names(x) & "notes" %in% names(x)){
+    out <- x %>% dplyr::rename(obs = notes)
+  }
+  if("obs" %nin% names(x) & "notes" %nin% names(x)){
+    out <- x %>% dplyr::mutate(
+      obs = NA_character_
+    )
+  }
+  out <- dplyr::mutate(out, obs = as.character(obs))
+  return(out)
+}
+```
+
+```{r examples-merge_note_obs, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir=NULL, file_to_read = f)[[1]]
+merge_note_obs(df)[1:5, "obs"]
+```
+
+
+## Create a meta-data file for each experiment designed during a season
+
+Create a meta-data to accompany fieldbooks.
+
+```{r function-create_meta_file}
+#' create a meta-data file with design factors, planting dates etc
+#'
+#' @param x a list of trials to generate metadata for
+#' @param season trial season e.g `"season-2024"`
+#' @param d_dir folder directory to write the meta-data e.g., `"C://Users/Documents"`
+#'
+#' @return a list of dataframes 
+#' @export
+#'
+#' @examples
+  create_meta_file <- function(x, season, d_dir = out_dir) {
+  # x  is a list of trials to generate metadata for
+  # season given in the form "season-2023" for example
+  s <- season
+  data("meta", envir = environment())
+  meta[1,] <- NA
+  out <- vector("list", length = length(names(x)))
+  for(i in seq_along(out)) out[[i]] <- meta
+  out <- out %>% magrittr::set_names(names(x))
+  # year
+  out <- out %>% purrr::map(
+    ., ~dplyr::mutate(
+      ., year = gsub("^\\w+-", "", season) %>% gsub(".*\\s+", "",.),
+      # first season planting on April 1, second season planting on Nov 1
+      
+      planting_date = dplyr::case_when(
+        stringr::str_count(s, "-") < 2 ~ as.Date(paste0("01-04-", sub("^([^-]*-[^-]*).*", "\\1", s) %>%
+                                                 gsub(".*-", "",.)), format = "%d-%m-%Y"),
+        TRUE ~ as.Date(paste0("01-11-", sub("^([^-]*-[^-]*).*", "\\1", s) %>%
+                                gsub(".*-", "",.)), format = "%d-%m-%Y")
+      ),
+      # Harvesting date is 100 days post planting
+      harvest_date =  dplyr::case_when(
+        stringr::str_count(s, "-") < 2 ~ as.Date(paste0("01-04-",sub("^([^-]*-[^-]*).*", "\\1", s) %>%
+                                                 gsub(".*-", "",.)), format = "%d-%m-%Y") + 100,
+        TRUE ~ as.Date(paste0("01-11-", sub("^([^-]*-[^-]*).*", "\\1", s) %>%
+                                gsub(".*-", "",.)), format = "%d-%m-%Y") + 100
+      )
+    )
+  )
+  
+  if(length(out) > 1){
+    out <- purrr::imap(out, ~ .x %>% dplyr::mutate(location = sub("hybrid", "", sub("_.*", "", .y))))
+  }else{
+    out <- out %>% purrr::map(
+      ., function(x) dplyr::mutate(x, location = sub("hybrid", "", sub("_.*", "", location)))
+    )
+  }
+  
+  out <- purrr::reduce(out, dplyr::bind_rows) %>% list() %>%
+    magrittr::set_names(season)
+
+  # p <- file.path(out_dir, "data", season,  "meta-data")
+  p <- file.path(d_dir, "data", season,  "meta-data")
+  # p_data <- file.path(out_dir, "data", season)
+  if (!dir.exists(p)) {
+    dir.create(p, recursive = TRUE)
+    paths <- file.path(p, paste0(names(out), ".csv"))
+    purrr::walk2(out, paths, readr::write_csv)
+  } else{
+    # get new files
+    p_sub <- setdiff(names(out), gsub("\\..*", "", list.files(p)))
+    if (length(p_sub) > 0 ) {
+      paths <- file.path(p, paste0(p_sub, ".csv"))
+      # paths_d <- file.path(p_data, names(x), ".csv")
+      purrr::walk2(out[p_sub], paths, readr::write_csv)
+    }
+    
+  }
+  return(out)
+  }
+```
+
+```{r examples-create_meta_file, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f)
+create_meta_file(df, season = "season-2024", d_dir = tempdir())
+```
+
+
+## Capture trial location
+
+You could try capture trial location from file names:
+
+```{r function-capture_location}
+#'  use `purrr::imap` to capture location of a trial from trial file
+#'  ipurrr::map applies a function to each element of a vector and its index
+#'
+#' @param lst a list object
+#'
+#' @return a vector of same length as `lst`
+#' @export
+#'
+#' @examples
+capture_location <- function(lst){
+  lst <- purrr::imap(
+    lst, ~.x %>% dplyr::mutate(loc = gsub(
+      ".*\\/|\\..*|.*it\\d+{1}_|.*at\\d+{1}_|_table|oadc.*|_at.*|_it.*|_lbht.*|_bsli.*|vegetative_|_tria.*|yield_|trial_\\d{1}_", "", .y
+    ))
+  )
+}
+```
+
+
+```{r examples-capture_location, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
+
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1")
+df1 <- read_workbooks(dir = NULL, file_to_read = f1)
+
+dat <- c(df, df1)
+# this has a loc variable
+dat_loc <- capture_location(dat)
+lapply(dat_loc, function(x) x$loc[1:5])
+```
+
+
+
+```{r function-gen_location}
+#' generate possible location from file paths
+#'
+#' @param x a character vector of file directory 
+#'
+#' @return a character vector
+#' @export
+#'
+#' @examples
+gen_location <- function(x){
+  gsub(".*\\/|\\..*|.*it\\d+{1}_|.*at\\d+{1}_|_table|oadc.*|_at.*|_it.*|_lbht.*|_bsli.*|vegetative_|_tria.*|yield_|trial_\\d{1}_", "", x)
+}
+```
+
+```{r function-gen_familycode}
+
+#' a regular expr deleting everything after last fullstop(`.`) or last underscore(`_`)
+#'
+#' @param x a character vector of accession names
+#'
+#' @return a character vector
+#' @export
+#'
+#' @examples
+gen_familycode <- function(x){
+  gsub("\\..*|_.*", "", x)
+}
+```
+
+
+## write data
+
+You can write trial data using `write_data()`:
+
+```{r function-write_data}
+#' write processed trial data to a directory
+#'
+#' @param dir destination directory/folder to write to
+#' @param data_list list of processed trial data
+#' @param season trial season 
+#'
+#' @return NULL
+#' @export
+#'
+#' @examples
+write_data <- function(dir = b_out_dir, data_list, season){
+  sn_dir <- file.path(dir, season)
+  if(!exists(sn_dir)) dir.create(sn_dir, recursive = TRUE)
+  paths <- file.path(sn_dir, paste0(names(data_list), ".csv"))
+  purrr::walk2(data_list, paths, readr::write_csv)
+}
+```
+
+```{r examples-write_data, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+f1 <- system.file("uon-trial-1.csv", package = "pbwrangler")
+
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1")
+df1 <- read_workbooks(dir = NULL, file_to_read = f1)
+dat <- c(df, df1)
+
+write_data(dir = tempdir(), data_list = dat, season = "season-2024")
+```
+
+
+
+```{r function-write_trials}
+#' write out trial data
+#'
+#' @param x list of trial data
+#' @param season trial season
+#' @param dir output directory 
+#' @param is_invalid logical: select invalid columns not defined in crop ontology
+#' 
+#' @return NULL
+#' @export
+#'
+#' @examples
+write_trials <- function(x, season, is_invalid = FALSE, dir = out_dir){
+  if(isTRUE(is_invalid)){
+    p <- file.path(dir, "data", season, "trials", "invalid-colnames")
+  }else{
+    p <- file.path(dir, "data", season, "trials")
+  }
+  
+  if(!dir.exists(p)) dir.create(p, recursive = T)
+  paths <- file.path(p, paste0(names(x), ".csv"))
+  # paths_d <- file.path(p_data, names(x), ".csv")
+  purrr::walk2(x, paths, readr::write_csv)
+}
+```
+
+
+```{r function-write_season_data}
+#' Write out data for pre-processed experimental data by calling `write_trials()`
+#'
+#' @param list_df a list of data frames
+#' @param season seasson of experiments
+#'
+#' @return NULL
+#' @export
+#'@seealso [write_trials()]
+#' @examples
+write_season_data <- function(list_df, season){
+  cat("Writing data for: ", season, "!\n")
+  
+  # get in/valid columns ------------------------------------------------------
+  
+  invalid <- purrr::map(list_df, subset_invalid_cols)
+  valid <- purrr::map(list_df, get_valid_columns)
+  
+  
+  # check accession names if in order ---------------------------------------
+  
+  check_geno(x = list_df, season = season)
+  
+  
+  # save trials -------------------------------------------------------------
+  
+  write_trials(valid, season = season)
+  write_trials(invalid, season = season, is_invalid = TRUE)
+  # #season 2023 metadata ---------------------------------------------------
+  
+  create_meta_file(x = list_df, season = season)
+  
+  # # season 2023 accessions ------------------------------------------------
+  
+  
+  format_accessions(x = list_df, season = season)
+  
+  ###########################################################################
+}
+```
+
+
+
+## create genotype family codes
+
+You can also create family codes from accession names using `create_family_vars()`.
+
+```{r function-create_new_family_vars}
+#' create new family code per new naming convention
+#'
+#' @param x a dataframe of trial data
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+create_family_vars <- function(x){
+  x %>% dplyr::select(geno, loc) %>% dplyr::mutate(
+    old_family_code = my_left(geno, 9)) %>%
+    dplyr::mutate(
+      old_year_of_cross = ifelse(
+        as.numeric(stringr::str_sub(geno, 5, 6)) > as.numeric(stringr::str_sub(lubridate::today(), 3,4)),
+        paste0("19", stringr::str_sub(geno, 5, 6)),  paste0("20", stringr::str_sub(geno, 5, 6))
+      ),
+      year_of_cross = dplyr::case_when(
+        as.numeric(stringr::str_sub(geno, 5, 6)) == 12 ~ paste0("20", 16),
+        as.numeric(stringr::str_sub(geno, 5, 6)) == 13 ~ paste0("20", 17),
+        as.numeric(stringr::str_sub(geno, 5, 6)) == 14 ~ paste0("20", 18),
+        as.numeric(stringr::str_sub(geno, 5, 6)) == 15 ~ paste0("20", 19),
+        as.numeric(stringr::str_sub(geno, 5, 6)) == 16 ~ paste0("20", 20),
+        as.numeric(stringr::str_sub(geno, 5, 6)) == 17 ~ paste0("20", 21),
+        as.numeric(stringr::str_sub(geno, 5, 6)) == 18 ~ paste0("20", 23),
+        as.numeric(stringr::str_sub(geno, 5, 6)) > as.numeric(stringr::str_sub(lubridate::today(), 3,4)) ~ paste0("19", stringr::str_sub(geno, 5, 6)),
+        TRUE ~ NA_character_
+      )
+    ) %>% dplyr::mutate(
+      new_family_code = paste0(
+        my_left(old_family_code, 4), my_right(year_of_cross, 2), my_right(old_family_code, 3)
+      )
+    ) %>% dplyr::mutate(
+      new_clone_id = paste0(new_family_code, ".", my_right(geno, 3))
+    )
+}
+```
+
+```{r examples-create_family_vars, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.xlsx", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f, sheet_name = "Sheet 1") %>%
+  capture_location(.) %>% `[[`(1)
+
+create_family_vars(df)[1:5, ]
+
+```
+
+
+```{r function-create_pedigree}
+
+#' create pedigree (ancestry)
+#'
+#' @param x a dataframe of genotypes created by `create_family_vars()`
+#'
+#' @return a dataframe
+#' @export
+#'@seealso [create_family_vars()]
+#'
+#' @examples
+create_pedigree <- function(x){
+  x <- x %>% dplyr::mutate(
+    female = NA_character_,
+    male = NA_character_
+  )
+}
+```
+
+## clean clone/genotype names
+
+```{r function-clean_clone_name}
+#' Clean accession names
+#'
+#' @param x a character vector of clone/genotype IDs 
+#'
+#' @return a vector of same length as `x`
+#' @export
+#'
+#' @examples
+# browseURL("https://stackoverflow.com/questions/22223431/using-non-ascii-characters-inside-functions-for-packages#:~:text=R%20Portable%20packages%20must%20use,it%20refers%20to%20Unicode%20characters.")
+clean_clone_name <- function(x){
+  gsub("\\s+", "", x) %>%
+  gsub("\\?IP|C\\u00ef\\u00bf\\u00bdP|\\u00ef\\u00bf\\\\u00bdIP|\\u00ef\\u00bf\\u00bdIP", "CIP", ., ignore.case = TRUE) %>%
+  gsub("CIP31675", "CIP316375", .) %>%
+  gsub("CIP314611", "CIP394611", .) %>%
+  gsub("CIP317904", "CIP317004", .) %>%
+  gsub("CIP 517035 517035.078", "CIP517035.078", .) %>%
+  gsub("CIP517035517035.078", "CIP517035.078", .) %>%
+  # change clone year from 18 to 23
+  gsub("CIP318", "CIP323", .) %>%
+    gsub("^duct", "Dutch", .)
+}
+
+```
+
+## read accession files that have been fixed and confirmed correct
+
+```{r function-read_accessions}
+#' read accession files that have been fixed and confirmed correct
+#'
+#' @param dir a character vector of path to accession files
+#'
+#' @return a dataframe of fixed accession names
+#' @export
+#'
+#' @examples
+read_accessions <- function(dir = out_dir){
+  files <- list.files(file.path(dir, "accessions", "fixed"),
+                      pattern = "^accession_", full.names = TRUE)
+  fixed <- purrr::map(files, readr::read_csv) %>% purrr::reduce(., dplyr::bind_rows) %>%
+    dplyr::distinct(., geno, .keep_all = TRUE) %>% dplyr::arrange(old_family_code) %>% 
+    dplyr::filter(!grepl("CIP317036.096", geno, ignore.case = T))
+  # write_csv(out, file.path(out_dir, "accessions", paste0("missing_accessions", ".csv")))
+  return(fixed)
+}
+
+```
+
+
+
+## organize accessions for export
+
+```{r function-format_accessions}
+#' organize accessions to export
+#'
+#' @param x a list of trial dataframes for a `season`
+#' @param season trial season
+#' @param filename name of output file
+#' @param dir  output directory
+#' @param sub_dir  output sub directory
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+format_accessions <- function(
+    x, 
+    dir = out_dir,
+    sub_dir = "accessions",
+    # df = family_code,
+    season, filename = "accession_miss"
+    ){
+  # get reference data from within the package
+  # see 
+  # browseURL("https://stackoverflow.com/questions/45044269/how-to-use-data-within-a-function-in-an-r-package")
+  
+  data("family_code", envir = environment())
+  df <- family_code
+  out <- capture_location(x)
+  # accessions for 2023
+  accessions <- purrr::reduce(out, dplyr::bind_rows) %>% dplyr::select(
+    dplyr::any_of(c("geno", "loc"))
+  ) %>% dplyr::distinct() %>% dplyr::mutate(season = season) %>% dplyr::filter(
+    grepl("^CIP3", geno, ignore.case = TRUE)
+  )
+
+  accessions <- create_family_vars(accessions)
+
+  # filter accession not yet in family_code
+  # a = old_family_code not in family_code
+  accessions_a <- accessions %>% dplyr::filter(
+    old_family_code %nin% df$old_family_code
+  ) %>% create_pedigree(.) %>%
+    dplyr::distinct(geno, .keep_all = TRUE) %>%
+    dplyr::arrange(old_family_code, geno) %>% dplyr::filter(
+      geno %nin% read_accessions()$geno
+    ) %>% dplyr::filter(gsub("\\..*", "", geno) %nin% family_code$new_family_code)
+  # b = old_family_code in family_code
+  accessions_b <- accessions %>% dplyr::filter(
+    old_family_code %in% df$old_family_code
+  ) %>% dplyr::arrange(old_family_code, geno)
+  out_a <- list(accessions_a, accessions_b) %>% magrittr::set_names(c("acc_miss", "acc_available"))
+  if(dim(out_a[[1]])[1] > 0){
+    readr::write_csv(out_a[["acc_miss"]], file.path(dir, sub_dir, paste0(filename, "_", season, ".csv")))
+  }
+  return(out_a)
+}
+```
+
+## recode variables
+
+Parse variables from one type to another using `recode_var()`.
+
+```{r function-recode_var}
+#' Coarce variable to numeric or character
+#'
+#' @param x a dataframe
+#' @param to_num columns to coerce to numeric
+#' @param to_char columns to coerce to character
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+recode_var <- function(x,
+                       to_num = c("plot", "tuber_size_mm", "rep", "row", "col", "yield"),
+                       to_char = c("flowering_date|obs|^note")) {
+  x %>% dplyr::mutate(dplyr::across(dplyr::any_of(to_char), ~ as.character(.))
+               ,
+               dplyr::across(dplyr::any_of(to_num), ~ as.numeric(.)))
+}
+```
+
+
+```{r examples-recode_var, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>% `[[`(1)
+df_c <- recode_var(df)
+```
+
+
+```{r function-filter_geno}
+#' Filter clone ids to rid of non-compliant formats
+#'
+#' @param x a dataframe
+#' @param pattern a character vector containing regular expression
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+filter_geno <- function(x, pattern = "x|^\\*"){
+  x %>% dplyr::filter(!grepl(pattern, geno, ignore.case = TRUE) & !is.na(geno))
+}
+
+```
+
+
+```{r function-convert_to_factor}
+#' Coerce columns to factors
+#'
+#' @param x a dataframe
+#' @param to_fact a vector of column names to coerce to factor
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+convert_to_factor <- function(
+    x,
+    to_fact = c(
+      "rep",
+      "plot",
+      "loc",
+      "block",
+      "trial",
+      "row",
+      "col",
+      "type",
+      "check",
+      "clone",
+      "geno"
+    )
+    ){
+  x %>% dplyr::mutate(dplyr::across(dplyr::any_of(
+    to_fact
+  ), ~ as.factor(.)))
+}
+```
+
+
+```{r function-convert_to_character}
+#' Coerce columns to character
+#'
+#' @param x a dataframe
+#' @param to_char column names to coerce to character
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+convert_to_character <- function(
+    x,
+    to_char =     c(
+      "obs",
+      "notes"
+    )
+    ){
+  x %>% dplyr::mutate(dplyr::across(dplyr::any_of(
+    to_char
+  ), ~ as.character(.)))
+}
+```
+
+
+```{r function-convert_to_numeric}
+#' onvert column values that numeric but read as character to numeric
+#'
+#' @param x a dataframe
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+convert_to_numeric <- function(x){
+  cols <- colnames(x[sapply(x, function(y) any(!is.na(as.numeric(y))))])
+  if(length(cols) > 0){
+    x[cols] <- sapply(x[cols], as.numeric)
+  }
+  x
+}
+```
+
+
+```{r function-drop_all_data}
+# drop all_data
+#' drop dataframe objects from a list of dataframes
+#'
+#' @param x a list of dataframes 
+#' @param pattern pattern a character vector containing regular expression
+#'
+#' @return a list of dataframes
+#' @export
+#'
+#' @examples
+drop_all_data <- function(x, pattern ="^all|a1_table" ){
+  x[!grepl(pattern, names(x))]
+}
+```
+
+```{r function-select_cols}
+#' A wrapper for `dplyr::select` function
+#'
+#' @param x a dataframe
+#' @param cols a character vector of column names
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+select_cols <- function(x, cols){
+  x %>% dplyr::select(dplyr::any_of(cols))
+}
+```
+
+
+## run routine data checks
+
+Run data checks using st4gi package and compute derived columns 
+
+```{r function-run_checks}
+#' run data quality checks using `{st4gi}` functions
+
+#' @param x a dataframe
+#' @param sz size of farm, here taken to be 10000 sq metres
+#' @param btwn spacing between ridges in metres
+#' @param within spacing between plants in the same ridge in metres
+#' @param ... additional arguments
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+
+run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3,...){
+  # check names
+  y <- st4gi::check.names(x)
+  # check outliers
+  # check.data.pt(x)
+  
+  # compute traits
+  y <- st4gi::cdt(y, method = "np", sz / (within * btwn))
+  
+  # set missing values to zero
+  #bug: clean.data() converts non-numeric columns to NA
+  y <- st4gi::clean.data(y)
+  # convert to CO names
+  # y <- convert.co(y)
+  
+  return(y)
+}
+
+```
+
+
+```{r examples-run_checks, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  `[[`(1)
+df_checked <- run_checks(df)
+```
+
+
+## check accession names
+
+Check accession names using `check_geno()`.
+
+```{r function-check_gene_chars}
+#' check length of accession family name - should be 9
+#'
+#' @param x a dataframe
+#'
+#' @return a data frame
+#' @export
+#'
+#' @examples
+check_gene_chars <- function(x){
+  y <- x %>% #filter(., grepl("^CIP", geno) & nchar(gsub("\\..*|_.*", "", geno)) < 9) 
+    dplyr::filter(
+      .,
+      # (nchar(geno) > 14 | nchar(geno) < 13) & grepl("^CIP", geno) & !grepl(".", geno)
+      ((nchar(gsub("\\..*|_.*", "", geno)) < 9 | nchar(gsub("\\..*|_.*", "", geno)) > 10) & grepl("^CIP3", geno, ignore.case = T)) |
+        (!grepl("^CIP3|CIP5", geno, ignore.case = T) & grepl("^cip", geno, ignore.case = T) |
+           !grepl("\\.", geno) & grepl("^cip", geno, ignore.case = T))
+    )
+  if(dim(y)[1] >0 ){
+    y <- y %>% dplyr::select(geno)
+    return(y)
+  }else{
+    message("All accession names in order")
+  }
+}
+```
+
+
+
+
+```{r function-check_geno}
+#' get accession names that do not conform to required protocol
+#'
+#' @param x a list of dataframes
+#' @param season trial season
+#' @param dir output directory
+#'
+#' @return a data frame
+#' @export
+#'
+#' @examples
+check_geno <- function(x, season, dir = out_dir){
+  out <- purrr::map(x, check_gene_chars) %>% drop_null_dfs()
+  if(length(out) > 0){
+    out <- out %>% capture_location() %>% dplyr::bind_rows()
+    p <- file.path(dir, "data-quality-assessment",season)
+    if(!dir.exists(p)) dir.create(p, recursive = TRUE)
+    readr::write_csv(out, file.path(p, "wrong-accessions.csv"))
+    return(out)
+  }else{
+    message("All accession names in order")
+  }
+}
+```
+
+
+```{r examples-check_geno, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) 
+df_checked <- check_geno(df)
+```
+
+
+
+## update accession names
+
+Update accession names with `update_geno()`
+
+```{r function-update_geno}
+#' Update accession names to conform to naming convention
+#'
+#' @param x a dataframe
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+update_geno <- function(x){
+  data("family_code", envir = environment())
+  # family_code <- pbwrangler::family_code
+  f_code <- family_code %>% dplyr::select(old_family_code, new_family_code)
+    # filter(old_family_code != "NA")
+  y <- x %>% dplyr::mutate(
+    old_family_code = gen_familycode(geno)
+  ) %>% dplyr::select(old_family_code, dplyr::everything()) 
+  y <- y %>% dplyr::left_join(f_code) %>% dplyr::mutate(
+      # family_code = ifelse(!is.na(new_family_code), new_family_code, old_family_code),
+      geno_2 = ifelse(grepl("CIP", geno) & !is.na(new_family_code),
+                  paste0(new_family_code,".", gsub(".*\\.", "", geno)), geno)
+    )  %>% dplyr::select(-c("geno", "old_family_code", "new_family_code")) %>% 
+    dplyr::rename(
+      geno = geno_2
+    ) %>% dplyr::select(geno, dplyr::everything())
+  return(y)
+}
+```
+
+
+```{r examples-update_geno, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  `[[`(1)
+df_checked <- update_geno(df)
+```
+
+
+## rename columns
+
+Rename variables to match ontology lables with `rename_cols()`
+
+```{r function-rename_cols}
+#' rename data columns to conform to ontology labels
+#'
+#' @param x a dataframe
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+rename_cols <- function(x) {
+  x <- x %>%  dplyr::rename_with(
+    ~ dplyr::case_when(
+      grepl("column", ., ignore.case = TRUE) ~ "col",
+      grepl("site|loc", ., ignore.case = TRUE) ~ "loc",
+      grepl("plot_id|plot_no|^plot", ., ignore.case = TRUE) ~ "plot",
+      grepl("nph_1_present_0_absent", ., ignore.case = TRUE) ~ "nph",
+      grepl("clone|^variet|instn|cip_id|^geno", ., ignore.case = TRUE) ~ "geno",
+      # grepl("skin_col", ., ignore.case = TRUE) ~ "tbskn1",
+      # grepl("flesh_col", ., ignore.case = TRUE) ~ "tbfsh1",
+      grepl("^uniqueid|unique_id", ., ignore.case = TRUE) ~ "unique_id",
+      grepl("r_audpc", ., ignore.case = TRUE) ~ "raudpc",
+      grepl("s_audpc", ., ignore.case = TRUE) ~ "saudpc",
+      grepl("^treat|trt", ., ignore.case = TRUE) ~ "treat",
+      grepl("n_no_mtp|no_of_non_marketable|number_small_size_tubers|no_small", ., ignore.case = TRUE) ~ "nnomtp",
+      grepl("weight_big_size_kg|weight_of_big|wgt_larg", ., ignore.case = TRUE) ~ "mtwci",
+      grepl("weight_medium_size_kg|weight_of_medium|wgt_med", ., ignore.case = TRUE) ~ "mtwcii",
+      grepl("number_big_size_tubers|no_large", ., ignore.case = TRUE) ~ "nmtci",
+      grepl("number_medium_size_tubers|no_med", ., ignore.case = TRUE) ~ "nmtcii",
+      grepl("no_tuber_marketable|\\bnmt\\b", ., ignore.case = TRUE) ~ "nmtp",
+      grepl("wt_of_marketable_kg|mtw_kg", ., ignore.case = TRUE) ~ "mtwp",
+      grepl("\\bmty\\b", ., ignore.case = TRUE) ~ "mtyna",
+      grepl("tuber_yld_in_t_ha|tty_t_ha", ., ignore.case = TRUE) ~ "ttyna",
+      grepl("total_tuber_weight|ttw_kg", ., ignore.case = TRUE) ~ "ttwp",
+      grepl("\\btnt\\b", ., ignore.case = TRUE) ~ "tntp",
+      grepl("no_mtwp|wt_of_non_marketable_kg|eight_small_size_kg|weight_of_small|wgt_small"
+            , ., ignore.case = TRUE) ~ "nomtwp",
+      grepl("p_vigor", ., ignore.case = TRUE) ~ "plant_vigor",
+      grepl("n_emerged_plants", ., ignore.case = TRUE) ~ "npe",
+      grepl("n_tubers_planted", ., ignore.case = TRUE) ~ "ntp",
+      grepl("number_harvested_plants", ., ignore.case = TRUE) ~ "nph",
+      grepl("senesc", ., ignore.case = TRUE) ~ "se",
+      grepl("plant_height", ., ignore.case = TRUE) ~ "plahe_ev",
+      grepl("main_stem_number", ., ignore.case = TRUE) ~ "snpp",
+      TRUE ~ .
+    )
+  )
+}
+```
+
+
+```{r examples-rename_cols, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  `[[`(1)
+df <- rename_cols(df)
+```
+
+
+## process trial data
+
+Apply a number of data cleaning functions to trial data with `pre_process_trials()`
+
+```{r function-pre_process_trials_}
+#' run a number of checks & transformations to pre-process a list of trial data 
+#'
+#' @param x a list of dataframes
+#'
+#' @return a list of dataframes
+#' @export
+#'
+#' @examples
+pre_process_trials_ <- function(x){
+  out <- keep_geno(x)  %>% purrr::map(., filter_geno) %>% purrr::map(
+    ., ~dplyr::mutate(
+      ., geno = clean_clone_name(geno)
+    ) 
+  ) %>% 
+    # map(., rename_cols) %>% 
+    purrr::map(., data.frame) %>% purrr::map(., run_checks) %>% clean_file_names(.)
+
+  return(out)
+}
+```
+
+
+```{r function-pre_process_trials}
+#' run a number of checks & transformations to pre-process a list of trial data 
+#'
+#' @param x a list of dataframes
+#'
+#' @return a list of dataframes
+#' @export
+#'
+#' @examples
+pre_process_trials <- function(x){
+  out <- keep_geno(x) %>%  purrr::map(., rename_cols) %>%
+    purrr::map(., convert_to_character) %>%
+    purrr::map(., merge_note_obs) %>% purrr::map(., convert_to_character) %>%
+    purrr::map(., convert_to_numeric) %>%
+    compute_cols(.) %>%
+    purrr::map(., update_geno) %>% purrr::map(., filter_geno) %>% 
+    purrr::map(
+      ., ~dplyr::mutate(
+        ., geno = clean_clone_name(geno)
+      )
+    ) %>% purrr::map(., drop_zeros) %>% 
+    purrr::map(., convert_to_factor) %>%
+    purrr::map(., data.frame) %>% purrr::map(., run_checks) %>% 
+    clean_file_names(.)
+  outt <- out %>% purrr::map(., convert_to_factor) %>% purrr::map(., data.frame)
+  return(outt)
+}
+```
+
+
+```{r function-process_trials}
+# do final processing of trials 
+
+#' run a number of checks & transformations to pre-process a list of trial data 
+#'
+#' @param x a list of dataframes
+#'
+#' @return a list of dataframes
+#' @export
+#'
+#' @examples
+process_trials <- function(x){
+  out <- purrr::map(x, drop_nas) %>% 
+    purrr::map(., ~ dplyr::rename_with(
+      .,
+      ~ dplyr::case_when(
+        grepl("skin_col", ., ignore.case = TRUE) ~ "tbskn1",
+        grepl("flesh_col", ., ignore.case = TRUE) ~ "tbfsh1",
+        TRUE ~ .
+      )
+    )) %>% 
+    purrr::map(., convert_to_character) %>%
+    purrr::map(., data.frame)
+  
+  return(out)
+}
+```
+
+
+```{r function-run_data_processes}
+#' compute derived phenotypic variables 
+#'
+#' @param x a dataframe
+#' @param sz size of farm, here taken to be 10000 sq metres
+#' @param btwn spacing between ridges in metres
+#' @param within spacing between plants in the same ridge in metres
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+run_data_processes <- function(x, sz = 10000, btwn = 0.75, within = 0.3){
+  x %>%  as.data.frame() %>%  st4gi::cdt(., 'np', sz/btwn/within) %>%
+    st4gi::clean.data() %>% st4gi::cdt(., 'np', sz/btwn/within) %>%
+    st4gi::clean.data()
+}
+```
+
+A number of computed columns are generated in the process.
+
+```{r examples-pre_process_trials, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) 
+df_out <- pre_process_trials(df) |> process_trials() %>%
+  purrr::map(., run_data_processes)
+purrr::map(df_out, names_df)
+```
+
+
+
+## Create a trial design object for row-col design
+
+Create a trial design object, fit model and extract predictions
+
+
+```{r function-create_td}
+#' A wrapper for `statgenSTA::createTD` for a `row-col` design model fitting
+#'
+#' @param x datframe of trial data
+#' @param design character vector of experimental design e.g `"rowcol"`, `"rcbd"`
+#'
+#' @return a list object of class TD
+#' @export 
+#'
+#' @examples
+create_td <-  function(x, design){
+  statgenSTA::createTD(
+    x,
+    genotype = "geno",
+    trial = "trial",
+    loc = "loc",
+    year = "year",
+    repId = "rep",
+    rowCoord = "row",
+    colCoord = "col",
+    rowId = "row",
+    colId = "col"
+    ,trDesign = design
+  )
+}
+```
+
+```{r function-fit_td}
+
+
+#' A wrapper for `statgenSTA::fitTD` for REML analysis
+#'
+#' @param x TD object generated by `create_td`
+#' @param trait a character vector phenotypic traits to model e.g `ttyna`
+#' @param spatial logical, whether to fit spatial structure
+#'
+#' @return an object of class STA
+#' @export
+#' @seealso [create_td()]
+#' @examples
+fit_td <- function(x, trait, spatial = FALSE){
+  statgenSTA::fitTD(
+    x,
+    traits = trait,
+    design = "res.rowcol"
+    ,what = c("fixed", "random"),
+    spatial = spatial
+  )
+}
+```
+
+```{r function-extract_blups}
+#' extract BLUPs from a `REML` model
+#'
+#' @param x an object of class `STA` from `fit_td`
+#' @param pred a character vector of predictors: `c("BLUEs", "seBLUEs)` or `c("BLUPs", "seBLUPs)`
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+extract_blups <- function(x, pred){
+  statgenSTA::STAtoTD(
+    x,
+    what = pred,
+    keep = "trial"
+  )
+}
+```
+
+
+```{r function-join_by_keys}
+#' Join predictor and heritability (`h2`) data objects to one dataframe
+#'
+#' @param x first data object either predictors or `h2`
+#' @param y  second data object 
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+join_by_keys <- function(x, y){
+  keys <- unique(c(names(x), names(y)))
+  out <- purrr::map2(
+    x[keys], y[keys], dplyr::full_join
+  ) %>% magrittr::set_names(keys)
+  out
+}
+```
+
+
+```{r examples-create_td, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  purrr::map(
+    ., ~dplyr::mutate(
+      ., year = "2024", loc = "UON", trial = "lbht"
+    )
+  )
+df_out <- pre_process_trials(df) |> process_trials() %>%
+  purrr::map(., run_data_processes) %>% `[[`(1) 
+# trial design object
+TD <- create_td(df_out, design = "rowcol")
+# fit 
+fit_TD <- fit_td(TD, trait = "atw")
+# extract predictions
+
+pred_TD <- extract_blups(fit_TD, pred = c("BLUEs", "seBLUEs"))
+
+pred_TD[[1]][1:5,]
+
+```
+
+
+
+## get in/valid column names 
+
+Get invalid columns (labels not defined in ontology)
+
+```{r function-subset_invalid_cols}
+#' get invalid names (labels not in ontology) & add geno
+#'
+#' @param x a dataframe
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+subset_invalid_cols <- function(x){
+  x[,c("geno", st4gi::get.invalid.names(x))]
+}
+```
+
+
+```{r examples-subset_invalid_cols, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+df <- read_workbooks(dir = NULL, file_to_read = f) %>%
+  purrr::map(
+    ., ~dplyr::mutate(
+      ., year = "2024", loc = "UON", trial = "lbht"
+    )
+  )
+df_out <- pre_process_trials(df) |> process_trials() %>%
+  purrr::map(., run_data_processes) %>% `[[`(1) 
+
+subset_invalid_cols(df_out) %>% colnames(.)
+```
+
+
+```{r function-get_valid_colums}
+#' get column names defined in ontology
+#'
+#' @param x a dataframe
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+get_valid_columns <- function(x){
+  x[, names(x) %nin% st4gi::get.invalid.names(x)]
+}
+```
+
+
+```{r function-get_design_factors}
+#' Get experimental design factors from a trial dataframe/fieldbook
+#'
+#' @return a character vector
+#' @export
+#'
+#' @examples
+get_design_factors <- function(){
+  factors <- c("loc", "year", "season", "env", "geno", "type", 
+               "rep", "block", "treat", "harvest", "is_a_control", "plot", 
+               "row", "col")
+  return(factors)
+}
+```
+
+
+```{r function-get_ontology_labels}
+#' get ontology labels from `{st4gi}`
+#'
+#' @param x a list of dataframes or a dataframe object 
+#' @param crop  a character vecto - `pt` or `sp`
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+get_ontology_labels <- function(x, crop = "pt"){
+  if(any(c("data.frame", "tbl", "tible_df") %in% class(x))){
+    df <- names_df(x) %>% unique() %>% as.data.frame() %>% `colnames<-`('label')
+  }else{
+    df <- lapply(x, names_df) %>% unlist() %>% unique() %>% as.data.frame() %>%
+      `colnames<-`('label')
+  }
+  # df$label_local <- df$label
+  if(crop == "pt"){
+    df_ont <- st4gi::ptont() %>% janitor::clean_names()
+  }else{
+    df_ont <- st4gi::spont() %>% janitor::clean_names()
+  }
+  out <- df %>% dplyr::left_join(df_ont) %>% dplyr::filter(is.na(full_name))
+  out <- dplyr::filter(out, !label %in% get_design_factors())
+  return(out)
+}
+```
+
+## tissue culture helpers
+
+```{r function-duplicate_row}
+#'  duplicate a row
+#'
+#' @param x a dataframe
+#' @param n number of copies to create
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+duplicate_row <- function(x, n = 8){
+  to_add <- n - nrow(x)
+  a <- x[1,]
+  x_copy <- a[rep(seq_len(nrow(a)), each = to_add), ]
+  out <- rbind(x, x_copy)
+  return(out)
+}
+```
+
+
+```{r function-gen_uniqueid}
+#' generate unique ids
+#'
+#' @param x a dataframe
+#'
+#' @return a character vector of hashed ids
+#' @export
+#'
+#' @examples
+gen_uniqueid <- function(x){
+  n <- nrow(x)
+  id <- ids::uuid(n, drop_hyphens = T ) %>% substr(., 1,12)
+  return(id)
+}
+```
+
+
+```{r function-assign_benches}
+#' assign clones to tissue culture benches
+#'
+#' @param x dataframe
+#' @param id_col row id index variable
+#'
+#' @return dataframe
+#' @export
+#'
+#' @examples
+assign_benches <- function(x, id_col="row_id"){
+  # there are 5-rows, 5 column benches, each grid taking 192 testubes
+  
+  out <- x %>% dplyr::mutate(
+    # Bench 1
+    location = dplyr::case_when(
+      .data[[id_col]] <= 192 ~ "B1R1C1",
+      .data[[id_col]] <= 384 ~ "B1R1C2",
+      .data[[id_col]] <= 576 ~ "B1R1C3",
+      .data[[id_col]] <= 768 ~ "B1R1C4",
+      .data[[id_col]] <= 960 ~ "B1R1C5",
+      .data[[id_col]] <= 1152 ~ "B1R2C1",
+      .data[[id_col]] <= 1344 ~ "B1R2C2",
+      .data[[id_col]] <= 1536 ~ "B1R2C3",
+      .data[[id_col]] <= 1728 ~ "B1R2C4",
+      .data[[id_col]] <= 1920 ~ "B1R2C5",
+      .data[[id_col]] <= 2112 ~ "B1R3C1",
+      .data[[id_col]] <= 2304 ~ "B1R3C2",
+      .data[[id_col]] <= 2496 ~ "B1R3C3",
+      .data[[id_col]] <= 2688 ~ "B1R3C4",
+      .data[[id_col]] <= 2880 ~ "B1R3C5",
+      .data[[id_col]] <= 3072 ~ "B1R4C1",
+      .data[[id_col]] <= 3264 ~ "B1R4C2",
+      .data[[id_col]] <= 3456 ~ "B1R4C3",
+      .data[[id_col]] <= 3648 ~ "B1R4C4",
+      .data[[id_col]] <= 3840 ~ "B1R4C5",
+      
+      # bench 2
+      
+      .data[[id_col]] <= 4032 ~ "B2R1C1",
+      .data[[id_col]] <= 4224 ~ "B2R1C2",
+      .data[[id_col]] <= 4416 ~ "B2R1C3",
+      .data[[id_col]] <= 4608 ~ "B2R1C4",
+      .data[[id_col]] <= 4800 ~ "B2R1C5",
+      .data[[id_col]] <= 4992 ~ "B2R2C1",
+      .data[[id_col]] <= 5184 ~ "B2R2C2",
+      .data[[id_col]] <= 5376 ~ "B2R2C3",
+      .data[[id_col]] <= 5568 ~ "B2R2C4",
+      .data[[id_col]] <= 5760 ~ "B2R2C5",
+      .data[[id_col]] <= 5952 ~ "B2R3C1",
+      .data[[id_col]] <= 6144 ~ "B2R3C2",
+      .data[[id_col]] <= 6336 ~ "B2R3C3",
+      .data[[id_col]] <= 6528 ~ "B2R3C4",
+      .data[[id_col]] <= 6720 ~ "B2R3C5",
+      .data[[id_col]] <= 6912 ~ "B2R4C1",
+      .data[[id_col]] <= 7104 ~ "B2R4C2",
+      .data[[id_col]] <= 7296 ~ "B2R4C3",
+      .data[[id_col]] <= 7488 ~ "B2R4C4",
+      .data[[id_col]] <= 7680 ~ "B2R4C5",
+      
+      # bench 3
+      
+      .data[[id_col]] <= 7872 ~ "B3R1C1",
+      .data[[id_col]] <= 8064 ~ "B3R1C2",
+      .data[[id_col]] <= 8256 ~ "B3R1C3",
+      .data[[id_col]] <= 8448 ~ "B3R1C4",
+      .data[[id_col]] <= 8640 ~ "B3R1C5",
+      .data[[id_col]] <= 8832 ~ "B3R2C1",
+      .data[[id_col]] <= 9024 ~ "B3R2C2",
+      .data[[id_col]] <= 9216 ~ "B3R2C3",
+      .data[[id_col]] <= 9408 ~ "B3R2C4",
+      .data[[id_col]] <= 9600 ~ "B3R2C5",
+      .data[[id_col]] <= 9792 ~ "B3R3C1",
+      .data[[id_col]] <= 9984 ~ "B3R3C2",
+      .data[[id_col]] <= 10176 ~ "B3R3C3",
+      .data[[id_col]] <= 10368 ~ "B3R3C4",
+      .data[[id_col]] <= 10560 ~ "B3R3C5",
+      .data[[id_col]] <= 10752 ~ "B3R4C1",
+      .data[[id_col]] <= 10944 ~ "B3R4C2",
+      .data[[id_col]] <= 11136 ~ "B3R4C3",
+      .data[[id_col]] <= 11328 ~ "B3R4C4",
+      .data[[id_col]] <= 11520 ~ "B3R4C5",
+      
+      # bench 4
+      
+      .data[[id_col]] <= 11712 ~ "B4R1C1",
+      .data[[id_col]] <= 11904 ~ "B4R1C2",
+      .data[[id_col]] <= 12096 ~ "B4R1C3",
+      .data[[id_col]] <= 12288 ~ "B4R1C4",
+      .data[[id_col]] <= 12480 ~ "B4R1C5",
+      .data[[id_col]] <= 12672 ~ "B4R2C1",
+      .data[[id_col]] <= 12864 ~ "B4R2C2",
+      .data[[id_col]] <= 13056 ~ "B4R2C3",
+      .data[[id_col]] <= 13248 ~ "B4R2C4",
+      .data[[id_col]] <= 13440 ~ "B4R2C5",
+      .data[[id_col]] <= 13632 ~ "B4R3C1",
+      .data[[id_col]] <= 13824 ~ "B4R3C2",
+      .data[[id_col]] <= 14016 ~ "B4R3C3",
+      .data[[id_col]] <= 14208 ~ "B4R3C4",
+      .data[[id_col]] <= 14400 ~ "B4R3C5",
+      .data[[id_col]] <= 14592 ~ "B4R4C1",
+      .data[[id_col]] <= 14784 ~ "B4R4C2",
+      .data[[id_col]] <= 14976 ~ "B4R4C3",
+      .data[[id_col]] <= 15168 ~ "B4R4C4",
+      .data[[id_col]] <= 15360 ~ "B4R4C5",
+      
+      # bench 5
+      
+      .data[[id_col]] <= 15552 ~ "B5R1C1",
+      .data[[id_col]] <= 15744 ~ "B5R1C2",
+      .data[[id_col]] <= 15936 ~ "B5R1C3",
+      .data[[id_col]] <= 16128 ~ "B5R1C4",
+      .data[[id_col]] <= 16320 ~ "B5R1C5",
+      .data[[id_col]] <= 16512 ~ "B5R2C1",
+      .data[[id_col]] <= 16704 ~ "B5R2C2",
+      .data[[id_col]] <= 16896 ~ "B5R2C3",
+      .data[[id_col]] <= 17088 ~ "B5R2C4",
+      .data[[id_col]] <= 17280 ~ "B5R2C5",
+      .data[[id_col]] <= 17472 ~ "B5R3C1",
+      .data[[id_col]] <= 17664 ~ "B5R3C2",
+      .data[[id_col]] <= 17856 ~ "B5R3C3",
+      .data[[id_col]] <= 18048 ~ "B5R3C4",
+      .data[[id_col]] <= 18240 ~ "B5R3C5",
+      .data[[id_col]] <= 18432 ~ "B5R4C1",
+      .data[[id_col]] <= 18624 ~ "B5R4C2",
+      .data[[id_col]] <= 18816 ~ "B5R4C3",
+      .data[[id_col]] <= 19008 ~ "B5R4C4",
+      .data[[id_col]] <= 19200 ~ "B5R4C5",
+      TRUE ~ NA_character_
+    )
+  )
+  out <- out %>% dplyr::mutate(
+    bench = substr(location, 1, 2),
+    row = substr(location, 3, 4),
+    col = substr(location, 5, 6)
+  ) %>% dplyr::select(-dplyr::any_of(id_col)) %>% dplyr::select(unique_id, geno, dplyr::everything()) %>% 
+    dplyr::arrange(location , geno)
+  return(out)
+}
+```
+
+
+## read trial data files
+
+```{r function-read_workbooks}
+
+#' A wrapper for `readr`'s `read_csv` & `readxl`'s `read_excel` for reading trial data
+#'
+#' @param dir trial data home directory
+#' @param season trial season
+#' @param read_subfolder logical. `TRUE` if data lives inside a subfolder in `season`
+#' @param s a regular expression used to keep relevant files
+#' @param sub_folder character of subfolder containing data e.g `"Data/Curated Data"`
+#' @param subset ogical. `TRUE` if you want to read just a subset of files
+#' @param n integer. Number of files to subset e.g, `1`, `-1` `1:4`.
+#' @param multiple logical. `TRUE` if you want to read nultiple excel sheets from the same workbook
+#' @param sheet_name character. used to specify excel sheet name of interest, e.g., `"fieldbook"`
+#' @param skip integer. number of rows to skip when reading data from an excel workbook
+#' @param file_to_read character.file name to read e.g., generated by `system.file()`
+#'
+#' @return a list of trial dataframes
+#' @export
+#'
+#' @examples
+read_workbooks <- function(dir = t_dir
+                           ,season = NULL
+                           ,read_subfolder = FALSE
+                           ,s = ".csv|.xlsx"
+                           ,sub_folder = "Data/Curated Data"
+                           ,subset = FALSE
+                           ,n = NULL
+                           ,multiple = FALSE
+                           ,sheet_name = NULL
+                           ,skip = 0
+                           ,file_to_read = NULL
+                           ) {
+  
+  if(is.null(season)){
+    folders = file.path(dir)
+  }else{
+    folders = file.path(dir, season)
+  }
+  # a situation where you want to read system files
+  if(is.null(dir)){
+    if(is.null(file_to_read)) {
+      stop("file_to_read must be specified and not NULL if dir is NULL")
+    }else{
+      file <- file_to_read
+    }
+  } else if (isTRUE(read_subfolder)) {
+    file <- list_files(folder = file.path(folders, sub_folder), subset = subset, n = n, s = s) %>%
+       subset(., grepl(s, .)
+      ) %>% subset(.,
+                   !grepl("mult|layout|plant|seed|regro|meta", ., ignore.case = TRUE))
+  } else{
+    file <- list_files(folder = folders, subset = subset, n = n, s = s) %>%
+      subset(., grepl(s, .)
+      ) %>% subset(.,
+                   !grepl("mult|layout|plant|seed|regro|meta", ., ignore.case = TRUE))
+  }
+  # n must be specified if subset TRUE
+  if(isTRUE(subset) & is.null(n)) stop("n must be specified if subset = TRUE")
+  
+
+  # if(dir == m_dir){
+  #   file <- list.files(dir, full.names = TRUE) %>%
+  #     # look at this subsetting `[`
+  #     subset(., grepl("season", ., ignore.case = TRUE))
+  # }
+  
+  
+  if (length(file) > 0) {
+    # file .xlsx or .csv
+    
+    f_csv <- file[grepl("csv", file)]
+    f_xls <- file %>% subset(., !file %in% f_csv)
+    
+    
+    # for .csvs
+    # duplicate column names for Njoro (ntp, plant_unif, se, nmtci/ii, mtwci/ii)
+    # to do: investigate
+    if (length(f_csv) > 0) {
+      if (!isTRUE(read_subfolder)) {
+        f_names_2 <- clean_dir_name(f_csv)
+      } else{
+        f_names_2 <- clean_dir_name_c(f_csv)
+      }
+      out_csv <-
+        purrr::map(f_csv, readr::read_csv) %>% magrittr::set_names(f_names_2) %>% purrr::map(., janitor::clean_names)
+      out_csv <- purrr::map(out_csv, drop_nas) %>% purrr::map(., data.frame)
+    }
+    if (length(f_xls) > 0) {
+      
+      if (!isTRUE(read_subfolder)) {
+        f_names <- clean_dir_name(f_xls)
+      } else{
+        f_names <- clean_dir_name_c(f_xls)
+      }
+      
+      if(isTRUE(multiple)){
+        sheets <- purrr::map(f_xls, readxl::excel_sheets)
+        sheets <- purrr::map(sheets, drop_sheets)
+
+        
+        # drop files without data - changed to >= from ==
+        f_xls <- f_xls[which(sapply(sheets, length) >= 1)]
+        sheets <- sheets[which(sapply(sheets, length) >= 1)]
+        
+        # drop empty list elements
+        sheets <- sheets[!sapply(sheets, identical, character(0))]
+        
+        # read multiple sheets 
+        out_xls <- sheets %>%  unlist() %>% 
+          purrr::map(~readxl::read_excel(path = f_xls, skip = skip)) %>% magrittr::set_names(., unlist(sheets))
+      }
+      # check if reading multiple sheets from same workbook and sheet_name specified
+      
+      if (!isTRUE(multiple)){
+        if(!is.null(sheet_name)){
+          sheets = purrr::map(f_xls, readxl::excel_sheets) %>%
+            purrr::map(., function(x) grep(sheet_name, x, ignore.case = T, value = T))
+
+        }else {
+          sheets = purrr::map(f_xls, readxl::excel_sheets) %>% purrr::map(., drop_sheets)
+
+        }
+        
+        out_xls <- purrr::map2(f_xls, sheets, readxl::read_excel, skip = skip) %>% magrittr::set_names(., f_names)
+      }
+
+      out_xls <- purrr::map(out_xls, drop_nas) #%>% set_names(., f_names)
+      out_xls <-
+        out_xls %>% purrr::map(., janitor::clean_names) %>% purrr::map(., data.frame)
+      # map(out_xls, names_df)
+    }
+    
+    
+    # unnest lists
+    if (exists("out_xls") & exists("out_csv")) {
+      out <- c(out_csv, out_xls)
+    } else if (exists("out_xls") & !exists("out_csv")) {
+      out <- out_xls
+    } else {
+      out <- out_csv
+    }
+    # list2env(out, envir = .GlobalEnv)
+    # rename a column if it exists
+    out <- purrr::map(out, ~ dplyr::rename_with(
+      .,
+      ~ dplyr::case_when(
+        grepl("column", ., ignore.case = TRUE) ~ "col",
+        grepl("site", ., ignore.case = TRUE) ~ "loc",
+        grepl("nph_1_present_0_absent", ., ignore.case = TRUE) ~ "nph",
+        grepl("clone|^variet|instn", ., ignore.case = TRUE) ~ "geno",
+        grepl("^uniqueid|unique_id", ., ignore.case = TRUE) ~ "unique_id",
+        TRUE ~ .
+      )
+    ))
+    # coerce type
+    out <- out %>%
+      purrr::map(., ~ dplyr::mutate(., across(any_of(
+        c(
+          'se',
+          'tuber_apper',
+          'tub_unif',
+          'tub_size',
+          'ntp',
+          'plant_vigor',
+          'mtwci',
+          'mtwcii',
+          'nmtci',
+          'nmtcii',
+          'nnomtp',
+          'nomtwp',
+          'npe',
+          'overall_impression'
+        )
+      ), ~ as.numeric(.)))) %>% purrr::map(., ~ dplyr::mutate(., across(any_of(
+        c('flowering_date')
+      ), ~ as.character(.))))
+    # delete columns without a name assigned
+    out <- out %>% purrr::map(., ~ dplyr::select(., !grep("^x", names(.), ignore.case = TRUE)))
+    out <- out %>% purrr::map(., data.frame)
+    # clean names
+    # names(out) <- gsub("*_\\d+", "", names(out))
+    return(out)
+  } else{
+    message("No data to read!")
+  }
+  
+}
+```
+
+```{r examples-read_workbooks, message=FALSE, warning=FALSE}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+d <- read_workbooks(dir = NULL, file_to_read = f)
+lapply(d, function(x) x[1:5, 1:5])
+```
+
+```{r tests-read_workbooks}
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+test_that("read_workbooks works properly and show error if needed", {
+  expect_error(read_workbooks(dir = NULL))
+  expect_error(read_workbooks(dir = NULL, file_to_read = f, subset = TRUE))
 })
 ```
 
-# Calculate the mean of a vector
+
+field trial randomization
+
+## partially replicated (prep) design
+
+
+```{r function-rand_Prep}
+#' Partially replicated field design
+#'
+#' @param tot integer. total number of unique clones/genotypes to be randomized to field
+#' @param ins a character vector of genotypes
+#' @param rowD integer. number of rows in the field
+#' @param trial character. trial name
+#' @param n_dummies integer. number of dummies to complete a rectangular layout
+#' @param loc character. trial location
+#' @param totReps integer. total number of plots: row by col
+#' @param trtrepP numeric vector. replications of `ins`
+#' @param trtgroup numeric vector. replication of treatment groups. samilar repliction as `trtrepP` 
+#' @param block_lst a list specifying blocking of the field
+#' @param season season of trial
+#' @param path character specifying path to write the design
+#' @param check a character vector of checks to fill rectangular grid
+#' @param dummy a character vector of dummy checks to fill rectangular grid
+#' @param to_add integer. number of checks to add to complete the rectangular grid
+#' @return
+#' @export
+#'
+#' @examples
+rand_Prep <- function(tot,
+                      ins,
+                      rowD,
+                      trial,
+                      n_dummies,
+                      loc,
+                      totReps,
+                      trtrepP,
+                      trtgroup,
+                      block_lst,
+                      season = "season-2024-2025",
+                      path = rand_dir,
+                      check = c("Shangi", "Unica", "Sagitta", "Sherekea"),
+                      dummy = c("Unica", "Shangi"),
+                      to_add = 4){
+  # to_add <- tot - length(reduce(ins,c))
+
+  set.seed(123456)
+  if(to_add <= 4){
+    checks <- sample(check, to_add, replace = F)
+  }else{
+    checks <- sample(check, to_add, replace = T)
+  }
+  
+  if(n_dummies <= 2 & n_dummies > 0){
+    dummies <- paste0("dummy-", sample(dummy, n_dummies, replace = F))
+  }else if (n_dummies > 2) {
+    dummies <- paste0("dummy-", sample(dummy, n_dummies, replace = T))
+  }else{
+    dummies <- NULL
+  }
+  geno_to_rand <- c(purrr::reduce(ins,c), dummies, checks)
+
+  
+  prep <- DiGGer::prDiGGer(
+                  # numberOfTreatments = tot+n_dummies,
+    # total is less 4 checks i.e all geno available + n_dummies
+                  numberOfTreatments = tot+length(checks),
+                   treatName = geno_to_rand,
+                   rowsInDesign = rowD,
+                   columnsInDesign = totReps / rowD,
+                   # rowsInReplicate = 32,
+                   # columnsInReplicate = 20,
+                   # blockSequence = list(
+                   #   c(9, 8), c(9, 4)
+                   # ),
+                   blockSequence = block_lst,
+                   treatRepPerRep = trtrepP,
+                   treatGroup=trtgroup,
+                   maxInterchanges = 1000,
+                   # fixedBlocks = TRUE,
+                   # nested = FALSE,
+                   rngSeeds = c(111, 222)
+  )
+  # run the search to spatially optimise the design
+  prep <- DiGGer::run(prep)
+  
+  
+  # get the matrix and plot it with checks in rep
+  # duplicated treatments of interest in yellow.
+  design <- prep$dlist[, 1:6] %>% janitor::clean_names()
+  design <- design %>% dplyr::mutate(
+    # unique_id = paste0(plot, rep, geno) 
+    unique_id = gen_uniqueid(.)
+  ) %>% dplyr::select(unique_id, dplyr::everything())
+  names(design)[3] <- "geno"
+  if(!is.null(path)){
+      readr::write_csv(
+    design,
+    file.path(
+      path, season,"fieldbook",  paste0(loc, "-", trial, ".csv")
+    )
+  )
+  
+  png(
+    file.path(path, season,"fieldbook",  paste0(loc,"-",trial, ".png")),
+    width = 2000,
+    height = 1500,
+    res = 150
+  )
+  # plot(prep)
+  plot(prep, trts = 1:5, col=2, new = FALSE)
+  dev.off()
+  }
+  return(design)
+}
+
+```
+
+
+```{r function-geno_by_tubers}
+
+#' Distribute clones to match the available seeds during replication
+#'
+#' @param df a dataframe of available seed
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+#' 
+geno_by_tubers <- function(df){
+  geno_3 <- df %>% dplyr::filter(number_of_tubers >= 30) %>% 
+    dplyr::select(geno) %>% dplyr::pull()
+  geno_2 <- df %>% dplyr::filter(number_of_tubers >= 20 & number_of_tubers < 30) %>%
+    dplyr::select(geno) %>% dplyr::pull()
+  geno_1 <- df %>% dplyr::filter(number_of_tubers >= 10 & number_of_tubers < 20) %>%
+    dplyr::select(geno) %>% dplyr::pull()
+  geno_lst <- list(geno_3, geno_2, geno_1) %>% purrr::set_names(paste0("geno_", c(3,2,1)))
+  geno_names <- c(geno_3,geno_2, geno_1)
+  return(geno_lst)
+}
+```
+
+
+
+```{r examples-geno_by_tubers, message=FALSE, warning=FALSE}
+data("ilri", package = "pbwrangler")
+ins_ilri <- geno_by_tubers(ilri)
+lapply(ins_ilri, head, 5)
+```
+
+
+```{r function-trial_design_meta}
+#' generate trial design inputs i.e., geno replications and blocking list
+#'
+#' @param trep numeric vector of treatment/genotype replications
+#' @param trgroup numeric vector of treatment group replication
+#' @param block_list a list of blocking field layout 
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+trial_design_meta <- function(
+    trep = rep(c(3,2,1,5), c(6, 11,36,4)),
+    trgroup = rep(c(3,2,1,5),c(6,11,36,4)),
+    block_list = list(c(6,4), c(6,2))
+){
+    
+  out <- list(
+    trep, trgroup, block_list
+  ) %>% purrr::set_names(c('trep', "trgroup", "block_list"))
+  return(out)
+}
+```
+
+Do partially replicated randomization
+
+```{r examples-rand_Prep, message=FALSE, warning=FALSE}
+d <- tempdir()
+data("ilri", package = "pbwrangler")
+ins_ilri <- geno_by_tubers(ilri)
+ilri_prep <- rand_Prep(
+  tot = 53,
+  ins = ins_ilri,
+  rowD = 12,
+  trial = "ilri",
+  n_dummies = 5,
+  loc = "ilri",
+  totReps =96,
+  trtrepP = trial_design_meta()$trep,
+  trtgroup = trial_design_meta()$trgroup,
+  block_lst = trial_design_meta()$block_list,
+  path = NULL
+)
+head(ilri_prep)
+```
+
+
+## rowcol design
+
+```{r function-randomize_row_col}
+#' row column design: plots = row by col; equal rep for each treatment
+#'
+#' @param clones ca dataframe with `geno` column
+#' @param tot integer. total number of unique clones/genotypes to be randomized to field
+#' @param loc character. trial location
+#' @param rowD integer. number of rows in the field
+#' @param n_dummies integer. number of dummies to complete a rectangular layout
+#' @param rep integer. number of replication
+#' @param season season of trial
+#' @param path character specifying path to write the design
+#' @param check a character vector of checks to fill rectangular grid
+#' @param dummy a character vector of dummy checks to fill rectangular grid
+#' @param to_add integer. number of checks to add to complete the rectangular grid
+#'
+#' @return
+#' @export
+#'
+#' @examples
+randomize_row_col <- function(clones,
+                              tot,
+                              loc,
+                              rowD,
+                              n_dummies,
+                              rep,
+                              season,
+                              path = rand_dir,
+                              check = c("Shangi", "Unica", "Sagitta", "Sherekea"),
+                              dummy = c("Unica", "Shangi"),
+                              to_add = 4) {
+  if(to_add <= 4){
+    checks <- sample(check, to_add, replace = F)
+  }else{
+    checks <- sample(check, to_add, replace = T)
+  }
+  
+  if(n_dummies <= 2 & n_dummies > 0){
+    dummies <- paste0("dummy-", sample(dummy, n_dummies, replace = F))
+  }else if (n_dummies > 2) {
+    dummies <- paste0("dummy-", sample(dummy, n_dummies, replace = T))
+  }else{
+    dummies <- NULL
+  }
+  
+  if(inherits(clones, "list")){
+    geno_names <- purrr::reduce(clones, data.frame)[, "geno"] %>% dplyr::pull()
+  }else{
+    geno_names <- clones %>% dplyr::pull()
+  }
+  geno_to_rand <- c(geno_names, dummies, checks)
+  
+  design <- DiGGer::rcDiGGer(
+    numberOfTreatments = tot,
+    treatName = geno_to_rand,
+    rowsInDesign = rowD,
+    columnsInDesign = (tot * rep) / rowD,
+    rowsInReplicate = tot / ((tot * rep) / rowD),
+    columnsInReplicate = (tot * rep) / rowD,
+    # blockSequence = list(
+    #   c(5, 12), c(10, 12)
+    # ),
+    maxInterchanges = 500000,
+    # fixedBlocks = TRUE,
+    nested = FALSE,
+    rngSeeds = c(111, 222)
+  )
+  
+  
+  design <- design$dlist[, 1:6] %>% janitor::clean_names()
+  colnames(design)[c(1, 2, 5)] <- c("plot", "geno", "column")
+  design <- design %>% dplyr::mutate(# unique_id = paste0(plot, rep, geno)
+    unique_id = gen_uniqueid(.)) %>% dplyr::select(unique_id, dplyr::everything())
+  if (!is.null(path)) {
+    png(
+      file.path(path, season, "fieldbook",  paste0(loc, ".png")),
+      width = 2000,
+      height = 1500,
+      res = 150
+    )
+    plot(design)
+    plot(design,
+         trts = 1:5,
+         col = 2,
+         new = FALSE)
+    dev.off()
+    
+    readr::write_csv(design,
+                     file.path(path, season, "fieldbook",  paste0(loc, ".csv")))
+  }
+  return(design)
+}
+```
+
+rowcol design for 4 genotypes with 2 checks
+
+```{r examples-randomize_row_col, message=FALSE, warning=FALSE}
+df <- data.frame(geno = LETTERS[1:4])
+rcD <-
+  randomize_row_col(
+    clones = df,
+    tot = 6,
+    rowD = 6,
+    n_dummies = 0,
+    to_add = 2,
+    rep = 3,
+    path = NULL
+  )
+head(rcD)
+```
+
+
+<!-- # Calculate the mean of a vector -->
 
 <!--
 There can be other functions, examples and tests in your flat template.
 Each of them will be inflated in a different file, provided that there is a level-1 or level-2 section title to separate from previous functions.
 -->
 
-## Use sub-functions in the same chunk
+<!-- ## Use sub-functions in the same chunk -->
 
-```{r function-my_other_median}
-#' My Other median
-#'
-#' @param x Vector of Numeric values
-#' @inheritParams stats::median
-#'
-#' @return
-#' Median of vector x
-#' @export
-#'
-#' @examples
-my_other_median <- function(x, na.rm = TRUE) {
-  if (!is.numeric(x)) {
-    stop("x should be numeric")
-  }
-  sub_median(x, na.rm = na.rm)
-}
 
-#' Core of the median not exported
-#' @param x Vector of Numeric values
-#' @inheritParams stats::median
-sub_median <- function(x, na.rm = TRUE) {
-  stats::median(x, na.rm)
-}
-```
-
-```{r examples-my_other_median}
-my_other_median(1:12)
-```
-
-```{r tests-my_other_median}
-test_that("my_median works properly and show error if needed", {
-  expect_true(my_other_median(1:12) == 6.5)
-  expect_error(my_other_median("text"))
-})
-```
 
 <!--
 # There can be development actions
@@ -199,16 +2498,17 @@ These are only included in the present flat template file, their content will no
 ```{r development-inflate, eval=FALSE}
 # Keep eval=FALSE to avoid infinite loop in case you hit the knit button
 # Execute in the console directly
-fusen::inflate(flat_file = "dev/flat_full.Rmd", vignette_name = "Get started")
+# fusen::inflate(flat_file = "dev/data_doc.Rmd", vignette_name = "Get started", overwrite = T)
+fusen::inflate(flat_file = "dev/flat_full.Rmd", vignette_name = "Get started", overwrite = T)
 ```
 
 
-# Inflate your package
+<!-- # Inflate your package -->
 
-You're one inflate from paper to box.
-Build your package from this very Rmd using `fusen::inflate()`
+<!-- You're one inflate from paper to box. -->
+<!-- Build your package from this very Rmd using `fusen::inflate()` -->
 
-- Verify your `"DESCRIPTION"` file has been updated
-- Verify your function is in `"R/"` directory
-- Verify your test is in `"tests/testthat/"` directory
-- Verify this Rmd appears in `"vignettes/"` directory
+<!-- - Verify your `"DESCRIPTION"` file has been updated -->
+<!-- - Verify your function is in `"R/"` directory -->
+<!-- - Verify your test is in `"tests/testthat/"` directory -->
+<!-- - Verify this Rmd appears in `"vignettes/"` directory -->

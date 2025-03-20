@@ -17,14 +17,13 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/Bokola/pbwrangler/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Bokola/pbwrangler/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/Bokola/pbwrangler/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Bokola/pbwrangler?branch=main)
 <!-- badges: end -->
 
-The goal of pbwrangler is to ...
+The goal of `pbwrangler` is to curate sweet/potato breeding date for analysis and archiving to breedbase. It was developed to help document functions used to read, wrangle and write data on a daily.
 
 ## Installation
 
-You can install the development version of pbwrangler from [GitHub](https://github.com/) with:
+You can install the development version of `pbwrangler` from [GitHub](https://github.com/) with: 
 
 ``` r
 # install.packages("devtools")
@@ -35,27 +34,35 @@ devtools::install_github("Bokola/pbwrangler")
 
 Full documentation website on: https://Bokola.github.io/pbwrangler
 
+## Documentation
+
+Full documentation website on: https://Bokola.github.io/pbwrangler
+
+## Documentation
+
+Full documentation website on: https://Bokola.github.io/pbwrangler
+
+## Documentation
+
+Full documentation website on: https://Bokola.github.io/pbwrangler
+
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+You can for instance read .xlsx and .csv files using 
 
-```{r example}
+```{r, message=FALSE, results='hide'}
+# devtools::install_github("Bokola/pbwrangler")
 library(pbwrangler)
-## basic example code
+
+f <- system.file("uon-trial-1.csv", package = "pbwrangler")
+d <- read_workbooks(dir = NULL, file_to_read = f)
+
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 
-```{r cars}
-summary(cars)
+```{r}
+lapply(d, function(x) x[1:5, 1:5])
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
 
-You can also embed plots, for example:
 
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
