@@ -1,0 +1,13 @@
+Package: pbwrangler
+Version: 0.0.0.9000
+Title: Potato Breeding Phenotypic Data Wrangler
+Description: `pbwrangler` is a collection of in-house functions used in
+    curating potato breeding data for analysis and archiving into breeding databases.
+Authors@R: person(given = "Basil",
+       family = "Okola",
+       role = c("aut", "cre"),
+       email = "okolabasilowiti@gmail.com")
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
