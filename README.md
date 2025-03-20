@@ -26,18 +26,6 @@ devtools::install_github("Bokola/pbwrangler")
 
 Full documentation website on: <https://Bokola.github.io/pbwrangler>
 
-## Documentation
-
-Full documentation website on: <https://Bokola.github.io/pbwrangler>
-
-## Documentation
-
-Full documentation website on: <https://Bokola.github.io/pbwrangler>
-
-## Documentation
-
-Full documentation website on: <https://Bokola.github.io/pbwrangler>
-
 ## Example
 
 You can for instance read .xlsx and .csv files using
