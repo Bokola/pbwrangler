@@ -12,6 +12,7 @@ BugReports: https://github.com/Bokola/pbwrangler/issues
 Imports: 
     DiGGer,
     dplyr,
+    grDevices,
     ids,
     janitor,
     lubridate,
@@ -21,7 +22,8 @@ Imports:
     readxl,
     st4gi,
     statgenSTA,
-    stringr
+    stringr,
+    utils
 Suggests: 
     here,
     knitr,
