@@ -29,6 +29,32 @@ combine_meta_files <- function(season, path=out_dir){
   return(meta)
 }
 
+#' get field trial fieldbooks in a particular folder
+#'
+#' @param path character string specifying the directory containing the fieldbooks 
+#' @param season character vector of trial season
+#' @param sub_folder character vector of sub-directory. defaults to NULL
+#' @param s character grep pattern of file extensions to return
+#'
+#' @return a dataframe
+#' @export
+#'
+get_fieldbooks <- function(path = t_dir, season, sub_folder = NULL, s = ".csv|.xlsx"){
+  if(!is.null(sub_folder)){
+    paths <- file.path(path, season,  sub_folder)
+  }else{
+    paths <- file.path(path, season)
+  }
+  list_files(folder = paths) %>%
+    lapply(., function(x) gsub(".*\\/", "", x)) %>% 
+    lapply(., function(x) subset(x, grepl(s, x))) %>%
+    purrr::reduce(., c)  %>% as.data.frame() %>% `colnames<-`("filedbook") %>% 
+    dplyr::mutate(
+      season = season,
+      sub_folder = ifelse(is.null(sub_folder), "", sub_folder)
+    )
+}
+
 #' List design files after designing trial experiments in R
 #'
 #' @param dir directory containing the fieldboooks
