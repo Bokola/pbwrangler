@@ -278,7 +278,7 @@ sum_rowwise <- function(x, target_cols){
   #   y = sum(dplyr::c_across(colnames(.)[colnames(.) %in% target_cols]),na.rm=T)
   # ) %>% dplyr::pull(y)
   # }
-  rowSums(x[,which(names(x) %in% target_cols)],na.rm=TRUE)
+  rowSums(data.frame(x[,which(names(x) %in% target_cols)]),na.rm=TRUE)
 
 }
 
