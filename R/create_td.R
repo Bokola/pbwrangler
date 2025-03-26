@@ -82,7 +82,7 @@ fit_td <- function(x, trait, spatial = FALSE){
 #' # trial design object
 #' TD <- create_td(df_out, design = "rowcol")
 #' # fit 
-#' fit_TD <- fit_td(TD, trait = "atw")
+#' fit_TD <- fit_td(TD, trait = "mtwp")
 #' # extract predictions
 #'
 #' pred_TD <- extract_blups(fit_TD, pred = c("BLUEs", "seBLUEs"))

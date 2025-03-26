@@ -140,19 +140,19 @@
 <span class="r-in"><span><span class="co"># trial design object</span></span></span>
 <span class="r-in"><span><span class="va">TD</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_td.html">create_td</a></span><span class="op">(</span><span class="va">df_out</span>, design <span class="op">=</span> <span class="st">"rowcol"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># fit </span></span></span>
-<span class="r-in"><span><span class="va">fit_TD</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_td.html">fit_td</a></span><span class="op">(</span><span class="va">TD</span>, trait <span class="op">=</span> <span class="st">"atw"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_TD</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_td.html">fit_td</a></span><span class="op">(</span><span class="va">TD</span>, trait <span class="op">=</span> <span class="st">"mtwp"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Using SpATS for fitting models.</span>
 <span class="r-in"><span><span class="co"># extract predictions</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">pred_TD</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_blups.html">extract_blups</a></span><span class="op">(</span><span class="va">fit_TD</span>, pred <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BLUEs"</span>, <span class="st">"seBLUEs"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">pred_TD</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         genotype trial BLUEs_atw seBLUEs_atw</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CIP312084.731  lbht  75.44285    12.12816</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 CIP3177011.028  lbht  55.62239    14.94085</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 CIP3177023.046  lbht  32.01268    12.45258</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 CIP3177038.001  lbht  43.54558    21.55975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 CIP3217003.001  lbht  57.81176    14.47848</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         genotype trial BLUEs_mtwp seBLUEs_mtwp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  CIP312084.731  lbht  10.514036     1.187315</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 CIP3177011.028  lbht  10.200466     1.462786</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 CIP3177023.046  lbht   6.488979     1.239065</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 CIP3177038.001  lbht   6.609805     2.149885</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 CIP3217003.001  lbht  12.022090     1.451649</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

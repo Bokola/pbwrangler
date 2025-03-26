@@ -193,9 +193,13 @@ find_var <- function(x, var){
 #'
 #' @examples
 sum_rowwise <- function(x, target_cols){
-  x %>% dplyr::rowwise() %>% dplyr::mutate(
-    y = sum(dplyr::c_across(colnames(.)[colnames(.) %in% target_cols]),na.rm=T)
-  ) %>% dplyr::pull(y)
+  # if(any(target_cols %in% names(x))){
+  #     x %>% dplyr::rowwise() %>% dplyr::mutate(
+  #   y = sum(dplyr::c_across(colnames(.)[colnames(.) %in% target_cols]),na.rm=T)
+  # ) %>% dplyr::pull(y)
+  # }
+  rowSums(x[,which(names(x) %in% target_cols)],na.rm=TRUE)
+
 }
 
 
@@ -207,13 +211,53 @@ sum_rowwise <- function(x, target_cols){
 #' @export
 #'
 #' @examples
-compute_cols <- function(x){
+compute_cols <- function(x) {
   purrr::map(
-    x, ~dplyr::mutate(
+    x,
+    ~ dplyr::mutate(
       # marketable tuber weight
-      .,mtwp = sum_rowwise(., target_cols = c("mtwci", "mtwcii")),
+      .,
+      nmtcii = sum_rowwise(
+        .,
+        target_cols = c(
+          "num30_35_number",
+          "num35_40_number",
+          "num40_45_number",
+          "num45_50_number",
+          "num50_55_number",
+          "num55_60_number"
+        )
+      ),
+      nmtci =
+        sum_rowwise(
+          .,
+          target_cols = c("num60_65_number",
+                          "num65_70_number", "num_70_number")
+        ),
+      nnomtp = sum_rowwise(., target_cols = c("num0_10_number", "num10_30_number")),
+      mtwci = sum_rowwise(
+        .,
+        target_cols = c("weight_g_60_65", "weight_g_65_70",
+                        "weight_g_70")
+      )/1000 ,
+      mtwcii = sum_rowwise(
+        .,
+        target_cols = c(
+          "weight_g_30_35",
+          "weight_g_35_40",
+          "weight_g_40_45",
+          "weight_g_45_50",
+          "weight_g_50_55",
+          "weight_g_55_60"
+        )
+      )/1000 ,
+      
+      nomtwp = sum_rowwise(
+        ., target_cols = c("weight_g_0_10",  "weight_g_10_30")
+      )/1000 ,
+      mtwp = sum_rowwise(., target_cols = c("mtwci", "mtwcii")),
       # number of marketable tubers
-        nmtp = sum_rowwise(., target_cols = c("nmtci", "nmtcii"))
+      nmtp = sum_rowwise(., target_cols = c("nmtci", "nmtcii"))
     )
   )
 }

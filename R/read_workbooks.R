@@ -180,7 +180,7 @@ read_workbooks <- function(dir = t_dir
       ), ~ as.character(.))))
     # delete columns without a name assigned
     out <- out %>% purrr::map(., ~ dplyr::select(., !grep("^x", names(.), ignore.case = TRUE)))
-    out <- out %>% purrr::map(., data.frame)
+    out <- out %>% compute_cols(.) %>%  purrr::map(., data.frame)
     # clean names
     # names(out) <- gsub("*_\\d+", "", names(out))
     return(out)
