@@ -12,7 +12,7 @@ pre_process_trials <- function(x){
     purrr::map(., convert_to_character) %>%
     purrr::map(., merge_note_obs) %>% purrr::map(., convert_to_character) %>%
     purrr::map(., convert_to_numeric) %>%
-    # compute_cols(.) %>%
+    compute_cols(.) %>%
     purrr::map(., update_geno) %>% purrr::map(., filter_geno) %>% 
     purrr::map(
       ., ~dplyr::mutate(
