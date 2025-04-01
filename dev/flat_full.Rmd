@@ -1835,7 +1835,8 @@ get_ontology_labels <- function(x, crop = "pt"){
   if(any(c("data.frame", "tbl", "tible_df") %in% class(x))){
     df <- names_df(x) %>% unique() %>% as.data.frame() %>% `colnames<-`('label')
   }else{
-    df <- lapply(x, names_df) %>% unlist() %>% unique() %>% as.data.frame() %>%
+    df <- lapply(x, names_df) %>% unlist() %>% unique() %>% 
+      as.data.frame() %>%
       `colnames<-`('label')
   }
   # df$label_local <- df$label
@@ -1844,7 +1845,7 @@ get_ontology_labels <- function(x, crop = "pt"){
   }else{
     df_ont <- st4gi::spont() %>% janitor::clean_names()
   }
-  out <- df %>% dplyr::left_join(df_ont) %>% dplyr::filter(is.na(full_name))
+  out <- df %>% dplyr::left_join(df_ont) %>% dplyr::filter(is.na(name))
   out <- dplyr::filter(out, !label %in% get_design_factors())
   return(out)
 }
