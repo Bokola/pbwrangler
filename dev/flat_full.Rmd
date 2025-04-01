@@ -1311,6 +1311,7 @@ Run data checks using st4gi package and compute derived columns
 #' @param sz size of farm, here taken to be 10000 sq metres
 #' @param btwn spacing between ridges in metres
 #' @param within spacing between plants in the same ridge in metres
+#' @param crop character. one of "sp" or "pt"
 #' @param ... additional arguments
 #'
 #' @return a dataframe
@@ -1318,18 +1319,18 @@ Run data checks using st4gi package and compute derived columns
 #'
 #' @examples
 
-run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3,...){
+run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3, crop = "pt", ...){
   # check names
-  y <- st4gi::check.names(x)
+  y <- st4gi::check.names(x, crop = crop)
   # check outliers
   # check.data.pt(x)
   
   # compute traits
-  y <- st4gi::cdt(y, method = "np", sz / (within * btwn))
+  y <- st4gi::cdt(y, method = "np", sz / (within * btwn), crop = crop)
   
   # set missing values to zero
   #bug: clean.data() converts non-numeric columns to NA
-  y <- st4gi::clean.data(y)
+  y <- st4gi::clean.data(y, crop = crop)
   # convert to CO names
   # y <- convert.co(y)
   

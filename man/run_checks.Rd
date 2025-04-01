@@ -4,7 +4,7 @@
 \alias{run_checks}
 \title{run data quality checks using \code{{st4gi}} functions}
 \usage{
-run_checks(x, sz = 10000, btwn = 0.75, within = 0.3, ...)
+run_checks(x, sz = 10000, btwn = 0.75, within = 0.3, crop = "pt", ...)
 }
 \arguments{
 \item{x}{a dataframe}
@@ -14,6 +14,8 @@ run_checks(x, sz = 10000, btwn = 0.75, within = 0.3, ...)
 \item{btwn}{spacing between ridges in metres}
 
 \item{within}{spacing between plants in the same ridge in metres}
+
+\item{crop}{character. one of "sp" or "pt"}
 
 \item{...}{additional arguments}
 }
