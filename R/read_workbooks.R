@@ -83,9 +83,9 @@ read_workbooks <- function(dir = t_dir
     # to do: investigate
     if (length(f_csv) > 0) {
       if (!isTRUE(read_subfolder)) {
-        f_names_2 <- clean_dir_name(f_csv)
+        f_names_2 <- toupper(clean_dir_name(f_csv))
       } else{
-        f_names_2 <- clean_dir_name_c(f_csv)
+        f_names_2 <- toupper(clean_dir_name_c(f_csv))
       }
       out_csv <-
         purrr::map(f_csv, readr::read_csv) %>% magrittr::set_names(f_names_2) %>% purrr::map(., janitor::clean_names)
@@ -94,9 +94,9 @@ read_workbooks <- function(dir = t_dir
     if (length(f_xls) > 0) {
       
       if (!isTRUE(read_subfolder)) {
-        f_names <- clean_dir_name(f_xls)
+        f_names <- toupper(clean_dir_name(f_xls))
       } else{
-        f_names <- clean_dir_name_c(f_xls)
+        f_names <- toupper(clean_dir_name_c(f_xls))
       }
       
       if(isTRUE(multiple)){
@@ -111,16 +111,40 @@ read_workbooks <- function(dir = t_dir
         # drop empty list elements
         sheets <- sheets[!sapply(sheets, identical, character(0))]
         
+        out_xls <- vector("list", length = length(f_xls)) %>% purrr::set_names(f_names)
+        
+        for (i in seq_along(f_xls)) {
+          d <-
+            purrr::map2(f_xls[i], sheets[[i]], readxl::read_excel, skip = skip) %>%
+            purrr::set_names(sheets[[i]]) %>%
+            purrr::map(., janitor::clean_names)
+          if (isTRUE(merge)) {
+            out_xls[[i]] <- purrr::reduce(d, dplyr::left_join, by = "plot")
+          } else{
+            out_xls[[i]] <- d
+          }
+        }
+        
         # read multiple sheets 
         # out_xls <- sheets %>%  unlist() %>% 
         #   purrr::map(~readxl::read_excel(path = f_xls, skip = skip)) %>% magrittr::set_names(., unlist(sheets))
         
-        out_xls <- sheets %>% unlist() %>% purrr::set_names() %>% 
-          purrr::map(readxl::read_excel,path = f_xls, skip = skip) 
-        if(isTRUE(merge)) {
-          out_xls <- purrr::reduce(out_xls, dplyr::left_join) %>% list() %>%
-            purrr::set_names(toupper(clean_dir_name(f_xls)))
-        }
+        # x <- tibble::data_frame(path = f_xls, sheet = sheets)
+        # x <- tidyr::unnest(x)
+        # 
+        # out_xls <- x %>% purrr::map2(
+        #   path, sheet,
+        #   ~readxl::read_excel(.x, .y)
+        # )
+        
+        # out_xls <-  purrr::map2(
+        #   x$path, x$sheet,
+        #   ~readxl::read_excel(.x, .y)
+        # )
+
+        # out_xls <- sheets %>% unlist() %>% purrr::set_names() %>% 
+        #   purrr::map(readxl::read_excel,path = f_xls, skip = skip) 
+
       }
       # check if reading multiple sheets from same workbook and sheet_name specified
       

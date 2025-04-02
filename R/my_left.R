@@ -257,7 +257,9 @@ compute_cols <- function(x) {
       )/1000 ,
       mtwp = sum_rowwise(., target_cols = c("mtwci", "mtwcii")),
       # number of marketable tubers
-      nmtp = sum_rowwise(., target_cols = c("nmtci", "nmtcii"))
+      nmtp = sum_rowwise(., target_cols = c("nmtci", "nmtcii")),
+      
+      n_tubers = sum_rowwise(., target_cols = c("nmtp", "nnomtp"))
     )
   )
 }
