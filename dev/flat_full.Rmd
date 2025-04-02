@@ -2143,8 +2143,11 @@ read_workbooks <- function(dir = t_dir
         sheets <- sheets[!sapply(sheets, identical, character(0))]
         
         # read multiple sheets 
-        out_xls <- sheets %>%  unlist() %>% 
-          purrr::map(~readxl::read_excel(path = f_xls, skip = skip)) %>% magrittr::set_names(., unlist(sheets))
+        # out_xls <- sheets %>%  unlist() %>% 
+        #   purrr::map(~readxl::read_excel(path = f_xls, skip = skip)) %>% magrittr::set_names(., unlist(sheets))
+        
+        out_xls <- sheets %>% unlist() %>% purrr::set_names() %>% 
+          purrr::map(readxl::read_excel,path = f_xls, skip = skip) 
       }
       # check if reading multiple sheets from same workbook and sheet_name specified
       
