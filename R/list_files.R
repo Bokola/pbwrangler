@@ -87,12 +87,13 @@ get_fieldbooks <- function(path = t_dir, season, sub_folder = NULL, s = ".csv|.x
 #' @param folder directory with files e.g. "C://users/user/x
 #' @param subset a logical value whether or not to return a subset of files in `folder`
 #' @param n integer. number of files to return if subsetting
+#' @param s character. pattern to look for e.g., s = ".csv|.xlsx"
 #' @param ... any other parameters to specify
 #'
 #' @return a character vector of listed files
 #' @export
 #'
-list_files <- function(folder, subset=FALSE, n = NULL, ...){
+list_files <- function(folder, subset=FALSE, n = NULL, s = ".csv|.xlsx",...){
   # if(dir == t_dir){
   #   folders <- list.files(dir, full.names = TRUE) %>%
   #     # look at this subsetting `[`
@@ -105,11 +106,16 @@ list_files <- function(folder, subset=FALSE, n = NULL, ...){
     if(is.null(n)){
       stop("no of files to subset: n is NULL!")
     }else{
-      files <- list.files(folder, full.names = TRUE) %>% `[`(n)
+      files <- list.files(folder, full.names = TRUE) %>% subset(
+        ., grepl(s, .)
+      ) %>%
+        `[`(n)
     }
 
   } else{
-    files <- list.files(folder, full.names = TRUE)
+    files <- list.files(folder, full.names = TRUE)  %>% subset(
+        ., grepl(s, .)
+      )
   }
   return(files)
 }

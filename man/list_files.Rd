@@ -4,7 +4,7 @@
 \alias{list_files}
 \title{List file in a directory}
 \usage{
-list_files(folder, subset = FALSE, n = NULL, ...)
+list_files(folder, subset = FALSE, n = NULL, s = ".csv|.xlsx", ...)
 }
 \arguments{
 \item{folder}{directory with files e.g. "C://users/user/x}
@@ -12,6 +12,8 @@ list_files(folder, subset = FALSE, n = NULL, ...)
 \item{subset}{a logical value whether or not to return a subset of files in \code{folder}}
 
 \item{n}{integer. number of files to return if subsetting}
+
+\item{s}{character. pattern to look for e.g., s = ".csv|.xlsx"}
 
 \item{...}{any other parameters to specify}
 }
