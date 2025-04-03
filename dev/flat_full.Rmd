@@ -1559,24 +1559,25 @@ pre_process_trials_ <- function(x){
 #' run a number of checks & transformations to pre-process a list of trial data 
 #'
 #' @param x a list of dataframes
-#' @param update logical. whether  to update genotype codes.
+#' @param update logical. whether or not to update clone codes
 #'
 #' @return a list of dataframes
 #' @export
 #'
 #' @examples
 pre_process_trials <- function(x, update = TRUE){
-  out <- keep_geno(x) %>%  purrr::map(., rename_cols) %>%
+  if(isTRUE(update)){
+    out <- purrr::map(x, update_geno)
+  }else{
+    out <- x
+  }
+  out <- keep_geno(out) %>%  purrr::map(., rename_cols) %>%
     purrr::map(., convert_to_character) %>%
     purrr::map(., merge_note_obs) %>% purrr::map(., convert_to_character) %>%
     purrr::map(., convert_to_numeric) %>%
     compute_cols(.) 
-  if(isTRUE(update)){
-    ot <- out %>% purrr::map(., update_geno)
-  }else{
-    ot <- out
-  }
-   out <- ot  %>% purrr::map(., filter_geno) %>% 
+   
+  out <- out  %>% purrr::map(., filter_geno) %>% 
     purrr::map(
       ., ~dplyr::mutate(
         ., geno = clean_clone_name(geno)

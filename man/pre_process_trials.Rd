@@ -9,7 +9,7 @@ pre_process_trials(x, update = TRUE)
 \arguments{
 \item{x}{a list of dataframes}
 
-\item{update}{logical. whether  to update genotype codes.}
+\item{update}{logical. whether or not to update clone codes}
 }
 \value{
 a list of dataframes
