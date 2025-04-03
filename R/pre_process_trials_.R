@@ -15,11 +15,11 @@ pre_process_trials <- function(x, update = TRUE){
     purrr::map(., convert_to_numeric) %>%
     compute_cols(.) 
   if(isTRUE(update)){
-    out <- out %>% purrr::map(., update_geno)
+    ot <- out %>% purrr::map(., update_geno)
   }else{
-    out <- out
+    ot <- out
   }
-   out <- out   %>% purrr::map(., filter_geno) %>% 
+   out <- ot  %>% purrr::map(., filter_geno) %>% 
     purrr::map(
       ., ~dplyr::mutate(
         ., geno = clean_clone_name(geno)
