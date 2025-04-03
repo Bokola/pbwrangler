@@ -228,17 +228,17 @@ read_workbooks <- function(dir = t_dir
       ., ~ dplyr::mutate(
         ., across(any_of(
           c(
-  "num30_35_number",
-  "num35_40_number",
-  "num40_45_number",
-  "num45_50_number",
-  "num50_55_number",
-  "num55_60_number",
-  "num60_65_number",
-  "num65_70_number",
-  "num_70_number",
-  "num0_10_number",
-  "num10_30_number",
+  "x30_35_number",
+  "x35_40_number",
+  "x40_45_number",
+  "x45_50_number",
+  "x50_55_number",
+  "x55_60_number",
+  "x60_65_number",
+  "x65_70_number",
+  "x70_number",
+  "x0_10_number",
+  "x0_30_number",
   "weight_g_60_65",
   "weight_g_65_70",
   "weight_g_70",
@@ -255,7 +255,7 @@ read_workbooks <- function(dir = t_dir
         ), ~ ifelse(. < 0, NA, .))
       )
     )
-    out <- out %>% purrr::map(., ~ dplyr::select(., !grep("^x", names(.), ignore.case = TRUE)))
+    # out <- out %>% purrr::map(., ~ dplyr::select(., !grep("^x", names(.), ignore.case = TRUE)))
     out <- out %>% #compute_cols(.) %>%
       purrr::map(., data.frame)
     # clean names
