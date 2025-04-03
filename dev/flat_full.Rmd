@@ -1606,6 +1606,12 @@ process_trials <- function(x){
         TRUE ~ .
       )
     )) %>% 
+    
+    purrr::map(
+  ., ~ dplyr::mutate(
+    ., n_tubers = sum_rowwise(., target_cols = c("nmtp", "nnomtp"))
+  )
+) %>%
     purrr::map(., convert_to_character) %>%
     purrr::map(., data.frame)
   
