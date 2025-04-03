@@ -89,7 +89,11 @@ read_workbooks <- function(dir = t_dir
       }
       out_csv <-
         purrr::map(f_csv, readr::read_csv) %>% magrittr::set_names(f_names_2) %>% purrr::map(., janitor::clean_names)
-      out_csv <- purrr::map(out_csv, drop_nas) %>% purrr::map(., data.frame)
+      out_csv <- purrr::map(out_csv, drop_nas) %>%
+      # %>% purrr::map(
+      #   ., ~ dplyr::mutate(., across(any_of("plot"), ~ as.character()))
+      # )
+        purrr::map(., data.frame)
     }
     if (length(f_xls) > 0) {
       
@@ -117,7 +121,11 @@ read_workbooks <- function(dir = t_dir
           d <-
             purrr::map2(f_xls[i], sheets[[i]], readxl::read_excel, skip = skip) %>%
             purrr::set_names(sheets[[i]]) %>%
-            purrr::map(., janitor::clean_names)
+            purrr::map(., janitor::clean_names) %>% purrr::map(
+              ., ~ dplyr::mutate(
+                ., across(any_of("plot"), ~ as.character(.))
+              )
+            )
           if (isTRUE(merge)) {
             out_xls[[i]] <- purrr::reduce(d, dplyr::left_join, by = "plot")
           } else{
@@ -158,7 +166,10 @@ read_workbooks <- function(dir = t_dir
 
         }
         
-        out_xls <- purrr::map2(f_xls, sheets, readxl::read_excel, skip = skip) %>% magrittr::set_names(., f_names)
+        out_xls <- purrr::map2(f_xls, sheets, readxl::read_excel, skip = skip) %>% 
+          magrittr::set_names(., f_names) %>% purrr::map(
+            ., ~ dplyr::mutate(., across(any_of("plot"), ~ as.character(.)))
+          )
       }
 
       out_xls <- purrr::map(out_xls, drop_nas) #%>% set_names(., f_names)
