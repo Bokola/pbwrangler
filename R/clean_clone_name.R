@@ -18,7 +18,8 @@ clean_clone_name <- function(x){
   gsub("CIP 517035 517035.078", "CIP517035.078", .) %>%
   gsub("CIP517035517035.078", "CIP517035.078", .) %>%
   # change clone year from 18 to 23
-  gsub("CIP318", "CIP323", .) %>%
+    
+  # gsub("CIP318", "CIP323", .) %>%
     gsub("^duct", "Dutch", .)
 }
 

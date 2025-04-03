@@ -1062,7 +1062,8 @@ clean_clone_name <- function(x){
   gsub("CIP 517035 517035.078", "CIP517035.078", .) %>%
   gsub("CIP517035517035.078", "CIP517035.078", .) %>%
   # change clone year from 18 to 23
-  gsub("CIP318", "CIP323", .) %>%
+    
+  # gsub("CIP318", "CIP323", .) %>%
     gsub("^duct", "Dutch", .)
 }
 
@@ -1569,7 +1570,7 @@ pre_process_trials <- function(x){
     purrr::map(., convert_to_character) %>%
     purrr::map(., merge_note_obs) %>% purrr::map(., convert_to_character) %>%
     purrr::map(., convert_to_numeric) %>%
-    compute_cols(.) 
+    compute_cols(.)  %>% purrr::map(., update_geno)
    
   out <- out  %>% purrr::map(., filter_geno) %>% 
     purrr::map(
