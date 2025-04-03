@@ -4,10 +4,12 @@
 \alias{pre_process_trials}
 \title{run a number of checks & transformations to pre-process a list of trial data}
 \usage{
-pre_process_trials(x)
+pre_process_trials(x, update = TRUE)
 }
 \arguments{
 \item{x}{a list of dataframes}
+
+\item{update}{logical. whether  to update genotype codes.}
 }
 \value{
 a list of dataframes
