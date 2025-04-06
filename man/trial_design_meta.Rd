@@ -6,7 +6,7 @@
 \usage{
 trial_design_meta(
   trep = rep(c(3, 2, 1, 5), c(6, 11, 36, 4)),
-  trgroup = rep(c(3, 2, 1, 5), c(6, 11, 36, 4)),
+  trgroup = trep,
   block_list = list(c(6, 4), c(6, 2))
 )
 }

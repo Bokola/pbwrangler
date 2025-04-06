@@ -115,12 +115,12 @@ rand_Prep <- function(tot,
       readr::write_csv(
     design,
     file.path(
-      path, season,"fieldbook",  paste0(loc, "-", trial, ".csv")
+      path, season,"fieldbook",  paste0(trial, ".csv")
     )
   )
   
   png(
-    file.path(path, season,"fieldbook",  paste0(loc,"-",trial, ".png")),
+    file.path(path, season,"fieldbook",  paste0(trial, ".png")),
     width = 2000,
     height = 1500,
     res = 150
@@ -162,7 +162,8 @@ rand_Prep <- function(tot,
 #' head(ilri_prep)
 trial_design_meta <- function(
     trep = rep(c(3,2,1,5), c(6, 11,36,4)),
-    trgroup = rep(c(3,2,1,5),c(6,11,36,4)),
+    # trgroup = rep(c(3,2,1,5),c(6,11,36,4)),
+    trgroup = trep,
     block_list = list(c(6,4), c(6,2))
 ){
     

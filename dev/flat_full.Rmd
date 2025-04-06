@@ -2429,12 +2429,12 @@ rand_Prep <- function(tot,
       readr::write_csv(
     design,
     file.path(
-      path, season,"fieldbook",  paste0(loc, "-", trial, ".csv")
+      path, season,"fieldbook",  paste0(trial, ".csv")
     )
   )
   
   png(
-    file.path(path, season,"fieldbook",  paste0(loc,"-",trial, ".png")),
+    file.path(path, season,"fieldbook",  paste0(trial, ".png")),
     width = 2000,
     height = 1500,
     res = 150
@@ -2495,7 +2495,8 @@ lapply(ins_ilri, head, 5)
 #' @examples
 trial_design_meta <- function(
     trep = rep(c(3,2,1,5), c(6, 11,36,4)),
-    trgroup = rep(c(3,2,1,5),c(6,11,36,4)),
+    # trgroup = rep(c(3,2,1,5),c(6,11,36,4)),
+    trgroup = trep,
     block_list = list(c(6,4), c(6,2))
 ){
     
@@ -2534,9 +2535,9 @@ head(ilri_prep)
 ```{r function-randomize_row_col}
 #' row column design: plots = row by col; equal rep for each treatment
 #'
-#' @param clones ca dataframe with `geno` column
+#' @param clones a dataframe with `geno` column
 #' @param tot integer. total number of unique clones/genotypes to be randomized to field
-#' @param loc character. trial location
+#' @param trial character. trial
 #' @param rowD integer. number of rows in the field
 #' @param n_dummies integer. number of dummies to complete a rectangular layout
 #' @param rep integer. number of replication
@@ -2552,7 +2553,7 @@ head(ilri_prep)
 #' @examples
 randomize_row_col <- function(clones,
                               tot,
-                              loc,
+                              trial,
                               rowD,
                               n_dummies,
                               rep,
@@ -2605,7 +2606,7 @@ randomize_row_col <- function(clones,
     unique_id = gen_uniqueid(.)) %>% dplyr::select(unique_id, dplyr::everything())
   if (!is.null(path)) {
     png(
-      file.path(path, season, "fieldbook",  paste0(loc, ".png")),
+      file.path(path, season, "fieldbook",  paste0(trial, ".png")),
       width = 2000,
       height = 1500,
       res = 150
@@ -2618,7 +2619,7 @@ randomize_row_col <- function(clones,
     dev.off()
     
     readr::write_csv(design,
-                     file.path(path, season, "fieldbook",  paste0(loc, ".csv")))
+                     file.path(path, season, "fieldbook",  paste0(trial, ".csv")))
   }
   return(design)
 }
@@ -2641,6 +2642,107 @@ rcD <-
 head(rcD)
 ```
 
+
+```{r function-randomize_res_row_col}
+#' resolvable row column design: plots = row by col; test clones replicated once, checks more than once
+#'
+#' @param clones a dataframe with `geno` column
+#' @param tot integer. total number of unique clones/genotypes to be randomized to field
+#' @param trial character. trial
+#' @param rowD integer. number of rows in the field
+#' @param totReps integer. total number of plots: row by col
+#' @param trtrepP numeric vector. replications of `ins`
+#' @param block_lst a list specifying blocking of the field
+#' @param season season of trial
+#' @param path character specifying path to write the design
+#' @param check a character vector of checks to fill rectangular grid
+#' @param dummy a character vector of dummy checks to fill rectangular grid
+#' @param n_dummies integer. number of dummies to complete a rectangular layout
+#' @param to_add integer. number of checks to add to complete the rectangular grid
+#'
+#' @return
+#' @export
+#'
+#' @examples
+randomize_res_row_col <- function(clones,
+                              tot,
+                              trial,
+                              totReps,
+                              trtrepP,
+                              # trtgroup,
+                              block_lst,
+                              rowD,
+                              n_dummies,
+                              # rep,
+                              season,
+                              path = rand_dir,
+                              check = c("Shangi", "Unica", "Sagitta", "Sherekea"),
+                              dummy = c("Unica", "Shangi"),
+                              to_add = 4) {
+  if(to_add <= 4){
+    checks <- sample(check, to_add, replace = F)
+  }else{
+    checks <- sample(check, to_add, replace = T)
+  }
+  
+  if(n_dummies <= 2 & n_dummies > 0){
+    dummies <- paste0("dummy-", sample(dummy, n_dummies, replace = F))
+  }else if (n_dummies > 2) {
+    dummies <- paste0("dummy-", sample(dummy, n_dummies, replace = T))
+  }else{
+    dummies <- NULL
+  }
+  
+  if(inherits(clones, "list")){
+    geno_names <- purrr::reduce(clones, data.frame)[, "geno"] %>% dplyr::pull()
+  }else{
+    geno_names <- clones %>% dplyr::pull()
+  }
+  geno_to_rand <- c(geno_names, dummies, checks)
+  
+  design <- DiGGer::corDiGGer(
+    numberOfTreatments = tot,
+    treatName = geno_to_rand,
+    rowsInDesign = rowD,
+    columnsInDesign = totReps / rowD,
+    rowsInReplicate = rowD,
+    columnsInReplicate = totReps / rowD,
+    blockSequence = block_lst,
+    treatRepPerRep = trtrepP,
+    # blockSequence = list(
+    #   c(5, 12), c(10, 12)
+    # ),
+    maxInterchanges = 500000,
+    # fixedBlocks = TRUE,
+    # nested = FALSE,
+    rngSeeds = c(111, 222)
+  )
+  
+  
+  design <- design$dlist[, 1:6] %>% janitor::clean_names()
+  colnames(design)[c(1, 2, 5)] <- c("plot", "geno", "column")
+  design <- design %>% dplyr::mutate(# unique_id = paste0(plot, rep, geno)
+    unique_id = gen_uniqueid(.)) %>% dplyr::select(unique_id, dplyr::everything())
+  if (!is.null(path)) {
+    png(
+      file.path(path, season, "fieldbook",  paste0(trial, ".png")),
+      width = 2000,
+      height = 1500,
+      res = 150
+    )
+    plot(design)
+    plot(design,
+         trts = 1:5,
+         col = 2,
+         new = FALSE)
+    dev.off()
+    
+    readr::write_csv(design,
+                     file.path(path, season, "fieldbook",  paste0(trial, ".csv")))
+  }
+  return(design)
+}
+```
 
 <!-- # Calculate the mean of a vector -->
 
