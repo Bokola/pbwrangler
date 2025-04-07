@@ -62,7 +62,7 @@
 <span>  <span class="va">ins</span>,</span>
 <span>  <span class="va">rowD</span>,</span>
 <span>  <span class="va">trial</span>,</span>
-<span>  <span class="va">n_dummies</span>,</span>
+<span>  n_dummies <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  <span class="va">loc</span>,</span>
 <span>  <span class="va">totReps</span>,</span>
 <span>  <span class="va">trtrepP</span>,</span>
@@ -107,7 +107,9 @@
 
 
 <dt>trtrepP</dt>
-<dd><p>numeric vector. replications of <code>ins</code></p></dd>
+<dd><p>numeric vector. replications of <code>ins</code> given in the form
+<code>rep(c(vector of reps), c(vector of number of clones))</code> e.g.,
+<code>rep(c(1,8), c(304, 4))</code></p></dd>
 
 
 <dt>trtgroup</dt>

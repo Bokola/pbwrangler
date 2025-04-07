@@ -34,7 +34,9 @@ geno_by_tubers <- function(df){
 #' @param n_dummies integer. number of dummies to complete a rectangular layout
 #' @param loc character. trial location
 #' @param totReps integer. total number of plots: row by col
-#' @param trtrepP numeric vector. replications of `ins`
+#' @param trtrepP numeric vector. replications of `ins` given in the form 
+#' `rep(c(vector of reps), c(vector of number of clones))` e.g.,
+#'  `rep(c(1,8), c(304, 4))`
 #' @param trtgroup numeric vector. replication of treatment groups. samilar repliction as `trtrepP` 
 #' @param block_lst a list specifying blocking of the field
 #' @param season season of trial
@@ -49,7 +51,7 @@ rand_Prep <- function(tot,
                       ins,
                       rowD,
                       trial,
-                      n_dummies,
+                      n_dummies=0,
                       loc,
                       totReps,
                       trtrepP,

@@ -12,7 +12,7 @@ randomize_res_row_col(
   trtrepP,
   block_lst,
   rowD,
-  n_dummies,
+  n_dummies = 0,
   season,
   path = rand_dir,
   check = c("Shangi", "Unica", "Sagitta", "Sherekea"),
@@ -29,7 +29,9 @@ randomize_res_row_col(
 
 \item{totReps}{integer. total number of plots: row by col}
 
-\item{trtrepP}{numeric vector. replications of \code{ins}}
+\item{trtrepP}{numeric vector. replications of \code{ins} given in the form
+\verb{rep(c(vector of reps), c(vector of number of clones))} e.g.,
+\code{rep(c(1,8), c(304, 4))}}
 
 \item{block_lst}{a list specifying blocking of the field}
 
@@ -49,4 +51,28 @@ randomize_res_row_col(
 }
 \description{
 resolvable row column design: plots = row by col; test clones replicated once, checks more than once
+}
+\examples{
+
+
+data("ilri")
+dat <- ilri \%>\% dplyr::select(geno) 
+dat \%>\% dplyr::pull() 
+
+
+rrc80 <- randomize_res_row_col(
+  clones = dat,
+  tot = 62,
+  trial = "ilri",
+  totReps = 80,
+  trtrepP = rep(c(1, 4, 3), c(55, 4, 3)),
+  block_lst = list(c(16,5), c(8,5)),
+  rowD = 16,
+  n_dummies = 3,
+  season = "season-2025",
+  path = NULL
+  
+)
+
+head(rrc80)
 }

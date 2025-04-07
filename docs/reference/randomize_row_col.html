@@ -60,9 +60,9 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">randomize_row_col</span><span class="op">(</span></span>
 <span>  <span class="va">clones</span>,</span>
 <span>  <span class="va">tot</span>,</span>
-<span>  <span class="va">loc</span>,</span>
+<span>  <span class="va">trial</span>,</span>
 <span>  <span class="va">rowD</span>,</span>
-<span>  <span class="va">n_dummies</span>,</span>
+<span>  n_dummies <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  <span class="va">rep</span>,</span>
 <span>  <span class="va">season</span>,</span>
 <span>  path <span class="op">=</span> <span class="va">rand_dir</span>,</span>
@@ -75,15 +75,15 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>clones</dt>
-<dd><p>ca dataframe with <code>geno</code> column</p></dd>
+<dd><p>a dataframe with <code>geno</code> column</p></dd>
 
 
 <dt>tot</dt>
 <dd><p>integer. total number of unique clones/genotypes to be randomized to field</p></dd>
 
 
-<dt>loc</dt>
-<dd><p>character. trial location</p></dd>
+<dt>trial</dt>
+<dd><p>character. trial</p></dd>
 
 
 <dt>rowD</dt>
@@ -132,7 +132,6 @@
 <span class="r-in"><span>    rep <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>    path <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>replacing previous import 'R.oo::throw' by 'R.methodsS3::throw' when loading 'DiGGer'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Phase,    Search%,    A-measure</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0000000 0.0000000 0.8121212</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1.0000000 10.0000000  0.8121212</span>
@@ -163,13 +162,13 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.8121212 0.8121212 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 0.0000000 0.0000000 0.0000000</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rcD</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      unique_id plot    geno entry row column rep</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 7cdc7933e2e9    1       C     3   1      1   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1c524f469821    2  Shangi     5   2      1   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 05f317e9230f    3       A     1   3      1   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 31b0995ed230    4 Sagitta     6   4      1   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 e0c3cbbee2a5    5       D     4   5      1   3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 a7682df8f893    6       B     2   6      1   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      unique_id plot     geno entry row column rep</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 7ca8f02f61db    1        C     3   1      1   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0b33dbccb354    2 Sherekea     5   2      1   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 2e5106683811    3        A     1   3      1   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 ac526c9eab80    4    Unica     6   4      1   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 464beeae983b    5        D     4   5      1   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 2f98ea60bd4e    6        B     2   6      1   3</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

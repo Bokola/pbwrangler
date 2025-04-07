@@ -7,7 +7,9 @@
 #' @param trial character. trial
 #' @param rowD integer. number of rows in the field
 #' @param totReps integer. total number of plots: row by col
-#' @param trtrepP numeric vector. replications of `ins`
+#' @param trtrepP numeric vector. replications of `ins` given in the form 
+#' `rep(c(vector of reps), c(vector of number of clones))` e.g.,
+#'  `rep(c(1,8), c(304, 4))`
 #' @param block_lst a list specifying blocking of the field
 #' @param season season of trial
 #' @param path character specifying path to write the design
@@ -19,6 +21,29 @@
 #' @return
 #' @export
 #'
+#' @examples
+#'
+#'
+#' data("ilri")
+#' dat <- ilri %>% dplyr::select(geno) 
+#' dat %>% dplyr::pull() 
+#'
+#'
+#' rrc80 <- randomize_res_row_col(
+#'   clones = dat,
+#'   tot = 62,
+#'   trial = "ilri",
+#'   totReps = 80,
+#'   trtrepP = rep(c(1, 4, 3), c(55, 4, 3)),
+#'   block_lst = list(c(16,5), c(8,5)),
+#'   rowD = 16,
+#'   n_dummies = 3,
+#'   season = "season-2025",
+#'   path = NULL
+#'   
+#' )
+#'
+#' head(rrc80)
 randomize_res_row_col <- function(clones,
                               tot,
                               trial,
@@ -27,7 +52,7 @@ randomize_res_row_col <- function(clones,
                               # trtgroup,
                               block_lst,
                               rowD,
-                              n_dummies,
+                              n_dummies=0,
                               # rep,
                               season,
                               path = rand_dir,
@@ -132,7 +157,7 @@ randomize_row_col <- function(clones,
                               tot,
                               trial,
                               rowD,
-                              n_dummies,
+                              n_dummies=0,
                               rep,
                               season,
                               path = rand_dir,

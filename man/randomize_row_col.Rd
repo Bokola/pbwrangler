@@ -9,7 +9,7 @@ randomize_row_col(
   tot,
   trial,
   rowD,
-  n_dummies,
+  n_dummies = 0,
   rep,
   season,
   path = rand_dir,
