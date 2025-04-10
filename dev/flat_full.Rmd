@@ -2102,12 +2102,12 @@ read_workbooks <- function(dir = t_dir
     file <- list_files(folder = file.path(folders, sub_folder), subset = subset, n = n, s = s) %>%
        subset(., grepl(s, .)
       ) %>% subset(.,
-                   !grepl("mult|layout|plant|seed|regro|meta", ., ignore.case = TRUE))
+                   !grepl("mult|layout|plant|seed|regro|meta", gsub(".*/", "", .), ignore.case = TRUE))
   } else{
     file <- list_files(folder = folders, subset = subset, n = n, s = s) %>%
       subset(., grepl(s, .)
       ) %>% subset(.,
-                   !grepl("mult|layout|plant|seed|regro|meta", ., ignore.case = TRUE))
+                   !grepl("mult|layout|plant|seed|regro|meta", gsub(".*/", "", .), ignore.case = TRUE))
   }
   # n must be specified if subset TRUE
   if(isTRUE(subset) & is.null(n)) stop("n must be specified if subset = TRUE")
