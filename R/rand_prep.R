@@ -52,13 +52,13 @@ rand_Prep <- function(tot,
                       rowD,
                       trial,
                       n_dummies=0,
-                      loc,
+                      loc=NULL,
                       totReps,
                       trtrepP,
                       trtgroup,
                       block_lst,
                       season = "season-2024-2025",
-                      path = rand_dir,
+                      path = t_dir,
                       check = c("Shangi", "Unica", "Sagitta", "Sherekea"),
                       dummy = c("Unica", "Shangi"),
                       to_add = 4){
@@ -108,21 +108,22 @@ rand_Prep <- function(tot,
   # get the matrix and plot it with checks in rep
   # duplicated treatments of interest in yellow.
   design <- prep$dlist[, 1:6] %>% janitor::clean_names()
+  names(design)[c(1,2)] <- c("plot", "geno")
   design <- design %>% dplyr::mutate(
     # unique_id = paste0(plot, rep, geno) 
-    unique_id = gen_uniqueid(.)
-  ) %>% dplyr::select(unique_id, dplyr::everything())
-  names(design)[3] <- "geno"
+    plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))
+  ) %>% dplyr::select(plot, dplyr::everything())
+
   if(!is.null(path)){
       readr::write_csv(
     design,
     file.path(
-      path, season,"fieldbook",  paste0(trial, ".csv")
+      path, season,"FieldBook",  paste0(trial, ".csv")
     )
   )
   
   png(
-    file.path(path, season,"fieldbook",  paste0(trial, ".png")),
+    file.path(path, season,"FieldBook",  paste0(trial, ".png")),
     width = 2000,
     height = 1500,
     res = 150
@@ -152,7 +153,7 @@ rand_Prep <- function(tot,
 #'   tot = 53,
 #'   ins = ins_ilri,
 #'   rowD = 12,
-#'   trial = "ilri",
+#'   trial = "KE24ILR-BIO-IT01",
 #'   n_dummies = 5,
 #'   loc = "ilri",
 #'   totReps =96,

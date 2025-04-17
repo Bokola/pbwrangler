@@ -2366,13 +2366,13 @@ rand_Prep <- function(tot,
                       rowD,
                       trial,
                       n_dummies=0,
-                      loc,
+                      loc=NULL,
                       totReps,
                       trtrepP,
                       trtgroup,
                       block_lst,
                       season = "season-2024-2025",
-                      path = rand_dir,
+                      path = t_dir,
                       check = c("Shangi", "Unica", "Sagitta", "Sherekea"),
                       dummy = c("Unica", "Shangi"),
                       to_add = 4){
@@ -2422,21 +2422,22 @@ rand_Prep <- function(tot,
   # get the matrix and plot it with checks in rep
   # duplicated treatments of interest in yellow.
   design <- prep$dlist[, 1:6] %>% janitor::clean_names()
+  names(design)[c(1,2)] <- c("plot", "geno")
   design <- design %>% dplyr::mutate(
     # unique_id = paste0(plot, rep, geno) 
-    unique_id = gen_uniqueid(.)
-  ) %>% dplyr::select(unique_id, dplyr::everything())
-  names(design)[3] <- "geno"
+    plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))
+  ) %>% dplyr::select(plot, dplyr::everything())
+
   if(!is.null(path)){
       readr::write_csv(
     design,
     file.path(
-      path, season,"fieldbook",  paste0(trial, ".csv")
+      path, season,"FieldBook",  paste0(trial, ".csv")
     )
   )
   
   png(
-    file.path(path, season,"fieldbook",  paste0(trial, ".png")),
+    file.path(path, season,"FieldBook",  paste0(trial, ".png")),
     width = 2000,
     height = 1500,
     res = 150
@@ -2519,7 +2520,7 @@ ilri_prep <- rand_Prep(
   tot = 53,
   ins = ins_ilri,
   rowD = 12,
-  trial = "ilri",
+  trial = "KE24ILR-BIO-IT01",
   n_dummies = 5,
   loc = "ilri",
   totReps =96,
@@ -2560,7 +2561,7 @@ randomize_row_col <- function(clones,
                               n_dummies=0,
                               rep,
                               season,
-                              path = rand_dir,
+                              path = t_dir,
                               check = c("Shangi", "Unica", "Sagitta", "Sherekea"),
                               dummy = c("Unica", "Shangi"),
                               to_add = 4) {
@@ -2605,10 +2606,10 @@ randomize_row_col <- function(clones,
   design <- design$dlist[, 1:6] %>% janitor::clean_names()
   colnames(design)[c(1, 2, 5)] <- c("plot", "geno", "column")
   design <- design %>% dplyr::mutate(# unique_id = paste0(plot, rep, geno)
-    unique_id = gen_uniqueid(.)) %>% dplyr::select(unique_id, dplyr::everything())
+    plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))) %>% dplyr::select(plot, dplyr::everything())
   if (!is.null(path)) {
     png(
-      file.path(path, season, "fieldbook",  paste0(trial, ".png")),
+      file.path(path, season, "FieldBook",  paste0(trial, ".png")),
       width = 2000,
       height = 1500,
       res = 150
@@ -2621,7 +2622,7 @@ randomize_row_col <- function(clones,
     dev.off()
     
     readr::write_csv(design,
-                     file.path(path, season, "fieldbook",  paste0(trial, ".csv")))
+                     file.path(path, season, "FieldBook",  paste0(trial, ".csv")))
   }
   return(design)
 }
@@ -2634,6 +2635,7 @@ df <- data.frame(geno = LETTERS[1:4])
 rcD <-
   randomize_row_col(
     clones = df,
+    trial = "KE24ILR-BW-ST01",
     tot = 6,
     rowD = 6,
     n_dummies = 0,
@@ -2679,7 +2681,7 @@ randomize_res_row_col <- function(clones,
                               n_dummies=0,
                               # rep,
                               season,
-                              path = rand_dir,
+                              path = t_dir,
                               check = c("Shangi", "Unica", "Sagitta", "Sherekea"),
                               dummy = c("Unica", "Shangi"),
                               to_add = 4) {
@@ -2726,10 +2728,11 @@ randomize_res_row_col <- function(clones,
   design <- design$dlist[, 1:6] %>% janitor::clean_names()
   colnames(design)[c(1, 2, 5)] <- c("plot", "geno", "column")
   design <- design %>% dplyr::mutate(# unique_id = paste0(plot, rep, geno)
-    unique_id = gen_uniqueid(.)) %>% dplyr::select(unique_id, dplyr::everything())
+    plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))) %>%
+    dplyr::select(plot, dplyr::everything())
   if (!is.null(path)) {
     png(
-      file.path(path, season, "fieldbook",  paste0(trial, ".png")),
+      file.path(path, season, "FieldBook",  paste0(trial, ".png")),
       width = 2000,
       height = 1500,
       res = 150
@@ -2742,7 +2745,7 @@ randomize_res_row_col <- function(clones,
     dev.off()
     
     readr::write_csv(design,
-                     file.path(path, season, "fieldbook",  paste0(trial, ".csv")))
+                     file.path(path, season, "FieldBook",  paste0(trial, ".csv")))
   }
   return(design)
 }
@@ -2762,7 +2765,7 @@ dat %>% dplyr::pull()
 rrc80 <- randomize_res_row_col(
   clones = dat,
   tot = 62,
-  trial = "ilri",
+  trial = "KE24ILR-BW-ST01",
   totReps = 80,
   trtrepP = rep(c(1, 4, 3), c(55, 4, 3)),
   block_lst = list(c(16,5), c(8,5)),

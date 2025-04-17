@@ -14,7 +14,7 @@ randomize_res_row_col(
   rowD,
   n_dummies = 0,
   season,
-  path = rand_dir,
+  path = t_dir,
   check = c("Shangi", "Unica", "Sagitta", "Sherekea"),
   dummy = c("Unica", "Shangi"),
   to_add = 4
@@ -63,7 +63,7 @@ dat \%>\% dplyr::pull()
 rrc80 <- randomize_res_row_col(
   clones = dat,
   tot = 62,
-  trial = "ilri",
+  trial = "KE24ILR-BW-ST01",
   totReps = 80,
   trtrepP = rep(c(1, 4, 3), c(55, 4, 3)),
   block_lst = list(c(16,5), c(8,5)),

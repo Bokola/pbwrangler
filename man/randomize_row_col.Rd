@@ -12,7 +12,7 @@ randomize_row_col(
   n_dummies = 0,
   rep,
   season,
-  path = rand_dir,
+  path = t_dir,
   check = c("Shangi", "Unica", "Sagitta", "Sherekea"),
   dummy = c("Unica", "Shangi"),
   to_add = 4
@@ -49,6 +49,7 @@ df <- data.frame(geno = LETTERS[1:4])
 rcD <-
   randomize_row_col(
     clones = df,
+    trial = "KE24ILR-BW-ST01",
     tot = 6,
     rowD = 6,
     n_dummies = 0,

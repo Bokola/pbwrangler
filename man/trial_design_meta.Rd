@@ -31,7 +31,7 @@ ilri_prep <- rand_Prep(
   tot = 53,
   ins = ins_ilri,
   rowD = 12,
-  trial = "ilri",
+  trial = "KE24ILR-BIO-IT01",
   n_dummies = 5,
   loc = "ilri",
   totReps =96,

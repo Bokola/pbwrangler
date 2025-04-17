@@ -493,7 +493,7 @@ ilri_prep <- rand_Prep(
   tot = 53,
   ins = ins_ilri,
   rowD = 12,
-  trial = "ilri",
+  trial = "KE24ILR-BIO-IT01",
   n_dummies = 5,
   loc = "ilri",
   totReps =96,
@@ -518,6 +518,7 @@ df <- data.frame(geno = LETTERS[1:4])
 rcD <-
   randomize_row_col(
     clones = df,
+    trial = "KE24ILR-BW-ST01",
     tot = 6,
     rowD = 6,
     n_dummies = 0,
@@ -543,7 +544,7 @@ dat %>% dplyr::pull()
 rrc80 <- randomize_res_row_col(
   clones = dat,
   tot = 62,
-  trial = "ilri",
+  trial = "KE24ILR-BW-ST01",
   totReps = 80,
   trtrepP = rep(c(1, 4, 3), c(55, 4, 3)),
   block_lst = list(c(16,5), c(8,5)),
