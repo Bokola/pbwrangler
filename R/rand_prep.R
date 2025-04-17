@@ -37,7 +37,8 @@ geno_by_tubers <- function(df){
 #' @param trtrepP numeric vector. replications of `ins` given in the form 
 #' `rep(c(vector of reps), c(vector of number of clones))` e.g.,
 #'  `rep(c(1,8), c(304, 4))`
-#' @param trtgroup numeric vector. replication of treatment groups. samilar repliction as `trtrepP` 
+#' @param trtgroup numeric vector. replication of treatment groups.
+#'  samilar repliction as `trtrepP` but should add to `tot`. 
 #' @param block_lst a list specifying blocking of the field
 #' @param season season of trial
 #' @param path character specifying path to write the design
@@ -122,16 +123,16 @@ rand_Prep <- function(tot,
       path, season,"FieldBook",  paste0(trial, ".csv")
     )
   )
-  
-  png(
-    file.path(path, season,"FieldBook",  paste0(trial, ".png")),
-    width = 2000,
-    height = 1500,
-    res = 150
-  )
+  # plot.new()
+  # png(
+  #   file.path(path, season,"FieldBook",  paste0(trial, ".png")),
+  #   width = 2000,
+  #   height = 1500,
+  #   res = 150
+  # )
   # plot(prep)
-  plot(prep, trts = 1:5, col=2, new = FALSE)
-  dev.off()
+  # plot(prep, trts = 1:5, col=2, new = FALSE)
+  # dev.off()
   }
   return(design)
 }

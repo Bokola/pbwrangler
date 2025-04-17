@@ -12,6 +12,7 @@ BugReports: https://github.com/Bokola/pbwrangler/issues
 Imports: 
     DiGGer,
     dplyr,
+    graphics,
     grDevices,
     ids,
     janitor,

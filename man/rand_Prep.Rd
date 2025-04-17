@@ -41,7 +41,8 @@ rand_Prep(
 \verb{rep(c(vector of reps), c(vector of number of clones))} e.g.,
 \code{rep(c(1,8), c(304, 4))}}
 
-\item{trtgroup}{numeric vector. replication of treatment groups. samilar repliction as \code{trtrepP}}
+\item{trtgroup}{numeric vector. replication of treatment groups.
+samilar repliction as \code{trtrepP} but should add to \code{tot}.}
 
 \item{block_lst}{a list specifying blocking of the field}
 
