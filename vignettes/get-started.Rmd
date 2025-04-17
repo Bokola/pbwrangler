@@ -490,7 +490,7 @@ d <- tempdir()
 data("ilri", package = "pbwrangler")
 ins_ilri <- geno_by_tubers(ilri)
 ilri_prep <- rand_Prep(
-  tot = 53,
+  tot = 57,
   ins = ins_ilri,
   rowD = 12,
   trial = "KE24ILR-BIO-IT01",

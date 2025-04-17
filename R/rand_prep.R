@@ -84,7 +84,8 @@ rand_Prep <- function(tot,
   prep <- DiGGer::prDiGGer(
                   # numberOfTreatments = tot+n_dummies,
     # total is less 4 checks i.e all geno available + n_dummies
-                  numberOfTreatments = tot+length(checks),
+                  # numberOfTreatments = tot+length(checks),
+                  numberOfTreatments = tot,
                    treatName = geno_to_rand,
                    rowsInDesign = rowD,
                    columnsInDesign = totReps / rowD,
@@ -150,7 +151,7 @@ rand_Prep <- function(tot,
 #' data("ilri", package = "pbwrangler")
 #' ins_ilri <- geno_by_tubers(ilri)
 #' ilri_prep <- rand_Prep(
-#'   tot = 53,
+#'   tot = 57,
 #'   ins = ins_ilri,
 #'   rowD = 12,
 #'   trial = "KE24ILR-BIO-IT01",
