@@ -202,6 +202,9 @@
     <loc>/reference/process_trials.html</loc>
   </url>
   <url>
+    <loc>/reference/randomize_noRep.html</loc>
+  </url>
+  <url>
     <loc>/reference/randomize_res_row_col.html</loc>
   </url>
   <url>
@@ -230,6 +233,9 @@
   </url>
   <url>
     <loc>/reference/select_cols.html</loc>
+  </url>
+  <url>
+    <loc>/reference/split_by_chunk.html</loc>
   </url>
   <url>
     <loc>/reference/subset_invalid_cols.html</loc>

@@ -282,6 +282,21 @@ sum_rowwise <- function(x, target_cols){
 
 }
 
+#' split a dataframe into a list by row numbe
+#'
+#' @param x a dataframe
+#' @param chunk integer. rows for each list element
+#'
+#' @return
+#' @export
+#'
+#' @examples
+split_by_chunk <- function(x, chunk) {
+  n <- nrow(x)
+  r  <- rep(1:ceiling(n / chunk), each = chunk)[1:n]
+  d <- split(x, r)
+}
+
 
 #' Compute nmtp, mtwp (no/marketable tuber weight per plot)
 #'
@@ -2773,7 +2788,7 @@ Randomize a resolvable row column of 55 clones replicated once,
 
 data("ilri")
 dat <- ilri %>% dplyr::select(geno) 
-dat %>% dplyr::pull() 
+# dat %>% dplyr::pull() 
 
 
 rrc80 <- randomize_res_row_col(
@@ -2793,6 +2808,72 @@ rrc80 <- randomize_res_row_col(
 head(rrc80$fieldbook)
 ```
 
+
+```{r function-randomize_noRep}
+#' randomize trials for multiplication without replication
+#'
+#' @param rowD integer. rows in design
+#' @param tot integer. total number of genotypes
+#' @param ins dataframe. contains a column named `geno`
+#' @param trial character. name of trial
+#' @param path character. path to write design
+#' @param season character. season to randomize
+#'
+#' @return
+#' @export
+#'
+#' @examples
+randomize_noRep <-
+  function(rowD = 23,
+           tot = 207,
+           ins = ins,
+           trial = "KE25MOL-HERL-ST01",
+           path = t_dir,
+           season = "Season 2025") {
+    
+    set.seed(as.numeric(lubridate::today()))
+    
+    fieldbook <-
+      data.frame(geno <- dplyr::sample_n(ins, tot, replace = FALSE))
+    fieldbook$plot <- 1:nrow(fieldbook)
+    fieldbook$plot <-
+      paste0(trial, "-", stringr::str_pad(fieldbook$plot, 5, pad = "0"))
+    
+    df <- split_by_chunk(fieldbook, chunk = rowD)
+    
+    for (i in seq_along(df)) {
+      df[[i]]$row <- 1:nrow(df[[i]])
+      df[[i]]$col <- i
+    }
+    out <- purrr::reduce(df, dplyr::bind_rows) %>%
+      dplyr::select(plot, dplyr::everything())
+    
+    if(!is.null(path)){
+      writexl::write_xlsx(list(out) %>% purrr::set_names(trial),
+                          path = file.path(path, season, "FieldBook",  paste0(trial, ".xlsx")))
+    }
+    return(out)
+  } 
+```
+
+
+Randomize without any replications, more like drawing a random sample 
+
+```{r examples-randomize_noRep}
+
+data("ilri")
+dat <- ilri %>% dplyr::select(geno) 
+
+d <- randomize_noRep(
+  rowD = 11,
+  tot = 55,
+  ins = dat,
+  path = NULL
+)
+
+head(d)
+
+```
 
 <!-- # Calculate the mean of a vector -->
 

@@ -202,6 +202,21 @@ sum_rowwise <- function(x, target_cols){
 
 }
 
+#' split a dataframe into a list by row numbe
+#'
+#' @param x a dataframe
+#' @param chunk integer. rows for each list element
+#'
+#' @return
+#' @export
+#'
+#' @examples
+split_by_chunk <- function(x, chunk) {
+  n <- nrow(x)
+  r  <- rep(1:ceiling(n / chunk), each = chunk)[1:n]
+  d <- split(x, r)
+}
+
 
 #' Compute nmtp, mtwp (no/marketable tuber weight per plot)
 #'

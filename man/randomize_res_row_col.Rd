@@ -57,7 +57,7 @@ resolvable row column design: plots = row by col; test clones replicated once, c
 
 data("ilri")
 dat <- ilri \%>\% dplyr::select(geno) 
-dat \%>\% dplyr::pull() 
+# dat \%>\% dplyr::pull() 
 
 
 rrc80 <- randomize_res_row_col(

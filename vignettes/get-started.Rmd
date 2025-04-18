@@ -538,7 +538,7 @@ Randomize a resolvable row column of 55 clones replicated once,
 
 data("ilri")
 dat <- ilri %>% dplyr::select(geno) 
-dat %>% dplyr::pull() 
+# dat %>% dplyr::pull() 
 
 
 rrc80 <- randomize_res_row_col(
@@ -558,6 +558,25 @@ rrc80 <- randomize_res_row_col(
 head(rrc80$fieldbook)
 ```
 
+
+
+
+Randomize without any replications, more like drawing a random sample 
+```{r examples-randomize_noRep}
+
+data("ilri")
+dat <- ilri %>% dplyr::select(geno) 
+
+d <- randomize_noRep(
+  rowD = 11,
+  tot = 55,
+  ins = dat,
+  path = NULL
+)
+
+head(d)
+
+```
 
 
 <!-- # Calculate the mean of a vector -->
