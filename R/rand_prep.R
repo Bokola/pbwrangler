@@ -117,6 +117,18 @@ rand_Prep <- function(tot,
   ) %>% dplyr::select(plot, dplyr::everything())
 
   if(!is.null(path)){
+    png(
+  file.path(path, season, "FieldBook",  paste0(trial, ".png")),
+  width = 2000,
+  height = 1500,
+  res = 150
+)
+plot(design)
+plot(design,
+     trts = 1:5,
+     col = 2,
+     new = FALSE)
+dev.off()
   #     readr::write_csv(
   #   design,
   #   file.path(
