@@ -123,7 +123,7 @@ rand_Prep <- function(tot,
   #     path, season,"FieldBook",  paste0(trial, ".csv")
   #   )
   # )
-        writexl::write_xlsx(list(design) %>% purrr::set_names(trial),
+        writexl::write_xlsx(list(fieldbook) %>% purrr::set_names(trial),
                      path = file.path(path, season, "FieldBook",  paste0(trial, ".xlsx")))
     
   plot(design)
