@@ -104,14 +104,14 @@ rand_Prep <- function(tot,
                    rngSeeds = c(111, 222)
   )
   # run the search to spatially optimise the design
-  prep <- DiGGer::run(prep)
+  design <- DiGGer::run(prep)
   
   
   # get the matrix and plot it with checks in rep
   # duplicated treatments of interest in yellow.
-  design <- prep$dlist[, 1:6] %>% janitor::clean_names()
-  names(design)[c(1,2)] <- c("plot", "geno")
-  design <- design %>% dplyr::mutate(
+ fieldbook <- design$dlist[, 1:6] %>% janitor::clean_names()
+  names(fieldbook)[c(1,2)] <- c("plot", "geno")
+  fieldbook <- fieldbook %>% dplyr::mutate(
     # unique_id = paste0(plot, rep, geno) 
     plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))
   ) %>% dplyr::select(plot, dplyr::everything())
@@ -126,18 +126,18 @@ rand_Prep <- function(tot,
         writexl::write_xlsx(list(design) %>% purrr::set_names(trial),
                      path = file.path(path, season, "FieldBook",  paste0(trial, ".xlsx")))
     
-  # plot.new()
-  # png(
-  #   file.path(path, season,"FieldBook",  paste0(trial, ".png")),
-  #   width = 2000,
-  #   height = 1500,
-  #   res = 150
-  # )
-  # plot(prep)
-  # plot(prep, trts = 1:5, col=2, new = FALSE)
-  # dev.off()
+  plot(design)
+  png(
+    file.path(path, season,"FieldBook",  paste0(trial, ".png")),
+    width = 2000,
+    height = 1500,
+    res = 150
+  )
+  plot(prep, trts = 1:5, col=2, new = FALSE)
+  dev.off()
   }
-  return(design)
+  out <- list(design, fieldbook) %>% purrr::set_names(c("design", "fieldbook"))
+  return(out)
 }
 
 
@@ -167,7 +167,7 @@ rand_Prep <- function(tot,
 #'   block_lst = trial_design_meta()$block_list,
 #'   path = NULL
 #' )
-#' head(ilri_prep)
+#' head(ilri_prep$design)
 trial_design_meta <- function(
     trep = rep(c(3,2,1,5), c(6, 11,36,4)),
     # trgroup = rep(c(3,2,1,5),c(6,11,36,4)),

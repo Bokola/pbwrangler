@@ -502,7 +502,7 @@ ilri_prep <- rand_Prep(
   block_lst = trial_design_meta()$block_list,
   path = NULL
 )
-head(ilri_prep)
+head(ilri_prep$design)
 ```
 
 
@@ -526,7 +526,7 @@ rcD <-
     rep = 3,
     path = NULL
   )
-head(rcD)
+head(rcD$fieldbook)
 ```
 
 
@@ -555,7 +555,7 @@ rrc80 <- randomize_res_row_col(
   
 )
 
-head(rrc80)
+head(rrc80$fieldbook)
 ```
 
 

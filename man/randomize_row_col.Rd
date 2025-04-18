@@ -57,5 +57,5 @@ rcD <-
     rep = 3,
     path = NULL
   )
-head(rcD)
+head(rcD$fieldbook)
 }

@@ -63,13 +63,13 @@
 <span>  <span class="va">rowD</span>,</span>
 <span>  <span class="va">trial</span>,</span>
 <span>  n_dummies <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  <span class="va">loc</span>,</span>
+<span>  loc <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">totReps</span>,</span>
 <span>  <span class="va">trtrepP</span>,</span>
 <span>  <span class="va">trtgroup</span>,</span>
 <span>  <span class="va">block_lst</span>,</span>
 <span>  season <span class="op">=</span> <span class="st">"season-2024-2025"</span>,</span>
-<span>  path <span class="op">=</span> <span class="va">rand_dir</span>,</span>
+<span>  path <span class="op">=</span> <span class="va">t_dir</span>,</span>
 <span>  check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Shangi"</span>, <span class="st">"Unica"</span>, <span class="st">"Sagitta"</span>, <span class="st">"Sherekea"</span><span class="op">)</span>,</span>
 <span>  dummy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Unica"</span>, <span class="st">"Shangi"</span><span class="op">)</span>,</span>
 <span>  to_add <span class="op">=</span> <span class="fl">4</span></span>
@@ -113,7 +113,8 @@
 
 
 <dt>trtgroup</dt>
-<dd><p>numeric vector. replication of treatment groups. samilar repliction as <code>trtrepP</code></p></dd>
+<dd><p>numeric vector. replication of treatment groups.
+samilar repliction as <code>trtrepP</code> but should add to <code>tot</code>.</p></dd>
 
 
 <dt>block_lst</dt>

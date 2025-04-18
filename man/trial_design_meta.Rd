@@ -40,5 +40,5 @@ ilri_prep <- rand_Prep(
   block_lst = trial_design_meta()$block_list,
   path = NULL
 )
-head(ilri_prep)
+head(ilri_prep$design)
 }

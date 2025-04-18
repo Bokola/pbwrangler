@@ -2418,14 +2418,14 @@ rand_Prep <- function(tot,
                    rngSeeds = c(111, 222)
   )
   # run the search to spatially optimise the design
-  prep <- DiGGer::run(prep)
+  design <- DiGGer::run(prep)
   
   
   # get the matrix and plot it with checks in rep
   # duplicated treatments of interest in yellow.
-  design <- prep$dlist[, 1:6] %>% janitor::clean_names()
-  names(design)[c(1,2)] <- c("plot", "geno")
-  design <- design %>% dplyr::mutate(
+ fieldbook <- design$dlist[, 1:6] %>% janitor::clean_names()
+  names(fieldbook)[c(1,2)] <- c("plot", "geno")
+  fieldbook <- fieldbook %>% dplyr::mutate(
     # unique_id = paste0(plot, rep, geno) 
     plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))
   ) %>% dplyr::select(plot, dplyr::everything())
@@ -2440,18 +2440,18 @@ rand_Prep <- function(tot,
         writexl::write_xlsx(list(design) %>% purrr::set_names(trial),
                      path = file.path(path, season, "FieldBook",  paste0(trial, ".xlsx")))
     
-  # plot.new()
-  # png(
-  #   file.path(path, season,"FieldBook",  paste0(trial, ".png")),
-  #   width = 2000,
-  #   height = 1500,
-  #   res = 150
-  # )
-  # plot(prep)
-  # plot(prep, trts = 1:5, col=2, new = FALSE)
-  # dev.off()
+  plot(design)
+  png(
+    file.path(path, season,"FieldBook",  paste0(trial, ".png")),
+    width = 2000,
+    height = 1500,
+    res = 150
+  )
+  plot(prep, trts = 1:5, col=2, new = FALSE)
+  dev.off()
   }
-  return(design)
+  out <- list(design, fieldbook) %>% purrr::set_names(c("design", "fieldbook"))
+  return(out)
 }
 
 ```
@@ -2534,7 +2534,7 @@ ilri_prep <- rand_Prep(
   block_lst = trial_design_meta()$block_list,
   path = NULL
 )
-head(ilri_prep)
+head(ilri_prep$design)
 ```
 
 
@@ -2608,30 +2608,31 @@ randomize_row_col <- function(clones,
   )
   
   
-  design <- design$dlist[, 1:6] %>% janitor::clean_names()
-  colnames(design)[c(1, 2, 5)] <- c("plot", "geno", "column")
-  design <- design %>% dplyr::mutate(# unique_id = paste0(plot, rep, geno)
+ fieldbook <- design$dlist[, 1:6] %>% janitor::clean_names()
+  colnames(fieldbook)[c(1, 2, 5)] <- c("plot", "geno", "column")
+  fieldbook <- fieldbook %>% dplyr::mutate(# unique_id = paste0(plot, rep, geno)
     plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))) %>% dplyr::select(plot, dplyr::everything())
   if (!is.null(path)) {
-    # png(
-    #   file.path(path, season, "FieldBook",  paste0(trial, ".png")),
-    #   width = 2000,
-    #   height = 1500,
-    #   res = 150
-    # )
-    # plot(design)
-    # plot(design,
-    #      trts = 1:5,
-    #      col = 2,
-    #      new = FALSE)
-    # dev.off()
+
+    plot(design)
+
+    
+    png(
+      file.path(path, season, "FieldBook",  paste0(trial, ".png")),
+      width = 2000,
+      height = 1500,
+      res = 150
+    )
+    
+    dev.off()
     
     # readr::write_csv(design,
     #                  file.path(path, season, "FieldBook",  paste0(trial, ".csv")))
-        writexl::write_xlsx(list(design) %>% purrr::set_names(trial),
+        writexl::write_xlsx(list(fieldbook) %>% purrr::set_names(trial),
                      path = file.path(path, season, "FieldBook",  paste0(trial, ".xlsx")))
   }
-  return(design)
+  out <- list(design, fieldbook) %>% purrr::set_names(c("design", "fieldbook"))
+  return(out)
 }
 ```
 
@@ -2650,7 +2651,7 @@ rcD <-
     rep = 3,
     path = NULL
   )
-head(rcD)
+head(rcD$fieldbook)
 ```
 
 
@@ -2732,32 +2733,34 @@ randomize_res_row_col <- function(clones,
   )
   
   
-  design <- design$dlist[, 1:6] %>% janitor::clean_names()
-  colnames(design)[c(1, 2, 5)] <- c("plot", "geno", "column")
-  design <- design %>% dplyr::mutate(# unique_id = paste0(plot, rep, geno)
+  fieldbook <- design$dlist[, 1:6] %>% janitor::clean_names()
+  colnames(fieldbook)[c(1, 2, 5)] <- c("plot", "geno", "column")
+  fieldbook <- fieldbook %>% dplyr::mutate(# unique_id = paste0(plot, rep, geno)
     plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))) %>%
     dplyr::select(plot, dplyr::everything())
   if (!is.null(path)) {
-    # png(
-    #   file.path(path, season, "FieldBook",  paste0(trial, ".png")),
-    #   width = 2000,
-    #   height = 1500,
-    #   res = 150
-    # )
-    # plot(design)
-    # plot(design,
-    #      trts = 1:5,
-    #      col = 2,
-    #      new = FALSE)
-    # dev.off()
+    plot(design)
+    png(
+      file.path(path, season, "FieldBook",  paste0(trial, ".png")),
+      width = 2000,
+      height = 1500,
+      res = 150
+    )
+
+    plot(design,
+         trts = 1:5,
+         col = 2,
+         new = FALSE)
+    dev.off()
     
     # readr::write_csv(design,
     #                  file.path(path, season, "FieldBook",  paste0(trial, ".csv")))
         
-    writexl::write_xlsx(list(design) %>% purrr::set_names(trial),
+    writexl::write_xlsx(list(fieldbook) %>% purrr::set_names(trial),
                      path = file.path(path, season, "FieldBook",  paste0(trial, ".xlsx")))
   }
-  return(design)
+  out <- list(design, fieldbook) %>% purrr::set_names(c("design", "fieldbook"))
+  return(out)
 }
 ```
 
@@ -2786,7 +2789,7 @@ rrc80 <- randomize_res_row_col(
   
 )
 
-head(rrc80)
+head(rrc80$fieldbook)
 ```
 
 

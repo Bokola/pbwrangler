@@ -74,5 +74,5 @@ rrc80 <- randomize_res_row_col(
   
 )
 
-head(rrc80)
+head(rrc80$fieldbook)
 }
