@@ -118,8 +118,11 @@ randomize_res_row_col <- function(clones,
     #      new = FALSE)
     # dev.off()
     
-    readr::write_csv(design,
-                     file.path(path, season, "FieldBook",  paste0(trial, ".csv")))
+    # readr::write_csv(design,
+    #                  file.path(path, season, "FieldBook",  paste0(trial, ".csv")))
+        
+    writexl::write_xlsx(list(design) %>% purrr::set_names(trial),
+                     path = file.path(path, season, "FieldBook",  paste0(trial, ".xlsx")))
   }
   return(design)
 }
@@ -222,8 +225,10 @@ randomize_row_col <- function(clones,
     #      new = FALSE)
     # dev.off()
     
-    readr::write_csv(design,
-                     file.path(path, season, "FieldBook",  paste0(trial, ".csv")))
+    # readr::write_csv(design,
+    #                  file.path(path, season, "FieldBook",  paste0(trial, ".csv")))
+        writexl::write_xlsx(list(design) %>% purrr::set_names(trial),
+                     path = file.path(path, season, "FieldBook",  paste0(trial, ".xlsx")))
   }
   return(design)
 }

@@ -24,7 +24,8 @@ Imports:
     st4gi,
     statgenSTA,
     stringr,
-    utils
+    utils,
+    writexl
 Suggests: 
     here,
     knitr,

@@ -117,12 +117,15 @@ rand_Prep <- function(tot,
   ) %>% dplyr::select(plot, dplyr::everything())
 
   if(!is.null(path)){
-      readr::write_csv(
-    design,
-    file.path(
-      path, season,"FieldBook",  paste0(trial, ".csv")
-    )
-  )
+  #     readr::write_csv(
+  #   design,
+  #   file.path(
+  #     path, season,"FieldBook",  paste0(trial, ".csv")
+  #   )
+  # )
+        writexl::write_xlsx(list(design) %>% purrr::set_names(trial),
+                     path = file.path(path, season, "FieldBook",  paste0(trial, ".xlsx")))
+    
   # plot.new()
   # png(
   #   file.path(path, season,"FieldBook",  paste0(trial, ".png")),
