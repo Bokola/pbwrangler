@@ -105,7 +105,7 @@ randomize_res_row_col <- function(clones,
     plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))) %>%
     dplyr::select(plot, dplyr::everything())
   if (!is.null(path)) {
-    plot(design)
+    dev.new()
     png(
       file.path(path, season, "FieldBook",  paste0(trial, ".png")),
       width = 2000,
@@ -215,7 +215,7 @@ randomize_row_col <- function(clones,
     plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))) %>% dplyr::select(plot, dplyr::everything())
   if (!is.null(path)) {
 
-    plot(design)
+    dev.new()
 
     
     png(

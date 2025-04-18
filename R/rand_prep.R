@@ -126,14 +126,14 @@ rand_Prep <- function(tot,
         writexl::write_xlsx(list(fieldbook) %>% purrr::set_names(trial),
                      path = file.path(path, season, "FieldBook",  paste0(trial, ".xlsx")))
     
-  plot(design)
+  dev.new()
   png(
     file.path(path, season,"FieldBook",  paste0(trial, ".png")),
     width = 2000,
     height = 1500,
     res = 150
   )
-  plot(prep, trts = 1:5, col=2, new = FALSE)
+  plot(design, trts = 1:5, col=2, new = FALSE)
   dev.off()
   }
   out <- list(design, fieldbook) %>% purrr::set_names(c("design", "fieldbook"))
