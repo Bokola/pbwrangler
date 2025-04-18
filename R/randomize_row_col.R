@@ -195,7 +195,7 @@ randomize_row_col <- function(clones,
     treatName = geno_to_rand,
     rowsInDesign = rowD,
     columnsInDesign = (tot * rep) / rowD,
-    rowsInReplicate = tot / ((tot * rep) / rowD),
+    rowsInReplicate = rowD,
     columnsInReplicate = (tot * rep) / rowD,
     # blockSequence = list(
     #   c(5, 12), c(10, 12)
