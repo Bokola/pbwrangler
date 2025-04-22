@@ -110,11 +110,11 @@ rand_Prep <- function(tot,
   # get the matrix and plot it with checks in rep
   # duplicated treatments of interest in yellow.
  fieldbook <- design$dlist[, 1:6] %>% janitor::clean_names()
-  names(fieldbook)[c(1,2)] <- c("plot", "geno")
+  names(fieldbook)[c(1,2,5)] <- c("plot", "geno", "col")
   fieldbook <- fieldbook %>% dplyr::mutate(
     # unique_id = paste0(plot, rep, geno) 
     plot = paste0(trial, "-", stringr::str_pad(plot, 5, pad = "0"))
-  ) %>% dplyr::select(plot, dplyr::everything())
+  ) %>% dplyr::select(plot,geno, row, col, dplyr::everything())
 
   if(!is.null(path)){
     png(
