@@ -10,7 +10,10 @@ randomize_noRep(
   ins = ins,
   trial = "KE25MOL-HERL-ST01",
   path = t_dir,
-  season = "Season 2025"
+  season = "Season 2025",
+  to_add = 4,
+  rep = 4,
+  check = c("Sagitta", "Unica", "Sherekea", "Shangi")
 )
 }
 \arguments{
@@ -25,6 +28,12 @@ randomize_noRep(
 \item{path}{character. path to write design}
 
 \item{season}{character. season to randomize}
+
+\item{to_add}{integer. number of checks to add}
+
+\item{rep}{integer. number of replications for each of the checks}
+
+\item{check}{character. vector of checks}
 }
 \description{
 randomize trials for multiplication without replication

@@ -17,7 +17,8 @@ clean_dir_name <- function(x){
   gsub(".*\\/", "", x) %>% gsub(".*\\d+{2}-\\d+{2}_", "", .) %>% 
     gsub("\\..*", "", .) %>% gsub("final_table|_table", "", .) %>%  
     trimws(.) %>% gsub("\\s", "-", .) %>% gsub("-{2,}", "-", .) %>%
-    tolower(.) %>% gsub("-\\d{4}|_\\d{4}", "", .) %>% gsub("final-data_", "", .)
+    # tolower(.) %>% 
+    gsub("-\\d{4}|_\\d{4}", "", .) %>% gsub("final-data_", "", .)
    
 }
 
@@ -29,7 +30,8 @@ clean_dir_name <- function(x){
 #' @export
 #'
 clean_dir_name_c <- function(x){
-  gsub(".*\\/", "", x) %>% gsub("\\..*", "", .) %>% tolower(.) %>%
+  gsub(".*\\/", "", x) %>% gsub("\\..*", "", .) %>% 
+    # tolower(.) %>%
     gsub("-\\s+", "-",.) %>% gsub("\\s+", "-",.)
 }
 

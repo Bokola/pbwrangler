@@ -8,7 +8,10 @@
 #' @param trial character. name of trial
 #' @param path character. path to write design
 #' @param season character. season to randomize
-#'
+#' @param to_add  integer. number of checks to add
+#' @param rep integer. number of replications for each of the checks
+#' @param check character. vector of checks
+#' 
 #' @return
 #' @export
 #'
@@ -32,12 +35,20 @@ randomize_noRep <-
            ins = ins,
            trial = "KE25MOL-HERL-ST01",
            path = t_dir,
-           season = "Season 2025") {
+           season = "Season 2025",
+           to_add = 4,
+           rep = 4,
+           check = c('Sagitta', 'Unica', 'Sherekea', 'Shangi')) {
     
     set.seed(as.numeric(lubridate::today()))
     
+    if(!is.null(to_add)){
+      to_add_df <- data.frame(geno = rep(check, each = to_add))
+      ins <- dplyr::bind_rows(ins, to_add_df)
+    }
+    
     fieldbook <-
-      data.frame(geno <- dplyr::sample_n(ins, tot, replace = FALSE))
+      data.frame(geno = dplyr::sample_n(ins, tot, replace = FALSE))
     fieldbook$plot <- 1:nrow(fieldbook)
     fieldbook$plot <-
       paste0(trial, "-", stringr::str_pad(fieldbook$plot, 5, pad = "0"))
