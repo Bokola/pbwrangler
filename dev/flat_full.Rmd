@@ -2855,7 +2855,7 @@ randomize_noRep <-
     }
     
     fieldbook <-
-      data.frame(geno = dplyr::sample_n(ins, tot, replace = FALSE))
+      data.frame(geno = sample(ins$geno, tot, replace = FALSE))
     fieldbook$plot <- 1:nrow(fieldbook)
     fieldbook$plot <-
       paste0(trial, "-", stringr::str_pad(fieldbook$plot, 5, pad = "0"))
