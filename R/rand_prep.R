@@ -34,11 +34,10 @@ geno_by_tubers <- function(df){
 #' @param n_dummies integer. number of dummies to complete a rectangular layout
 #' @param loc character. trial location
 #' @param totReps integer. total number of plots: row by col
-#' @param trtrepP numeric vector. replications of `ins` given in the form 
-#' `rep(c(vector of reps), c(vector of number of clones))` e.g.,
-#'  `rep(c(1,8), c(304, 4))`
-#' @param trtgroup numeric vector. replication of treatment groups.
-#'  samilar repliction as `trtrepP` but should add to `tot`. 
+#' @param trtrepP a list of numeric vectors. replications of `ins` given in the form 
+#' `list(c(vector of reps), c(vector of number of clones))` e.g.,
+#'  `list(c(1,8), c(304, 4))`
+#' @param trtgroup a list of numeric vector. replication of treatment groups samilar repliction as `trtrepP` but should add to `tot`. 
 #' @param block_lst a list specifying blocking of the field
 #' @param season season of trial
 #' @param path character specifying path to write the design
@@ -96,8 +95,8 @@ rand_Prep <- function(tot,
                    #   c(9, 8), c(9, 4)
                    # ),
                    blockSequence = block_lst,
-                   treatRepPerRep = trtrepP,
-                   treatGroup=trtgroup,
+                   treatRepPerRep = rep(trtrepP[[1]], trtrepP[[2]]),
+                   treatGroup= rep(trtgroup[[1]], trtgroup[[2]]),
                    maxInterchanges = 1000,
                    # fixedBlocks = TRUE,
                    # nested = FALSE,
@@ -105,6 +104,7 @@ rand_Prep <- function(tot,
   )
   # run the search to spatially optimise the design
   design <- DiGGer::run(prep)
+  plotD <- DiGGer::getDesign(design)
   
   
   # get the matrix and plot it with checks in rep
@@ -123,11 +123,19 @@ rand_Prep <- function(tot,
   height = 1500,
   res = 150
 )
-plot(design)
-plot(design,
-     trts = 1:5,
-     col = 2,
-     new = FALSE)
+# plot(design)
+# plot(design,
+#      trts = 1:5,
+#      col = 2,
+#      new = FALSE)
+    
+ones <- which(trtrepP[[1]] == 1)
+norep <- trtrepP[[2]][ones]
+desPlot(plotD, seq(trtrepP[[2]][1]) + trtrepP[[2]][2]
+        , col = 8, new = TRUE, label = TRUE)
+desPlot(plotD, seq(trtrepP[[2]][2]), col = 7
+        , new = FALSE, label = TRUE)
+
 dev.off()
   #     readr::write_csv(
   #   design,
@@ -172,7 +180,7 @@ dev.off()
 #' )
 #' head(ilri_prep$design)
 trial_design_meta <- function(
-    trep = rep(c(3,2,1,5), c(6, 11,36,4)),
+    trep = list(c(3,2,1,5), c(6, 11,36,4)),
     # trgroup = rep(c(3,2,1,5),c(6,11,36,4)),
     trgroup = trep,
     block_list = list(c(6,4), c(6,2))

@@ -37,12 +37,11 @@ rand_Prep(
 
 \item{totReps}{integer. total number of plots: row by col}
 
-\item{trtrepP}{numeric vector. replications of \code{ins} given in the form
-\verb{rep(c(vector of reps), c(vector of number of clones))} e.g.,
-\code{rep(c(1,8), c(304, 4))}}
+\item{trtrepP}{a list of numeric vectors. replications of \code{ins} given in the form
+\verb{list(c(vector of reps), c(vector of number of clones))} e.g.,
+\code{list(c(1,8), c(304, 4))}}
 
-\item{trtgroup}{numeric vector. replication of treatment groups.
-samilar repliction as \code{trtrepP} but should add to \code{tot}.}
+\item{trtgroup}{a list of numeric vector. replication of treatment groups samilar repliction as \code{trtrepP} but should add to \code{tot}.}
 
 \item{block_lst}{a list specifying blocking of the field}
 
