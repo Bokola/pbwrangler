@@ -76,7 +76,7 @@ randomize_noRep <-
 #' @param trial character. trial
 #' @param rowD integer. number of rows in the field
 #' @param totReps integer. total number of plots: row by col
-#' @param trtrepP numeric vector. replications of `ins` given in the form 
+#' @param trtrepP numeric vector. replications of `ins` given in the form
 #' `rep(c(vector of reps), c(vector of number of clones))` e.g.,
 #'  `rep(c(1,8), c(304, 4))`
 #' @param block_lst a list specifying blocking of the field
@@ -106,6 +106,8 @@ randomize_noRep <-
 #'   trtrepP = rep(c(1, 4, 3), c(55, 4, 3)),
 #'   block_lst = list(c(16,5), c(8,5)),
 #'   rowD = 16,
+#'   # rowsinR = 4,
+#'   # colsinR = 1,
 #'   n_dummies = 3,
 #'   season = "season-2025",
 #'   path = NULL
@@ -121,6 +123,8 @@ randomize_res_row_col <- function(clones,
                               # trtgroup,
                               block_lst,
                               rowD,
+                              # rowsinR,
+                              # colsinR,
                               n_dummies=0,
                               # rep,
                               season,
@@ -202,6 +206,8 @@ dev.off()
 #' @param tot integer. total number of unique clones/genotypes to be randomized to field
 #' @param trial character. trial
 #' @param rowD integer. number of rows in the field
+#' @param rowsinR integer. number of rows in template replicate block; for blocking
+#' @param colsinR integer. number of columns in template replicate block; for blocking
 #' @param n_dummies integer. number of dummies to complete a rectangular layout
 #' @param rep integer. number of replication
 #' @param season season of trial
@@ -220,7 +226,9 @@ dev.off()
 #'     clones = df,
 #'     trial = "KE24ILR-BW-ST01",
 #'     tot = 6,
-#'     rowD = 6,
+#'     rowD = 3,
+#'     rowsinR = 3,
+#'     colsinR = 2,
 #'     n_dummies = 0,
 #'     to_add = 2,
 #'     rep = 3,
@@ -231,6 +239,8 @@ randomize_row_col <- function(clones,
                               tot,
                               trial,
                               rowD,
+                              rowsinR,
+                              colsinR,
                               n_dummies=0,
                               rep,
                               season,
@@ -264,8 +274,8 @@ randomize_row_col <- function(clones,
     treatName = geno_to_rand,
     rowsInDesign = rowD,
     columnsInDesign = (tot * rep) / rowD,
-    rowsInReplicate = rowD,
-    columnsInReplicate = (tot * rep) / rowD,
+    rowsInReplicate = rowsinR,
+    columnsInReplicate = colsinR,
     # blockSequence = list(
     #   c(5, 12), c(10, 12)
     # ),

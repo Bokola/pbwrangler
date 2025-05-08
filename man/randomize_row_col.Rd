@@ -9,6 +9,8 @@ randomize_row_col(
   tot,
   trial,
   rowD,
+  rowsinR,
+  colsinR,
   n_dummies = 0,
   rep,
   season,
@@ -26,6 +28,10 @@ randomize_row_col(
 \item{trial}{character. trial}
 
 \item{rowD}{integer. number of rows in the field}
+
+\item{rowsinR}{integer. number of rows in template replicate block; for blocking}
+
+\item{colsinR}{integer. number of columns in template replicate block; for blocking}
 
 \item{n_dummies}{integer. number of dummies to complete a rectangular layout}
 
@@ -51,7 +57,9 @@ rcD <-
     clones = df,
     trial = "KE24ILR-BW-ST01",
     tot = 6,
-    rowD = 6,
+    rowD = 3,
+    rowsinR = 3,
+    colsinR = 2,
     n_dummies = 0,
     to_add = 2,
     rep = 3,

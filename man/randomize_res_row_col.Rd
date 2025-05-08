@@ -68,6 +68,8 @@ rrc80 <- randomize_res_row_col(
   trtrepP = rep(c(1, 4, 3), c(55, 4, 3)),
   block_lst = list(c(16,5), c(8,5)),
   rowD = 16,
+  # rowsinR = 4,
+  # colsinR = 1,
   n_dummies = 3,
   season = "season-2025",
   path = NULL
