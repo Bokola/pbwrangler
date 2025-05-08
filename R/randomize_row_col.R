@@ -149,7 +149,7 @@ randomize_res_row_col <- function(clones,
   if(inherits(clones, "list")){
     geno_names <- purrr::reduce(clones, data.frame)[, "geno"] %>% dplyr::pull()
   }else{
-    geno_names <- clones %>% dplyr::pull()
+    geno_names <- clones %>% dplyr::select(geno) %>%  dplyr::pull()
   }
   geno_to_rand <- c(geno_names, dummies, checks)
   
