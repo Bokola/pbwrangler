@@ -45,7 +45,9 @@ randomize_row_col(
 
 \item{dummy}{a character vector of dummy checks to fill rectangular grid}
 
-\item{to_add}{integer. number of checks to add to complete the rectangular grid}
+\item{to_add}{integer. number of checks to add to complete the rectangular grid
+Note: to optimize on the row or column, remember that rep\emph{rowsinR = rowD or
+rep}colsinR = colsD.}
 }
 \description{
 row column design: plots = row by col; equal rep for each treatment

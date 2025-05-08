@@ -214,8 +214,11 @@ dev.off()
 #' @param path character specifying path to write the design
 #' @param check a character vector of checks to fill rectangular grid
 #' @param dummy a character vector of dummy checks to fill rectangular grid
+#' 
 #' @param to_add integer. number of checks to add to complete the rectangular grid
-#'
+#' Note: to optimize on the row or column, remember that rep*rowsinR = rowD or
+#' rep*colsinR = colsD.
+#' 
 #' @return
 #' @export
 #'
@@ -265,7 +268,7 @@ randomize_row_col <- function(clones,
   if(inherits(clones, "list")){
     geno_names <- purrr::reduce(clones, data.frame)[, "geno"] %>% dplyr::pull()
   }else{
-    geno_names <- clones %>% dplyr::pull()
+    geno_names <- clones %>% dplyr::select(geno) %>%  dplyr::pull()
   }
   geno_to_rand <- c(geno_names, dummies, checks)
   
