@@ -297,6 +297,22 @@ split_by_chunk <- function(x, chunk) {
   d <- split(x, r)
 }
 
+#' generate rows and columns after `split_by_chunk`
+#'
+#' @param x a list of dataframes 
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+gen_row_col <- function(x){
+  for(i in seq_along(x)){
+    x[[i]]$row <- 1:nrow(x[[i]])
+    x[[i]]$column <- i
+  }
+  x %>% dplyr::bind_rows()
+}
+
 
 #' Compute nmtp, mtwp (no/marketable tuber weight per plot)
 #'
@@ -2585,8 +2601,9 @@ head(ilri_prep$design)
 #' @param dummy a character vector of dummy checks to fill rectangular grid
 #' 
 #' @param to_add integer. number of checks to add to complete the rectangular grid
-#' Note: to optimize on the row or column, remember that rep\*rowsinR = rowD or
-#' rep\*colsinR = colsD.
+#' \cr
+#' **Note**: To optimize on the row or column, remember that rep * rowsinR = rowD or
+#' rep * colsinR = colsD.
 #' 
 #' @return
 #' @export

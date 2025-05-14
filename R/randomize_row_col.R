@@ -216,8 +216,9 @@ dev.off()
 #' @param dummy a character vector of dummy checks to fill rectangular grid
 #' 
 #' @param to_add integer. number of checks to add to complete the rectangular grid
-#' Note: to optimize on the row or column, remember that rep\*rowsinR = rowD or
-#' rep\*colsinR = colsD.
+#' \cr
+#' **Note**: To optimize on the row or column, remember that rep * rowsinR = rowD or
+#' rep * colsinR = colsD.
 #' 
 #' @return
 #' @export

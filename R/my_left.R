@@ -217,6 +217,22 @@ split_by_chunk <- function(x, chunk) {
   d <- split(x, r)
 }
 
+#' generate rows and columns after `split_by_chunk`
+#'
+#' @param x a list of dataframes 
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+gen_row_col <- function(x){
+  for(i in seq_along(x)){
+    x[[i]]$row <- 1:nrow(x[[i]])
+    x[[i]]$column <- i
+  }
+  x %>% dplyr::bind_rows()
+}
+
 
 #' Compute nmtp, mtwp (no/marketable tuber weight per plot)
 #'
