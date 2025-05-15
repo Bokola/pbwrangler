@@ -44,15 +44,17 @@ get_ontology_labels <- function(x, crop = "pt"){
 #' @param x a dataframe
 #'
 #' @return a dataframe
+#' @param crop one of "pt" or "sp"
 #' @export
 #'
-get_valid_columns <- function(x){
-  x[, names(x) %nin% st4gi::get.invalid.names(x)]
+get_valid_columns <- function(x, crop = "pt"){
+  x[, names(x) %nin% st4gi::get.invalid.names(x, crop = crop)]
 }
 
 #' get invalid names (labels not in ontology) & add geno
 #'
 #' @param x a dataframe
+#' @param crop  one of "pt" or "sp"
 #'
 #' @return a dataframe
 #' @export
@@ -69,6 +71,6 @@ get_valid_columns <- function(x){
 #'   purrr::map(., run_data_processes) %>% `[[`(1) 
 #'
 #' subset_invalid_cols(df_out) %>% colnames(.)
-subset_invalid_cols <- function(x){
-  x[,c("geno", st4gi::get.invalid.names(x))]
+subset_invalid_cols <- function(x, crop = "pt"){
+  x[,c("geno", st4gi::get.invalid.names(x, crop = crop))]
 }

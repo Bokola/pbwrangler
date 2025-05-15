@@ -4,10 +4,12 @@
 \alias{get_valid_columns}
 \title{get column names defined in ontology}
 \usage{
-get_valid_columns(x)
+get_valid_columns(x, crop = "pt")
 }
 \arguments{
 \item{x}{a dataframe}
+
+\item{crop}{one of "pt" or "sp"}
 }
 \value{
 a dataframe

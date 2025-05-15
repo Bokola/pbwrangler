@@ -4,10 +4,12 @@
 \alias{subset_invalid_cols}
 \title{get invalid names (labels not in ontology) & add geno}
 \usage{
-subset_invalid_cols(x)
+subset_invalid_cols(x, crop = "pt")
 }
 \arguments{
 \item{x}{a dataframe}
+
+\item{crop}{one of "pt" or "sp"}
 }
 \value{
 a dataframe
