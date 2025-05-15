@@ -4,7 +4,7 @@
 \alias{create_meta_file}
 \title{create a meta-data file with design factors, planting dates etc}
 \usage{
-create_meta_file(x, season, d_dir = out_dir)
+create_meta_file(x, season, d_dir = t_dir)
 }
 \arguments{
 \item{x}{a list of trials to generate metadata for}

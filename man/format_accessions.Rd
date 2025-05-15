@@ -6,8 +6,8 @@
 \usage{
 format_accessions(
   x,
-  dir = out_dir,
-  sub_dir = "accessions",
+  dir = t_dir,
+  sub_dir = file.path("Archive", "data-quality-assessment", "accessions"),
   season,
   filename = "accession_miss"
 )

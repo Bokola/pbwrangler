@@ -13,7 +13,7 @@
 #' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 #' df <- read_workbooks(dir = NULL, file_to_read = f)
 #' create_meta_file(df, season = "season-2024", d_dir = tempdir())
-  create_meta_file <- function(x, season, d_dir = out_dir) {
+  create_meta_file <- function(x, season, d_dir = t_dir) {
   # x  is a list of trials to generate metadata for
   # season given in the form "season-2023" for example
   s <- season
@@ -56,7 +56,7 @@
     magrittr::set_names(season)
 
   # p <- file.path(out_dir, "data", season,  "meta-data")
-  p <- file.path(d_dir, "data", season,  "meta-data")
+  p <- file.path(d_dir, season, "Data", "meta-data")
   # p_data <- file.path(out_dir, "data", season)
   if (!dir.exists(p)) {
     dir.create(p, recursive = TRUE)

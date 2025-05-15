@@ -4,7 +4,7 @@
 \alias{write_trials}
 \title{write out trial data}
 \usage{
-write_trials(x, season, is_invalid = FALSE, dir = out_dir)
+write_trials(x, season, is_invalid = FALSE, dir = t_dir)
 }
 \arguments{
 \item{x}{list of trial data}

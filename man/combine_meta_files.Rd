@@ -4,7 +4,7 @@
 \alias{combine_meta_files}
 \title{read meta-files from separate trials in a season into 1 file}
 \usage{
-combine_meta_files(season, path = out_dir)
+combine_meta_files(season, path = t_dir)
 }
 \arguments{
 \item{season}{trial season such as \code{"season-2024"}}

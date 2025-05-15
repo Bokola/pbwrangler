@@ -37,11 +37,11 @@ check_gene_chars <- function(x){
 #' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 #' df <- read_workbooks(dir = NULL, file_to_read = f) 
 #' df_checked <- check_geno(df)
-check_geno <- function(x, season, dir = out_dir){
+check_geno <- function(x, season, dir = t_dir){
   out <- purrr::map(x, check_gene_chars) %>% drop_null_dfs()
   if(length(out) > 0){
     out <- out %>% capture_location() %>% dplyr::bind_rows()
-    p <- file.path(dir, "data-quality-assessment",season)
+    p <- file.path(dir, season, "Archive", "data-quality-assessment")
     if(!dir.exists(p)) dir.create(p, recursive = TRUE)
     readr::write_csv(out, file.path(p, "wrong-accessions.csv"))
     return(out)

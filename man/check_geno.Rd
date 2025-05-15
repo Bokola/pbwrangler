@@ -4,7 +4,7 @@
 \alias{check_geno}
 \title{get accession names that do not conform to required protocol}
 \usage{
-check_geno(x, season, dir = out_dir)
+check_geno(x, season, dir = t_dir)
 }
 \arguments{
 \item{x}{a list of dataframes}

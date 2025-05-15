@@ -58,7 +58,7 @@ write_season_data <- function(list_df, season){
   # # season 2023 accessions ------------------------------------------------
   
   
-  format_accessions(x = list_df, season = season)
+  # format_accessions(x = list_df, season = season)
   
   ###########################################################################
 }
@@ -73,11 +73,11 @@ write_season_data <- function(list_df, season){
 #' @return NULL
 #' @export
 #'
-write_trials <- function(x, season, is_invalid = FALSE, dir = out_dir){
+write_trials <- function(x, season, is_invalid = FALSE, dir = t_dir){
   if(isTRUE(is_invalid)){
-    p <- file.path(dir, "data", season, "trials", "invalid-colnames")
+    p <- file.path(dir, season, "Archive", "invalid-colnames")
   }else{
-    p <- file.path(dir, "data", season, "trials")
+    p <- file.path(dir, season, "Data")
   }
   
   if(!dir.exists(p)) dir.create(p, recursive = T)

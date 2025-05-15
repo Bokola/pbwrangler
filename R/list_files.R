@@ -12,8 +12,8 @@
 #' @examples
 #'
 #' list_files(system.file(package = "pbwrangler"))[1:5]
-combine_meta_files <- function(season, path=out_dir){
-  csv <- list.files(file.path(path, "data", season, "meta-data"), full.names = TRUE) %>%
+combine_meta_files <- function(season, path=t_dir){
+  csv <- list.files(file.path(path, season, "Data", "meta-data"), full.names = TRUE) %>%
     subset(., grepl(".csv$",.))
   if(path == m_dir){
     xls <-  list.files(file.path(path, "meta-data"), full.names = TRUE) %>%

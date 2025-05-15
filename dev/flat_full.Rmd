@@ -596,8 +596,8 @@ get_fieldbooks <- function(path = t_dir, season, sub_folder = NULL, s = ".csv|.x
 #' @export
 #'
 #' @examples
-combine_meta_files <- function(season, path=out_dir){
-  csv <- list.files(file.path(path, "data", season, "meta-data"), full.names = TRUE) %>%
+combine_meta_files <- function(season, path=t_dir){
+  csv <- list.files(file.path(path, season, "Data", "meta-data"), full.names = TRUE) %>%
     subset(., grepl(".csv$",.))
   if(path == m_dir){
     xls <-  list.files(file.path(path, "meta-data"), full.names = TRUE) %>%
@@ -758,7 +758,7 @@ Create a meta-data to accompany fieldbooks.
 #' @export
 #'
 #' @examples
-  create_meta_file <- function(x, season, d_dir = out_dir) {
+  create_meta_file <- function(x, season, d_dir = t_dir) {
   # x  is a list of trials to generate metadata for
   # season given in the form "season-2023" for example
   s <- season
@@ -801,7 +801,7 @@ Create a meta-data to accompany fieldbooks.
     magrittr::set_names(season)
 
   # p <- file.path(out_dir, "data", season,  "meta-data")
-  p <- file.path(d_dir, "data", season,  "meta-data")
+  p <- file.path(d_dir, season, "Data", "meta-data")
   # p_data <- file.path(out_dir, "data", season)
   if (!dir.exists(p)) {
     dir.create(p, recursive = TRUE)
@@ -945,11 +945,11 @@ write_data(dir = tempdir(), data_list = dat, season = "season-2024")
 #' @export
 #'
 #' @examples
-write_trials <- function(x, season, is_invalid = FALSE, dir = out_dir){
+write_trials <- function(x, season, is_invalid = FALSE, dir = t_dir){
   if(isTRUE(is_invalid)){
-    p <- file.path(dir, "data", season, "trials", "invalid-colnames")
+    p <- file.path(dir, season, "Archive", "invalid-colnames")
   }else{
-    p <- file.path(dir, "data", season, "trials")
+    p <- file.path(dir, season, "Data")
   }
   
   if(!dir.exists(p)) dir.create(p, recursive = T)
@@ -995,7 +995,7 @@ write_season_data <- function(list_df, season){
   # # season 2023 accessions ------------------------------------------------
   
   
-  format_accessions(x = list_df, season = season)
+  # format_accessions(x = list_df, season = season)
   
   ###########################################################################
 }
@@ -1143,14 +1143,17 @@ read_accessions <- function(dir = out_dir){
 #' @examples
 format_accessions <- function(
     x, 
-    dir = out_dir,
-    sub_dir = "accessions",
+    dir = t_dir,
+    sub_dir = file.path("Archive", "data-quality-assessment", "accessions"),
     # df = family_code,
     season, filename = "accession_miss"
     ){
   # get reference data from within the package
   # see 
   # browseURL("https://stackoverflow.com/questions/45044269/how-to-use-data-within-a-function-in-an-r-package")
+  
+  p <- file.path(dir,season, sub_dir)
+  if(!dir.exists(p)) dir.create(p, recursive = TRUE)
   
   data("family_code", envir = environment())
   df <- family_code
@@ -1179,7 +1182,8 @@ format_accessions <- function(
   ) %>% dplyr::arrange(old_family_code, geno)
   out_a <- list(accessions_a, accessions_b) %>% magrittr::set_names(c("acc_miss", "acc_available"))
   if(dim(out_a[[1]])[1] > 0){
-    readr::write_csv(out_a[["acc_miss"]], file.path(dir, sub_dir, paste0(filename, "_", season, ".csv")))
+    readr::write_csv(out_a[["acc_miss"]], 
+    file.path(p, paste0(filename,".csv")))
   }
   return(out_a)
 }
@@ -1435,11 +1439,11 @@ check_gene_chars <- function(x){
 #' @export
 #'
 #' @examples
-check_geno <- function(x, season, dir = out_dir){
+check_geno <- function(x, season, dir = t_dir){
   out <- purrr::map(x, check_gene_chars) %>% drop_null_dfs()
   if(length(out) > 0){
     out <- out %>% capture_location() %>% dplyr::bind_rows()
-    p <- file.path(dir, "data-quality-assessment",season)
+    p <- file.path(dir, season, "Archive", "data-quality-assessment")
     if(!dir.exists(p)) dir.create(p, recursive = TRUE)
     readr::write_csv(out, file.path(p, "wrong-accessions.csv"))
     return(out)

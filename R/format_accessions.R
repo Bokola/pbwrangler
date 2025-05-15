@@ -12,14 +12,17 @@
 #'
 format_accessions <- function(
     x, 
-    dir = out_dir,
-    sub_dir = "accessions",
+    dir = t_dir,
+    sub_dir = file.path("Archive", "data-quality-assessment", "accessions"),
     # df = family_code,
     season, filename = "accession_miss"
     ){
   # get reference data from within the package
   # see 
   # browseURL("https://stackoverflow.com/questions/45044269/how-to-use-data-within-a-function-in-an-r-package")
+  
+  p <- file.path(dir,season, sub_dir)
+  if(!dir.exists(p)) dir.create(p, recursive = TRUE)
   
   data("family_code", envir = environment())
   df <- family_code
@@ -48,7 +51,8 @@ format_accessions <- function(
   ) %>% dplyr::arrange(old_family_code, geno)
   out_a <- list(accessions_a, accessions_b) %>% magrittr::set_names(c("acc_miss", "acc_available"))
   if(dim(out_a[[1]])[1] > 0){
-    readr::write_csv(out_a[["acc_miss"]], file.path(dir, sub_dir, paste0(filename, "_", season, ".csv")))
+    readr::write_csv(out_a[["acc_miss"]], 
+    file.path(p, paste0(filename,".csv")))
   }
   return(out_a)
 }
