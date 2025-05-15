@@ -60,8 +60,11 @@ process_trials <- function(x){
     purrr::map(., ~ dplyr::rename_with(
       .,
       ~ dplyr::case_when(
-        grepl("skin_col", ., ignore.case = TRUE) ~ "tbskn1",
-        grepl("flesh_col", ., ignore.case = TRUE) ~ "tbfsh1",
+        grepl("^skin_col|predominant_tuber_skin_colour", ., ignore.case = TRUE) ~ "tbskn1",
+         grepl("tuber_skin_main_colour_intensity", ., ignore.case = TRUE) ~ "tbskn2",
+        grepl("^flesh_col|predominant_tuber_flesh_colour", ., ignore.case = TRUE) ~ "tbfsh1",
+        grepl("secondary_tuber_flesh_colour", ., ignore.case = TRUE) ~ "tbfsh2",
+        
         TRUE ~ .
       )
     )) %>% 

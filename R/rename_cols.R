@@ -46,6 +46,12 @@ rename_cols <- function(x) {
       grepl("senesc", ., ignore.case = TRUE) ~ "se",
       grepl("plant_height", ., ignore.case = TRUE) ~ "plahe_ev",
       grepl("main_stem_number", ., ignore.case = TRUE) ~ "snpp",
+      grepl("pl_gwth", ., ignore.case = TRUE) ~ "pgh",
+      grepl("inflorescence_number", ., ignore.case = TRUE) ~ "nipp",
+      grepl("inflorescence_flower_number", ., ignore.case = TRUE) ~ "nfwp",
+      grepl("tuber_depth_eyes", ., ignore.case = TRUE) ~ "tbshp3",
+      grepl("tuber_shape", ., ignore.case = TRUE) ~ "tbshp1",
+      grepl("unusual_tuber_shape", ., ignore.case = TRUE) ~ "tbshp2",
       TRUE ~ .
     )
   )
