@@ -1555,7 +1555,7 @@ rename_cols <- function(x) {
       grepl("inflorescence_number", ., ignore.case = TRUE) ~ "nipp",
       grepl("inflorescence_flower_number", ., ignore.case = TRUE) ~ "nfwp",
       grepl("tuber_depth_eyes", ., ignore.case = TRUE) ~ "tbshp3",
-      grepl("tuber_shape", ., ignore.case = TRUE) ~ "tbshp1",
+      grepl("^tuber_shape", ., ignore.case = TRUE) ~ "tbshp1",
       grepl("unusual_tuber_shape", ., ignore.case = TRUE) ~ "tbshp2",
       TRUE ~ .
     )
