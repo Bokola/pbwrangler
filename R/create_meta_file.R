@@ -45,10 +45,10 @@
   )
   
   if(length(out) > 1){
-    out <- purrr::imap(out, ~ .x %>% dplyr::mutate(location = sub("hybrid", "", sub("_.*", "", .y))))
+    out <- purrr::imap(out, ~ .x %>% dplyr::mutate(trial_name = sub("hybrid", "", sub("_.*", "", .y))))
   }else{
     out <- out %>% purrr::map(
-      ., function(x) dplyr::mutate(x, location = sub("hybrid", "", sub("_.*", "", location)))
+      ., function(x) dplyr::mutate(x, trial_name = sub("hybrid", "", sub("_.*", "", trial_name)))
     )
   }
   
