@@ -774,18 +774,24 @@ Create a meta-data to accompany fieldbooks.
       # first season planting on April 1, second season planting on Nov 1
       
       planting_date = dplyr::case_when(
-        stringr::str_count(s, "-") < 2 ~ as.Date(paste0("01-04-", sub("^([^-]*-[^-]*).*", "\\1", s) %>%
-                                                 gsub(".*-", "",.)), format = "%d-%m-%Y"),
-        TRUE ~ as.Date(paste0("01-11-", sub("^([^-]*-[^-]*).*", "\\1", s) %>%
-                                gsub(".*-", "",.)), format = "%d-%m-%Y")
+        !grepl("\\d+-", s)  ~ as.Date(paste0("01-04-", sub("^([^-|^ ])*.", "", s) %>%
+                                                 gsub("-.*", "",.)), format = "%d-%m-%Y"),
+        TRUE ~ as.Date(paste0("01-11-", sub("^([^-|^ ])*.", "", s) %>%
+                                gsub("-.*", "",.)), format = "%d-%m-%Y")
       ),
+      
+      # planting_date = as.Date(paste0("01-04-", sub("^([^- | ^ ])*.", "", s) %>%
+      #                                            gsub("-.*", "",.)), format = "%d-%m-%Y"),
       # Harvesting date is 100 days post planting
       harvest_date =  dplyr::case_when(
-        stringr::str_count(s, "-") < 2 ~ as.Date(paste0("01-04-",sub("^([^-]*-[^-]*).*", "\\1", s) %>%
-                                                 gsub(".*-", "",.)), format = "%d-%m-%Y") + 100,
-        TRUE ~ as.Date(paste0("01-11-", sub("^([^-]*-[^-]*).*", "\\1", s) %>%
-                                gsub(".*-", "",.)), format = "%d-%m-%Y") + 100
+         !grepl("\\d+-", s) ~ as.Date(paste0("01-04-",sub("^([^-|^ ])*.", "", s) %>%
+                                                 gsub("-.*", "",.)), format = "%d-%m-%Y") + 100,
+        TRUE ~ as.Date(paste0("01-11-", sub("^([^-|^ ])*.", "", s) %>%
+                                gsub("-.*", "",.)), format = "%d-%m-%Y") + 100
       )
+      
+      # harvest_date = as.Date(paste0("01-04-",sub("^([^- | ^ ])*.", "", s) %>%
+      #                                            gsub("-.*", "",.)), format = "%d-%m-%Y") + 100
     )
   )
   
