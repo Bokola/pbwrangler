@@ -21,8 +21,8 @@
 write_data <- function(dir = b_out_dir, data_list, season){
   sn_dir <- file.path(dir, season)
   if(!exists(sn_dir)) dir.create(sn_dir, recursive = TRUE)
-  paths <- file.path(sn_dir, paste0(names(data_list), ".csv"))
-  purrr::walk2(data_list, paths, readr::write_csv)
+  paths <- file.path(sn_dir, paste0(names(data_list), ".xlsx"))
+  purrr::walk2(data_list, paths, writexl::write_xlsx)
 }
 
 #' Write out data for pre-processed experimental data by calling `write_trials()`
@@ -81,7 +81,7 @@ write_trials <- function(x, season, is_invalid = FALSE, dir = t_dir){
   }
   
   if(!dir.exists(p)) dir.create(p, recursive = T)
-  paths <- file.path(p, paste0(names(x), ".csv"))
+  paths <- file.path(p, paste0(names(x), ".cxlsx"))
   # paths_d <- file.path(p_data, names(x), ".csv")
-  purrr::walk2(x, paths, readr::write_csv)
+  purrr::walk2(x, paths, writexl::write_xlsx)
 }

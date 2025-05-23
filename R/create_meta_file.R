@@ -66,15 +66,15 @@
   # p_data <- file.path(out_dir, "data", season)
   if (!dir.exists(p)) {
     dir.create(p, recursive = TRUE)
-    paths <- file.path(p, paste0(names(out), ".csv"))
-    purrr::walk2(out, paths, readr::write_csv)
+    paths <- file.path(p, paste0(names(out), ".xlsx"))
+    purrr::walk2(out, paths, writexl::write_xlsx)
   } else{
     # get new files
     p_sub <- setdiff(names(out), gsub("\\..*", "", list.files(p)))
     if (length(p_sub) > 0 ) {
-      paths <- file.path(p, paste0(p_sub, ".csv"))
+      paths <- file.path(p, paste0(p_sub, ".xlsx"))
       # paths_d <- file.path(p_data, names(x), ".csv")
-      purrr::walk2(out[p_sub], paths, readr::write_csv)
+      purrr::walk2(out[p_sub], paths, writexl::write_xlsx)
     }
     
   }
