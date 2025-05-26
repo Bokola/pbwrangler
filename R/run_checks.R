@@ -25,7 +25,14 @@ run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3, crop = "pt", ...
   # check.data.pt(x)
   
   # compute traits
-  y <- st4gi::cdt(y, method = "np", sz / (within * btwn), crop = crop)
+  if("spaces_between_ridges" %nin% names(x)){
+      y <- st4gi::cdt(y, method = "np", sz / (within * btwn), crop = crop)
+  }else{
+    x_btwn <- readr::parse_number(x$space_between_ridges)
+    x_within <- readr::parse_number(x$space_between_plants_in_ridges)
+    y <- st4gi::cdt(y, method = "np", sz / (x_within * x_btwn), crop = crop)
+  }
+
   
   # set missing values to zero
   #bug: clean.data() converts non-numeric columns to NA

@@ -23,7 +23,17 @@ compute derived phenotypic variables
 }
 \examples{
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
-df <- read_workbooks(dir = NULL, file_to_read = f) 
+df <- read_workbooks(dir = NULL, file_to_read = f)  \%>\%
+  purrr::map(
+    .,
+    ~ dplyr::mutate(
+      .,
+      space_between_ridges = "0.75m",
+      space_between_plants_in_ridges = "0.3m",
+      number_of_plants_per_plot = 10
+    )
+  )
+
 df_out <- pre_process_trials(df) |> process_trials() \%>\%
   purrr::map(., run_data_processes)
 purrr::map(df_out, names_df)

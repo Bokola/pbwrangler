@@ -76,6 +76,15 @@ fit_td <- function(x, trait, spatial = FALSE){
 #'     ., ~dplyr::mutate(
 #'       ., year = "2024", loc = "UON", trial = "lbht"
 #'     )
+#'   ) %>%
+#'   purrr::map(
+#'     .,
+#'     ~ dplyr::mutate(
+#'       .,
+#'       space_between_ridges = "0.75m",
+#'       space_between_plants_in_ridges = "0.3m",
+#'       number_of_plants_per_plot = 10
+#'     )
 #'   )
 #' df_out <- pre_process_trials(df) |> process_trials() %>%
 #'   purrr::map(., run_data_processes) %>% `[[`(1) 
@@ -96,3 +105,30 @@ join_by_keys <- function(x, y){
   ) %>% magrittr::set_names(keys)
   out
 }
+
+#' join data and meta data 
+#'
+#' @param data_lst a list of trial dfs
+#' @param meta_lst a list of accompanying meta data
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+join_data_meta <- function(data_lst, meta_lst){
+  names_lst = names(data_lst)
+  meta <- meta_lst[names(meta_lst) %in% names(data_lst)]
+  df_lst <- purrr::imap(
+    data_lst, ~ .x %>% dplyr::mutate(
+      trial_name = .y
+    )
+  )
+  out = vector("list", length = length(data_lst))
+  for(i in seq(data_lst)){
+    pattern = names(data_lst)[i]
+    out[[i]] <- dplyr::left_join(df_lst[[pattern]], meta[[pattern]])
+  }
+   names(out) <- names_lst
+   return(out)
+}
+

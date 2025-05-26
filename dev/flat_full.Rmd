@@ -370,7 +370,12 @@ compute_cols <- function(x) {
       # number of marketable tubers
       nmtp = sum_rowwise(., target_cols = c("nmtci", "nmtcii")),
       
-      n_tubers = sum_rowwise(., target_cols = c("nmtp", "nnomtp"))
+      n_tubers = sum_rowwise(., target_cols = c("nmtp", "nnomtp")),
+      # pls = net plot size, pld = planting density, per 10000m^2
+     pls = readr::parse_number(space_between_ridges) * 
+       readr::parse_number(space_between_plants_in_ridges) #* number_of_plants_per_plot
+    ,pld = 10000/pls
+    ,ntp = number_of_plants_per_plot
     )
   )
 }
@@ -1378,7 +1383,14 @@ run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3, crop = "pt", ...
   # check.data.pt(x)
   
   # compute traits
-  y <- st4gi::cdt(y, method = "np", sz / (within * btwn), crop = crop)
+  if("spaces_between_ridges" %nin% names(x)){
+      y <- st4gi::cdt(y, method = "np", sz / (within * btwn), crop = crop)
+  }else{
+    x_btwn <- readr::parse_number(x$space_between_ridges)
+    x_within <- readr::parse_number(x$space_between_plants_in_ridges)
+    y <- st4gi::cdt(y, method = "np", sz / (x_within * x_btwn), crop = crop)
+  }
+
   
   # set missing values to zero
   #bug: clean.data() converts non-numeric columns to NA
@@ -1697,7 +1709,17 @@ A number of computed columns are generated in the process.
 
 ```{r examples-pre_process_trials, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
-df <- read_workbooks(dir = NULL, file_to_read = f) 
+df <- read_workbooks(dir = NULL, file_to_read = f)  %>%
+  purrr::map(
+    .,
+    ~ dplyr::mutate(
+      .,
+      space_between_ridges = "0.75m",
+      space_between_plants_in_ridges = "0.3m",
+      number_of_plants_per_plot = 10
+    )
+  )
+
 df_out <- pre_process_trials(df) |> process_trials() %>%
   purrr::map(., run_data_processes)
 purrr::map(df_out, names_df)
@@ -1798,6 +1820,33 @@ join_by_keys <- function(x, y){
   ) %>% magrittr::set_names(keys)
   out
 }
+
+#' join data and meta data 
+#'
+#' @param data_lst a list of trial dfs
+#' @param meta_lst a list of accompanying meta data
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+join_data_meta <- function(data_lst, meta_lst){
+  names_lst = names(data_lst)
+  meta <- meta_lst[names(meta_lst) %in% names(data_lst)]
+  df_lst <- purrr::imap(
+    data_lst, ~ .x %>% dplyr::mutate(
+      trial_name = .y
+    )
+  )
+  out = vector("list", length = length(data_lst))
+  for(i in seq(data_lst)){
+    pattern = names(data_lst)[i]
+    out[[i]] <- dplyr::left_join(df_lst[[pattern]], meta[[pattern]])
+  }
+   names(out) <- names_lst
+   return(out)
+}
+
 ```
 
 
@@ -1807,6 +1856,15 @@ df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   purrr::map(
     ., ~dplyr::mutate(
       ., year = "2024", loc = "UON", trial = "lbht"
+    )
+  ) %>%
+  purrr::map(
+    .,
+    ~ dplyr::mutate(
+      .,
+      space_between_ridges = "0.75m",
+      space_between_plants_in_ridges = "0.3m",
+      number_of_plants_per_plot = 10
     )
   )
 df_out <- pre_process_trials(df) |> process_trials() %>%
@@ -1851,6 +1909,15 @@ df <- read_workbooks(dir = NULL, file_to_read = f) %>%
   purrr::map(
     ., ~dplyr::mutate(
       ., year = "2024", loc = "UON", trial = "lbht"
+    )
+  ) %>%
+  purrr::map(
+    .,
+    ~ dplyr::mutate(
+      .,
+      space_between_ridges = "0.75m",
+      space_between_plants_in_ridges = "0.3m",
+      number_of_plants_per_plot = 10
     )
   )
 df_out <- pre_process_trials(df) |> process_trials() %>%

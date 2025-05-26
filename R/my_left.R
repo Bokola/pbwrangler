@@ -290,7 +290,12 @@ compute_cols <- function(x) {
       # number of marketable tubers
       nmtp = sum_rowwise(., target_cols = c("nmtci", "nmtcii")),
       
-      n_tubers = sum_rowwise(., target_cols = c("nmtp", "nnomtp"))
+      n_tubers = sum_rowwise(., target_cols = c("nmtp", "nnomtp")),
+      # pls = net plot size, pld = planting density, per 10000m^2
+     pls = readr::parse_number(space_between_ridges) * 
+       readr::parse_number(space_between_plants_in_ridges) #* number_of_plants_per_plot
+    ,pld = 10000/pls
+    ,ntp = number_of_plants_per_plot
     )
   )
 }
