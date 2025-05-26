@@ -243,6 +243,9 @@ gen_row_col <- function(x){
 #'
 #' @examples
 compute_cols <- function(x) {
+  
+  ttwp_cols <- c("mtwci", "mtwcii", "nomtwp")
+  tntp_cols <- c("nmtp", "nnomtp")
   purrr::map(
     x,
     ~ dplyr::mutate(
@@ -289,7 +292,8 @@ compute_cols <- function(x) {
       mtwp = sum_rowwise(., target_cols = c("mtwci", "mtwcii")),
       # number of marketable tubers
       nmtp = sum_rowwise(., target_cols = c("nmtci", "nmtcii")),
-      
+      ttwp = sum_rowwise(., target_cols = ttwp_cols),
+      tntp = sum_rowwise(., target_cols = tntp_cols),
       n_tubers = sum_rowwise(., target_cols = c("nmtp", "nnomtp")),
       # pls = net plot size, pld = planting density, per 10000m^2
      pls = readr::parse_number(space_between_ridges) * 

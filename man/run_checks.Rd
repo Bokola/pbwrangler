@@ -28,6 +28,11 @@ run data quality checks using \code{{st4gi}} functions
 \examples{
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) \%>\%
-  `[[`(1)
+  `[[`(1) \%>\% 
+  dplyr::mutate(
+          space_between_ridges = "0.75m",
+      space_between_plants_in_ridges = "0.3m",
+      number_of_plants_per_plot = 10
+  )
 df_checked <- run_checks(df)
 }

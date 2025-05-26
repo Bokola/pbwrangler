@@ -323,6 +323,9 @@ gen_row_col <- function(x){
 #'
 #' @examples
 compute_cols <- function(x) {
+  
+  ttwp_cols <- c("mtwci", "mtwcii", "nomtwp")
+  tntp_cols <- c("nmtp", "nnomtp")
   purrr::map(
     x,
     ~ dplyr::mutate(
@@ -369,7 +372,8 @@ compute_cols <- function(x) {
       mtwp = sum_rowwise(., target_cols = c("mtwci", "mtwcii")),
       # number of marketable tubers
       nmtp = sum_rowwise(., target_cols = c("nmtci", "nmtcii")),
-      
+      ttwp = sum_rowwise(., target_cols = ttwp_cols),
+      tntp = sum_rowwise(., target_cols = tntp_cols),
       n_tubers = sum_rowwise(., target_cols = c("nmtp", "nnomtp")),
       # pls = net plot size, pld = planting density, per 10000m^2
      pls = readr::parse_number(space_between_ridges) * 
@@ -1407,7 +1411,12 @@ run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3, crop = "pt", ...
 ```{r examples-run_checks, message=FALSE, warning=FALSE}
 f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 df <- read_workbooks(dir = NULL, file_to_read = f) %>%
-  `[[`(1)
+  `[[`(1) %>% 
+  dplyr::mutate(
+          space_between_ridges = "0.75m",
+      space_between_plants_in_ridges = "0.3m",
+      number_of_plants_per_plot = 10
+  )
 df_checked <- run_checks(df)
 ```
 
