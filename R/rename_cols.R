@@ -17,7 +17,7 @@ rename_cols <- function(x) {
     ~ dplyr::case_when(
       grepl("column", ., ignore.case = TRUE) ~ "col",
       grepl("site|^loc", ., ignore.case = TRUE) ~ "loc",
-      grepl("plot_id|plot_no|^plot", ., ignore.case = TRUE) ~ "plot",
+      grepl("plot_id|plot_no", ., ignore.case = TRUE) ~ "plot",
       grepl("nph_1_present_0_absent", ., ignore.case = TRUE) ~ "nph",
       grepl("clone|^variet|instn|cip_id|^geno", ., ignore.case = TRUE) ~ "geno",
       # grepl("skin_col", ., ignore.case = TRUE) ~ "tbskn1",
