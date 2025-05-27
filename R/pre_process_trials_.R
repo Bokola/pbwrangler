@@ -86,6 +86,7 @@ process_trials <- function(x){
 #' @param sz size of farm, here taken to be 10000 sq metres
 #' @param btwn spacing between ridges in metres
 #' @param within spacing between plants in the same ridge in metres
+#' @param crop one of \code{'pt'} or \code{'sp'}
 #'
 #' @return a dataframe
 #' @export
@@ -106,8 +107,14 @@ process_trials <- function(x){
 #' df_out <- pre_process_trials(df) |> process_trials() %>%
 #'   purrr::map(., run_data_processes)
 #' purrr::map(df_out, names_df)
-run_data_processes <- function(x, sz = 10000, btwn = 0.75, within = 0.3){
-  x %>%  as.data.frame() %>%  st4gi::cdt(., 'np', sz/btwn/within) %>%
-    st4gi::clean.data() %>% st4gi::cdt(., 'np', sz/btwn/within) %>%
-    st4gi::clean.data()
+run_data_processes <- function(x, sz = 10000, btwn = 0.75, within = 0.3, crop = 'pt'){
+    if("spaces_between_ridges" %nin% names(x)){
+      y <- st4gi::cdt(x, method = "np", sz / (within * btwn * 10), crop = crop)
+  }else{
+    x_btwn <- readr::parse_number(x$space_between_ridges)
+    x_within <- readr::parse_number(x$space_between_plants_in_ridges)
+    y <- st4gi::cdt(x, method = "np", sz / (x_within * x_btwn * number_of_plants_per_ridge), crop = crop)
+  }
+  
+  y
 }

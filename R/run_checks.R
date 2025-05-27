@@ -31,11 +31,11 @@ run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3, crop = "pt", ...
   
   # compute traits
   if("spaces_between_ridges" %nin% names(x)){
-      y <- st4gi::cdt(y, method = "np", sz / (within * btwn), crop = crop)
+      y <- st4gi::cdt(y, method = "np", sz / (within * btwn * 10), crop = crop)
   }else{
     x_btwn <- readr::parse_number(x$space_between_ridges)
     x_within <- readr::parse_number(x$space_between_plants_in_ridges)
-    y <- st4gi::cdt(y, method = "np", sz / (x_within * x_btwn), crop = crop)
+    y <- st4gi::cdt(y, method = "np", sz / (x_within * x_btwn * number_of_plants_per_ridge), crop = crop)
   }
 
   

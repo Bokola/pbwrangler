@@ -4,7 +4,7 @@
 \alias{run_data_processes}
 \title{compute derived phenotypic variables}
 \usage{
-run_data_processes(x, sz = 10000, btwn = 0.75, within = 0.3)
+run_data_processes(x, sz = 10000, btwn = 0.75, within = 0.3, crop = "pt")
 }
 \arguments{
 \item{x}{a dataframe}
@@ -14,6 +14,8 @@ run_data_processes(x, sz = 10000, btwn = 0.75, within = 0.3)
 \item{btwn}{spacing between ridges in metres}
 
 \item{within}{spacing between plants in the same ridge in metres}
+
+\item{crop}{one of \code{'pt'} or \code{'sp'}}
 }
 \value{
 a dataframe
