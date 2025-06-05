@@ -1112,7 +1112,8 @@ clean_clone_name <- function(x){
   # change clone year from 18 to 23
     
   # gsub("CIP318", "CIP323", .) %>%
-    gsub("^duct", "Dutch", .)
+    gsub("^duct", "Dutch", .) %>%
+    gsub("-filler|filler-|dummy-|-dummy", "", .)
 }
 
 ```
@@ -2062,7 +2063,7 @@ gen_uniqueid <- function(x){
 #'
 #' @examples
 assign_benches <- function(x, id_col="row_id"){
-  # there are 5-rows, 5 column benches, each grid taking 192 testubes
+  # there are 5-rows, 5 column benches, each grid taking 192 test tubes
   
   out <- x %>% dplyr::mutate(
     # Bench 1

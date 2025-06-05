@@ -20,6 +20,7 @@ clean_clone_name <- function(x){
   # change clone year from 18 to 23
     
   # gsub("CIP318", "CIP323", .) %>%
-    gsub("^duct", "Dutch", .)
+    gsub("^duct", "Dutch", .) %>%
+    gsub("-filler|filler-|dummy-|-dummy", "", .)
 }
 

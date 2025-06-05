@@ -9,7 +9,7 @@
 #' @export
 #'
 assign_benches <- function(x, id_col="row_id"){
-  # there are 5-rows, 5 column benches, each grid taking 192 testubes
+  # there are 5-rows, 5 column benches, each grid taking 192 test tubes
   
   out <- x %>% dplyr::mutate(
     # Bench 1
