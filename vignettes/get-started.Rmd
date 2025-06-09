@@ -640,6 +640,10 @@ These are only included in the present flat template file, their content will no
 -->
 
 
+Plotting functions
+
+
+
 <!-- # Inflate your package -->
 
 <!-- You're one inflate from paper to box. -->

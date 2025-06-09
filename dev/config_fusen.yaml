@@ -33,6 +33,7 @@ flat_full.Rmd:
   - R/subset_invalid_cols.R
   - R/merge_note_obs.R
   - R/my_left.R
+  - R/plot_weather.R
   - R/pre_process_trials_.R
   - R/randomize_row_col.R
   - R/read_accessions.R

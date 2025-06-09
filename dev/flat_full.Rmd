@@ -3069,6 +3069,68 @@ Create a chunk with 'development' actions
 These are only included in the present flat template file, their content will not be part of the package anywhere else.
 -->
 
+
+Plotting functions
+
+```{r function-plot_weather}
+plot_weather <- function(df = df_w_summ,
+                         var = "temperature_mean",
+                         color_c = c("#003f5c", "#58508d", "#bc5090",
+                                     "#ff6361", "#ffa600"),
+                         color_bg = "grey99",
+                         color_axis = "#273B50",
+                         color_title = "#273B50",
+                         color_panelbg = "#F6F2EE",
+                         b_font = "Source Serif Pro") {
+  y_lab <- ifelse(grepl("temp|dew", var), paste0("Temperature", "(\u00B0C)"),
+                        paste0("Relative humidity", "(%)"))
+  titl <- ifelse(grepl("temp|dew", var), paste0("Average Temperature"),
+                  paste0("Average Relative Humidity"))
+  
+  if(grepl("temp|dew", var)){
+    breaks <- seq(0, 30, 4)
+    minor_breaks <- seq(0, 30, 2)
+  }else{
+    breaks <- seq(0, 100, 20)
+    minor_breaks <- seq(0, 100, 10)
+  }
+
+  ggplot2::ggplot(df, aes(x = date, y = !!sym(var), color = location)) +
+    geom_line(alpha = 0.5, linewidth = 0.4) + ylab(y_lab) +
+    xlab("date") + scale_x_date(date_labels = "%b-%Y") +
+    scale_color_manual(values = color_c) +
+    scale_y_continuous(
+      breaks = breaks,
+      minor_breaks = minor_breaks,
+      position = "left",
+      labels = scales::number
+    ) +
+    labs(title = titl,
+         caption = "Source: HOBO data logger devices") +
+    coord_cartesian(clip = "off") +
+    theme_gray(base_family = b_font) +
+    theme(
+      legend.position = "top",
+      plot.background = element_rect(fill = color_bg, color = NA),
+      panel.background = element_rect(fill = color_panelbg , color = NA),
+      axis.title.x = element_blank(),
+      axis.title = element_text(size = 12, colour = color_axis),
+      axis.text = element_text(size = 12, color = color_axis),
+      plot.margin = margin(20, 20, 20, 30),
+      plot.title = element_text(
+        size = 20,
+        face = "bold",
+        color = color_title,
+        margin = margin(0, 0, 10, 0)
+      ),
+      plot.subtitle = element_text(color = color_title),
+      plot.caption = element_text(color = color_title)
+    )
+}
+
+```
+
+
 ```{r development-inflate, eval=FALSE}
 # Keep eval=FALSE to avoid infinite loop in case you hit the knit button
 # Execute in the console directly
