@@ -92,6 +92,7 @@ process_trials <- function(x){
 #' @export
 #'
 #' @examples
+run_data_processes <-
 #' f <- system.file("uon-trial-1.csv", package = "pbwrangler")
 #' df <- read_workbooks(dir = NULL, file_to_read = f)  %>%
 #'   purrr::map(
@@ -107,20 +108,34 @@ process_trials <- function(x){
 #' df_out <- pre_process_trials(df) |> process_trials() %>%
 #'   purrr::map(., run_data_processes)
 #' purrr::map(df_out, names_df)
-run_data_processes <- function(x, sz = 10, btwn = 0.75, within = 0.3, crop = 'pt'){
-  x_cols <- names(x)
-    if("spaces_between_ridges" %nin% x_cols){
-      y <- st4gi::cdt(x, method = "ps", sz * (within * btwn), crop = crop)
-      y <- y %>% st4gi::clean.data()
-  }else{
-    x_btwn <- readr::parse_number(x$space_between_ridges)
-    x_within <- readr::parse_number(x$space_between_plants_in_ridges)
-    no_plant <- x$number_of_plants_per_plot
-    y <- st4gi::cdt(x, method = "ps",  (x_within * x_btwn 
-                                            * no_plant
-                                            ), crop = crop)
-    y <- y %>% clean.data()
+  function(x,
+           sz = 10,
+           btwn = 0.75,
+           within = 0.3,
+           crop = 'pt') {
+    x_cols <- names(x)
+    #   if("spaces_between_ridges" %nin% x_cols){
+    #     y <- st4gi::cdt(x, method = "ps", sz * (within * btwn), crop = crop)
+    #     y <- y %>% st4gi::clean.data()
+    # }
+    # if ("spaces_between_ridges" %in% x_cols) {
+    #   x_btwn <- readr::parse_number(x$space_between_ridges)
+    #   x_within <-
+    #     readr::parse_number(x$space_between_plants_in_ridges)
+    #   no_plant <- x$number_of_plants_per_plot
+     y <-
+        st4gi::cdt(
+          x,
+          method = "ps",
+          (
+            readr::parse_number(x$space_between_ridges) *
+              readr::parse_number(x$space_between_plants_in_ridges) *
+              x$number_of_plants_per_plot
+          ),
+          crop = crop
+        )
+      y <- y %>% st4gi::clean.data(crop = crop)
+    # }
+    
+    y
   }
-  
-  y
-}
