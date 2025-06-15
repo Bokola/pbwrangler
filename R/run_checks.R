@@ -3,7 +3,7 @@
 #' run data quality checks using `{st4gi}` functions
 
 #' @param x a dataframe
-#' @param sz size of farm, here taken to be 10000 sq metres
+#' @param sz number of plants per plot
 #' @param btwn spacing between ridges in metres
 #' @param within spacing between plants in the same ridge in metres
 #' @param crop character. one of "sp" or "pt"
@@ -23,7 +23,7 @@
 #'       number_of_plants_per_plot = 10
 #'   )
 #' df_checked <- run_checks(df)
-run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3, crop = "pt", ...){
+run_checks <- function(x,sz = 10, btwn = 0.75, within = 0.3, crop = "pt", ...){
   # check names
   y <- st4gi::check.names(x, crop = crop)
   # check outliers
@@ -31,12 +31,12 @@ run_checks <- function(x,sz = 10000, btwn = 0.75, within = 0.3, crop = "pt", ...
   
   # compute traits
   if("spaces_between_ridges" %nin% names(x)){
-      y <- st4gi::cdt(y, method = "np", sz / (within * btwn), crop = crop)
+      y <- st4gi::cdt(y, method = "ps", sz * (within * btwn), crop = crop)
   }else{
     x_btwn <- readr::parse_number(x$space_between_ridges)
     x_within <- readr::parse_number(x$space_between_plants_in_ridges)
-    y <- st4gi::cdt(y, method = "np", sz / (x_within * x_btwn 
-                                            # * number_of_plants_per_ridge
+    y <- st4gi::cdt(y, method = "ps", sz * (x_within * x_btwn 
+                                            * number_of_plants_per_plot
                                             )
                     , crop = crop)
   }

@@ -4,12 +4,12 @@
 \alias{run_data_processes}
 \title{compute derived phenotypic variables}
 \usage{
-run_data_processes(x, sz = 10000, btwn = 0.75, within = 0.3, crop = "pt")
+run_data_processes(x, sz = 10, btwn = 0.75, within = 0.3, crop = "pt")
 }
 \arguments{
 \item{x}{a dataframe}
 
-\item{sz}{size of farm, here taken to be 10000 sq metres}
+\item{sz}{number of plants per plot}
 
 \item{btwn}{spacing between ridges in metres}
 
