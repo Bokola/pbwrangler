@@ -25,18 +25,20 @@
 #' df_checked <- run_checks(df)
 run_checks <- function(x,sz = 10, btwn = 0.75, within = 0.3, crop = "pt", ...){
   # check names
+  x_cols <- names(x)
   y <- st4gi::check.names(x, crop = crop)
   # check outliers
   # check.data.pt(x)
   
   # compute traits
-  if("spaces_between_ridges" %nin% names(x)){
+  if("spaces_between_ridges" %nin% x_cols){
       y <- st4gi::cdt(y, method = "ps", sz * (within * btwn), crop = crop)
   }else{
     x_btwn <- readr::parse_number(x$space_between_ridges)
     x_within <- readr::parse_number(x$space_between_plants_in_ridges)
+    no_plant <- x$number_of_plants_per_plot
     y <- st4gi::cdt(y, method = "ps",  (x_within * x_btwn 
-                                            * number_of_plants_per_plot
+                                            * no_plant
                                             )
                     , crop = crop)
   }

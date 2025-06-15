@@ -108,14 +108,16 @@ process_trials <- function(x){
 #'   purrr::map(., run_data_processes)
 #' purrr::map(df_out, names_df)
 run_data_processes <- function(x, sz = 10, btwn = 0.75, within = 0.3, crop = 'pt'){
-    if("spaces_between_ridges" %nin% names(x)){
+  x_cols <- names(x)
+    if("spaces_between_ridges" %nin% x_cols){
       y <- st4gi::cdt(x, method = "ps", sz * (within * btwn), crop = crop)
       y <- y %>% st4gi::clean.data()
   }else{
     x_btwn <- readr::parse_number(x$space_between_ridges)
     x_within <- readr::parse_number(x$space_between_plants_in_ridges)
+    no_plant <- x$number_of_plants_per_plot
     y <- st4gi::cdt(x, method = "ps",  (x_within * x_btwn 
-                                            * number_of_plants_per_plot
+                                            * no_plant
                                             ), crop = crop)
     y <- y %>% clean.data()
   }
