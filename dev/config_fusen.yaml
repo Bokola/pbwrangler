@@ -20,6 +20,7 @@ flat_full.Rmd:
   - R/duplicate_row.R
   - R/capture_location.R
   - R/check_gene_chars.R
+  - R/plot_weather.R
   - R/clean_clone_name.R
   - R/clean_file_names.R
   - R/list_files.R
@@ -33,7 +34,6 @@ flat_full.Rmd:
   - R/subset_invalid_cols.R
   - R/merge_note_obs.R
   - R/my_left.R
-  - R/plot_weather.R
   - R/pre_process_trials_.R
   - R/randomize_row_col.R
   - R/read_accessions.R

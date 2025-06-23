@@ -3179,6 +3179,34 @@ plot_weather <- function(df = df_w_summ,
 ```
 
 
+Data quality checks
+
+```{r function-check_vars}
+#' find variables not collecte but should have been
+#'
+#' @param x a data frame
+#' @param y a vector of variables to find
+#'
+#' @return a list
+#' @export
+#'
+#' @examples
+check_vars <- function(x, y = c("npe", "nph", "ntp")){
+  out <- vector("list")
+  
+  for(i in seq(y)){
+    if(y[i] %nin% names(x)){
+      out[[i]] <- data.frame(variable = y[i], mesaage = "not collected") %>% 
+        dplyr::distinct()
+    }
+    # out[[i]] <- out[[i]] %>% dplyr::distinct() #%>% reduce(., bind_rows)
+  }
+  out 
+}
+
+```
+
+
 ```{r development-inflate, eval=FALSE}
 # Keep eval=FALSE to avoid infinite loop in case you hit the knit button
 # Execute in the console directly
