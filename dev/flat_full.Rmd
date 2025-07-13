@@ -3214,7 +3214,7 @@ my_theme <- function(plot,
     coord_cartesian(clip = "off") +
     theme_gray(base_family = b_font) +
     theme(
-      legend.position = "top",
+      legend.position = legend_pos,
       plot.background = element_rect(fill = color_bg, color = NA),
       panel.background = element_rect(fill = color_panelbg , color = NA),
       axis.title.x = element_blank(),
