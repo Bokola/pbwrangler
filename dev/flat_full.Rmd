@@ -3179,6 +3179,63 @@ plot_weather <- function(df = df_w_summ,
 ```
 
 
+```{r function-my_theme}
+#' plot weather data coming from HOBO data loggers
+#' @param plot plot to theme
+#' @param caption plot caption
+#' @param title plot title
+#' @param legend_pos a character vector specifying legend position 
+#' @param color_c a character vector of hex color codes
+#' @param color_bg a character vector of hex color codes
+#' @param color_axis a character vector of hex color codes
+#' @param color_title a character vector of hex color codes
+#' @param color_panelbg a character vector of hex color codes
+#' @param b_font a character vector of font family
+#'
+#' @return NULL
+#' @export
+#'
+#' @examples
+my_theme <- function(plot,
+                     caption,
+                     title,
+                     legend_pos = "off",
+                         color_c = c("#003f5c", "#58508d", "#bc5090",
+                                     "#ff6361", "#ffa600"),
+                         color_bg = "grey99",
+                         color_axis = "#273B50",
+                         color_title = "#273B50",
+                         color_panelbg = "#F6F2EE",
+                         b_font = "Source Serif Pro") {
+ 
+  
+    p <- plot + labs(title = title,
+         caption = caption) +
+    coord_cartesian(clip = "off") +
+    theme_gray(base_family = b_font) +
+    theme(
+      legend.position = "top",
+      plot.background = element_rect(fill = color_bg, color = NA),
+      panel.background = element_rect(fill = color_panelbg , color = NA),
+      axis.title.x = element_blank(),
+      axis.title = element_text(size = 12, colour = color_axis),
+      axis.text = element_text(size = 12, color = color_axis),
+      plot.margin = margin(20, 20, 20, 30),
+      plot.title = element_text(
+        size = 20,
+        face = "bold",
+        color = color_title,
+        margin = margin(0, 0, 10, 0)
+      ),
+      plot.subtitle = element_text(color = color_title),
+      plot.caption = element_text(color = color_title)
+    )
+    p
+}
+
+```
+
+
 Data quality checks
 
 ```{r function-check_vars}
