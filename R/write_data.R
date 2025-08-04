@@ -41,6 +41,7 @@ write_season_data <- function(list_df, season){
   invalid <- purrr::map(list_df, subset_invalid_cols)
   valid <- purrr::map(list_df, get_valid_columns)
   
+  outlying <- purrr::map(list_df, check_outlier)
   
   # check accession names if in order ---------------------------------------
   
@@ -51,6 +52,7 @@ write_season_data <- function(list_df, season){
   
   write_trials(valid, season = season)
   write_trials(invalid, season = season, is_invalid = TRUE)
+  write_outliers(outlying, season = season, outliers = TRUE)
   # #season 2023 metadata ---------------------------------------------------
   
   create_meta_file(x = list_df, season = season)
@@ -76,6 +78,31 @@ write_season_data <- function(list_df, season){
 write_trials <- function(x, season, is_invalid = FALSE, dir = t_dir){
   if(isTRUE(is_invalid)){
     p <- file.path(dir, season, "Archive", "invalid-colnames")
+  }else{
+    p <- file.path(dir, season, "Data")
+  }
+  
+  if(!dir.exists(p)) dir.create(p, recursive = T)
+  paths <- file.path(p, paste0(names(x), ".xlsx"))
+  # paths_d <- file.path(p_data, names(x), ".csv")
+  purrr::walk2(x, paths, writexl::write_xlsx)
+}
+
+
+#' write out trial data
+#'
+#' @param x list of trial data
+#' @param season trial season
+#' @param dir output directory 
+#' @param outliers logical: select clones with outlying yield
+#' 
+#' @return NULL
+#' @export
+#'
+#' @examples
+write_outliers <- function(x, season, outliers = TRUE, dir = t_dir){
+  if(isTRUE(is_invalid)){
+    p <- file.path(dir, season, "Archive", "outliers")
   }else{
     p <- file.path(dir, season, "Data")
   }

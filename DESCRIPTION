@@ -25,6 +25,7 @@ Imports:
     scales,
     st4gi,
     statgenSTA,
+    stats,
     stringr,
     utils,
     writexl

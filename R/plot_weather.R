@@ -18,7 +18,24 @@ check_vars <- function(x, y = c("npe", "nph", "ntp")){
     }
     # out[[i]] <- out[[i]] %>% dplyr::distinct() #%>% reduce(., bind_rows)
   }
-  out 
+  if(length(out) > 0){
+    out <- out %>% purrr::reduce(., dplyr::bind_rows) %>% dplyr::distinct() 
+  }
+  return(out)
+}
+
+check_outlier <- function(x){
+  out <- x %>% dplyr::group_by(geno) %>% dplyr::summarize(
+    sd = stats::sd(ttyna, na.rm = TRUE),
+  ) %>% dplyr::ungroup() %>%
+    dplyr::filter(., sd >2)
+  
+  xx <- x %>% dplyr::filter(geno %in% out$geno) %>%
+    dplyr::select(geno, ttyna) %>%
+    dplyr::arrange(geno)
+  
+  return(xx)
+  
 }
 
 

@@ -3,6 +3,7 @@
 #' @importFrom grDevices dev.off
 #' @importFrom grDevices png
 #' @importFrom graphics  plot.new
+#' @importFrom stats  sd
 #' 
 utils::globalVariables(
   c(
