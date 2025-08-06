@@ -1020,7 +1020,7 @@ write_season_data <- function(list_df, season){
   
   outlying <- purrr::map(list_df, check_outlier)
   # rid of null 0 obs elements
-  outlying <- outlying[!sapply(a, is.null) & lengths(outlying) > 0]
+  outlying <- outlying[!sapply(outlying, is.null) & lengths(outlying) > 0]
 
   
   # check accession names if in order ---------------------------------------
