@@ -1019,6 +1019,9 @@ write_season_data <- function(list_df, season){
   valid <- purrr::map(list_df, get_valid_columns)
   
   outlying <- purrr::map(list_df, check_outlier)
+  # rid of null 0 obs elements
+  outlying <- outlying[!sapply(a, is.null) & lengths(outlying) > 0]
+
   
   # check accession names if in order ---------------------------------------
   
@@ -3292,17 +3295,20 @@ check_vars <- function(x, y = c("npe", "nph", "ntp")){
 }
 
 check_outlier <- function(x){
-  out <- x %>% dplyr::group_by(geno) %>% dplyr::summarize(
-    sd = stats::sd(ttyna, na.rm = TRUE),
-  ) %>% dplyr::ungroup() %>%
-    dplyr::filter(., sd >2)
-  
-  xx <- x %>% dplyr::filter(geno %in% out$geno) %>%
-    dplyr::select(geno, ttyna) %>%
-    dplyr::arrange(geno)
-  
-  return(xx)
-  
+  if(any(grepl("ttyna", names(x)))){
+    out <- x %>% dplyr::group_by(geno) %>% dplyr::summarize(
+      sd = stats::sd(ttyna, na.rm = TRUE),
+    ) %>% dplyr::ungroup() %>%
+      dplyr::filter(., sd >= 5)
+    
+    xx <- x %>% dplyr::filter(geno %in% out$geno) %>%
+      dplyr::select(geno, ttyna) %>%
+      dplyr::arrange(geno)
+    
+
+    xx
+  }
+  # return(xx)
 }
 
 ```

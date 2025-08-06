@@ -25,17 +25,20 @@ check_vars <- function(x, y = c("npe", "nph", "ntp")){
 }
 
 check_outlier <- function(x){
-  out <- x %>% dplyr::group_by(geno) %>% dplyr::summarize(
-    sd = stats::sd(ttyna, na.rm = TRUE),
-  ) %>% dplyr::ungroup() %>%
-    dplyr::filter(., sd >2)
-  
-  xx <- x %>% dplyr::filter(geno %in% out$geno) %>%
-    dplyr::select(geno, ttyna) %>%
-    dplyr::arrange(geno)
-  
-  return(xx)
-  
+  if(any(grepl("ttyna", names(x)))){
+    out <- x %>% dplyr::group_by(geno) %>% dplyr::summarize(
+      sd = stats::sd(ttyna, na.rm = TRUE),
+    ) %>% dplyr::ungroup() %>%
+      dplyr::filter(., sd >= 5)
+    
+    xx <- x %>% dplyr::filter(geno %in% out$geno) %>%
+      dplyr::select(geno, ttyna) %>%
+      dplyr::arrange(geno)
+    
+
+    xx
+  }
+  # return(xx)
 }
 
 

@@ -42,6 +42,9 @@ write_season_data <- function(list_df, season){
   valid <- purrr::map(list_df, get_valid_columns)
   
   outlying <- purrr::map(list_df, check_outlier)
+  # rid of null 0 obs elements
+  outlying <- outlying[!sapply(a, is.null) & lengths(outlying) > 0]
+
   
   # check accession names if in order ---------------------------------------
   
