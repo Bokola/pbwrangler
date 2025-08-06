@@ -104,7 +104,7 @@ write_trials <- function(x, season, is_invalid = FALSE, dir = t_dir){
 #'
 #' @examples
 write_outliers <- function(x, season, outliers = TRUE, dir = t_dir){
-  if(isTRUE(is_invalid)){
+  if(isTRUE(outliers)){
     p <- file.path(dir, season, "Archive", "outliers")
   }else{
     p <- file.path(dir, season, "Data")
