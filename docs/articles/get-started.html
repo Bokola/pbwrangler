@@ -224,7 +224,7 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <span><span class="co">#&gt; $`season-2024`</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 17</span></span></span>
 <span><span class="co">#&gt;   trial_name breeding_program location year  transplanting_date design_type</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>      </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>               <span style="color: #BB0000;">NA</span>       2024  <span style="color: #BB0000;">NA</span>                 <span style="color: #BB0000;">NA</span>         </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 11 more variables: description &lt;lgl&gt;, trial_type &lt;lgl&gt;, plot_width &lt;lgl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   plot_length &lt;lgl&gt;, planting_date &lt;date&gt;, harvest_date &lt;date&gt;,</span></span></span>
@@ -320,7 +320,12 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">`[[`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="fu">`[[`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>          space_between_ridges <span class="op">=</span> <span class="st">"0.75m"</span>,</span>
+<span>      space_between_plants_in_ridges <span class="op">=</span> <span class="st">"0.3m"</span>,</span>
+<span>      number_of_plants_per_plot <span class="op">=</span> <span class="fl">10</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="va">df_checked</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_checks.html">run_checks</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -361,22 +366,42 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <p>A number of computed columns are generated in the process.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"uon-trial-1.csv"</span>, package <span class="op">=</span> <span class="st">"pbwrangler"</span><span class="op">)</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span> </span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span>  <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
+<span>    <span class="va">.</span>,</span>
+<span>    <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      <span class="va">.</span>,</span>
+<span>      space_between_ridges <span class="op">=</span> <span class="st">"0.75m"</span>,</span>
+<span>      space_between_plants_in_ridges <span class="op">=</span> <span class="st">"0.3m"</span>,</span>
+<span>      number_of_plants_per_plot <span class="op">=</span> <span class="fl">10</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
 <span><span class="va">df_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre_process_trials.html">pre_process_trials</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/process_trials.html">process_trials</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">run_data_processes</span><span class="op">)</span></span>
 <span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">df_out</span>, <span class="va">names_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $`UON-TRIAL-1`</span></span>
-<span><span class="co">#&gt;  [1] "atmw"                "col"                 "entry"              </span></span>
-<span><span class="co">#&gt;  [4] "flower_colour"       "flowering"           "flowering_date"     </span></span>
-<span><span class="co">#&gt;  [7] "geno"                "growth_speed"        "late_blight_60_days"</span></span>
-<span><span class="co">#&gt; [10] "mtwp"                "mtyna"               "n_tubers"           </span></span>
-<span><span class="co">#&gt; [13] "nmtp"                "npe"                 "ntp"                </span></span>
-<span><span class="co">#&gt; [16] "obs"                 "overall_impression"  "pgh"                </span></span>
-<span><span class="co">#&gt; [19] "photo"               "plant_unif"          "plant_vigor"        </span></span>
-<span><span class="co">#&gt; [22] "plot"                "ppe"                 "rep"                </span></span>
-<span><span class="co">#&gt; [25] "row"                 "se"                  "tbfsh1"             </span></span>
-<span><span class="co">#&gt; [28] "tbskn1"              "tub_size"            "tub_unif"           </span></span>
-<span><span class="co">#&gt; [31] "tuber_apper"         "unique"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "atmw"                           "atw"                           </span></span>
+<span><span class="co">#&gt;  [3] "col"                            "entry"                         </span></span>
+<span><span class="co">#&gt;  [5] "flower_colour"                  "flowering"                     </span></span>
+<span><span class="co">#&gt;  [7] "flowering_date"                 "geno"                          </span></span>
+<span><span class="co">#&gt;  [9] "growth_speed"                   "late_blight_60_days"           </span></span>
+<span><span class="co">#&gt; [11] "mtwp"                           "mtyna"                         </span></span>
+<span><span class="co">#&gt; [13] "n_tubers"                       "nmtp"                          </span></span>
+<span><span class="co">#&gt; [15] "npe"                            "ntp"                           </span></span>
+<span><span class="co">#&gt; [17] "number_of_plants_per_plot"      "obs"                           </span></span>
+<span><span class="co">#&gt; [19] "overall_impression"             "pgh"                           </span></span>
+<span><span class="co">#&gt; [21] "photo"                          "plant_unif"                    </span></span>
+<span><span class="co">#&gt; [23] "plant_vigor"                    "pld"                           </span></span>
+<span><span class="co">#&gt; [25] "plot"                           "pls"                           </span></span>
+<span><span class="co">#&gt; [27] "ppe"                            "rep"                           </span></span>
+<span><span class="co">#&gt; [29] "row"                            "se"                            </span></span>
+<span><span class="co">#&gt; [31] "space_between_plants_in_ridges" "space_between_ridges"          </span></span>
+<span><span class="co">#&gt; [33] "tbfsh1"                         "tbskn1"                        </span></span>
+<span><span class="co">#&gt; [35] "tntp"                           "ttwp"                          </span></span>
+<span><span class="co">#&gt; [37] "ttyna"                          "tub_size"                      </span></span>
+<span><span class="co">#&gt; [39] "tub_unif"                       "tuber_apper"                   </span></span>
+<span><span class="co">#&gt; [41] "unique"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="create-a-trial-design-object-for-row-col-design">Create a trial design object for row-col design<a class="anchor" aria-label="anchor" href="#create-a-trial-design-object-for-row-col-design"></a>
@@ -388,6 +413,15 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
 <span>    <span class="va">.</span>, <span class="op">~</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>      <span class="va">.</span>, year <span class="op">=</span> <span class="st">"2024"</span>, loc <span class="op">=</span> <span class="st">"UON"</span>, trial <span class="op">=</span> <span class="st">"lbht"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
+<span>    <span class="va">.</span>,</span>
+<span>    <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      <span class="va">.</span>,</span>
+<span>      space_between_ridges <span class="op">=</span> <span class="st">"0.75m"</span>,</span>
+<span>      space_between_plants_in_ridges <span class="op">=</span> <span class="st">"0.3m"</span>,</span>
+<span>      number_of_plants_per_plot <span class="op">=</span> <span class="fl">10</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">df_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre_process_trials.html">pre_process_trials</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/process_trials.html">process_trials</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -419,15 +453,29 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <span>    <span class="va">.</span>, <span class="op">~</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>      <span class="va">.</span>, year <span class="op">=</span> <span class="st">"2024"</span>, loc <span class="op">=</span> <span class="st">"UON"</span>, trial <span class="op">=</span> <span class="st">"lbht"</span></span>
 <span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
+<span>    <span class="va">.</span>,</span>
+<span>    <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>      <span class="va">.</span>,</span>
+<span>      space_between_ridges <span class="op">=</span> <span class="st">"0.75m"</span>,</span>
+<span>      space_between_plants_in_ridges <span class="op">=</span> <span class="st">"0.3m"</span>,</span>
+<span>      number_of_plants_per_plot <span class="op">=</span> <span class="fl">10</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">df_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pre_process_trials.html">pre_process_trials</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/process_trials.html">process_trials</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">run_data_processes</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">`[[`</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="fu"><a href="../reference/subset_invalid_cols.html">subset_invalid_cols</a></span><span class="op">(</span><span class="va">df_out</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "geno"                "unique"              "entry"              </span></span>
-<span><span class="co">#&gt;  [4] "growth_speed"        "flowering_date"      "flower_colour"      </span></span>
-<span><span class="co">#&gt;  [7] "overall_impression"  "late_blight_60_days" "obs"                </span></span>
-<span><span class="co">#&gt; [10] "photo"               "trial"               "n_tubers"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "geno"                           "unique"                        </span></span>
+<span><span class="co">#&gt;  [3] "entry"                          "growth_speed"                  </span></span>
+<span><span class="co">#&gt;  [5] "flowering_date"                 "flower_colour"                 </span></span>
+<span><span class="co">#&gt;  [7] "overall_impression"             "late_blight_60_days"           </span></span>
+<span><span class="co">#&gt;  [9] "obs"                            "photo"                         </span></span>
+<span><span class="co">#&gt; [11] "trial"                          "space_between_ridges"          </span></span>
+<span><span class="co">#&gt; [13] "space_between_plants_in_ridges" "number_of_plants_per_plot"     </span></span>
+<span><span class="co">#&gt; [15] "n_tubers"                       "pls"                           </span></span>
+<span><span class="co">#&gt; [17] "pld"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="tissue-culture-helpers">tissue culture helpers<a class="anchor" aria-label="anchor" href="#tissue-culture-helpers"></a>
@@ -441,12 +489,12 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_workbooks.html">read_workbooks</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="cn">NULL</span>, file_to_read <span class="op">=</span> <span class="va">f</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">d</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $`UON-TRIAL-1`</span></span>
-<span><span class="co">#&gt;           unique plot          geno entry row</span></span>
-<span><span class="co">#&gt; 1 1CIP317004.001    1 CIP317004.001    12   1</span></span>
-<span><span class="co">#&gt; 2 2CIP317005.036    2 CIP317005.036    14   2</span></span>
-<span><span class="co">#&gt; 3 3CIP317007.103    3 CIP317007.103    20   3</span></span>
-<span><span class="co">#&gt; 4 4CIP317013.120    4 CIP317013.120    23   4</span></span>
-<span><span class="co">#&gt; 5 5CIP317026.004    5 CIP317026.004    28   5</span></span></code></pre></div>
+<span><span class="co">#&gt;           unique              plot          geno entry row</span></span>
+<span><span class="co">#&gt; 1 1CIP317004.001 UON-TRIAL-1-00001 CIP317004.001    12   1</span></span>
+<span><span class="co">#&gt; 2 2CIP317005.036 UON-TRIAL-1-00002 CIP317005.036    14   2</span></span>
+<span><span class="co">#&gt; 3 3CIP317007.103 UON-TRIAL-1-00003 CIP317007.103    20   3</span></span>
+<span><span class="co">#&gt; 4 4CIP317013.120 UON-TRIAL-1-00004 CIP317013.120    23   4</span></span>
+<span><span class="co">#&gt; 5 5CIP317026.004 UON-TRIAL-1-00005 CIP317026.004    28   5</span></span></code></pre></div>
 <p>field trial randomization</p>
 </div>
 <div class="section level2">
@@ -574,49 +622,51 @@ season<a class="anchor" aria-label="anchor" href="#create-a-meta-data-file-for-e
 <span>    clones <span class="op">=</span> <span class="va">df</span>,</span>
 <span>    trial <span class="op">=</span> <span class="st">"KE24ILR-BW-ST01"</span>,</span>
 <span>    tot <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>    rowD <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>    rowD <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    rowsinR <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    colsinR <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>    n_dummies <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>    to_add <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>    rep <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>    path <span class="op">=</span> <span class="cn">NULL</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt;      Phase,    Search%,    A-measure</span></span>
-<span><span class="co">#&gt; [1] 1.000000 0.000000 1.002506</span></span>
-<span><span class="co">#&gt; [1]  1.0000000 10.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  1.0000000 20.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  1.0000000 30.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  1.0000000 40.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  1.0000000 50.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  1.0000000 60.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  1.0000000 70.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  1.0000000 80.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  1.0000000 90.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]   1.0000000 100.0000000   0.7919192</span></span>
-<span><span class="co">#&gt;  [1] 0.7919192 0.7919192 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; [1] 1.0000000 0.0000000 0.8121212</span></span>
+<span><span class="co">#&gt; [1]  1.0000000 10.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  1.0000000 20.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  1.0000000 30.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  1.0000000 40.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  1.0000000 50.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  1.0000000 60.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  1.0000000 70.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  1.0000000 80.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  1.0000000 90.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]   1.0000000 100.0000000   0.8121212</span></span>
+<span><span class="co">#&gt;  [1] 0.8121212 0.8121212 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
 <span><span class="co">#&gt;  [8] 0.0000000 0.0000000 0.0000000</span></span>
-<span><span class="co">#&gt; 1 row by 3 columns</span></span>
+<span><span class="co">#&gt; 3 rows by 1 column</span></span>
 <span><span class="co">#&gt;      Phase,    Search%,    A-measure</span></span>
-<span><span class="co">#&gt; [1] 2.0000000 0.0000000 0.8554697</span></span>
-<span><span class="co">#&gt; [1]  2.0000000 10.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  2.0000000 20.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  2.0000000 30.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  2.0000000 40.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  2.0000000 50.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  2.0000000 60.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  2.0000000 70.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  2.0000000 80.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]  2.0000000 90.0000000  0.7919192</span></span>
-<span><span class="co">#&gt; [1]   2.0000000 100.0000000   0.7919192</span></span>
-<span><span class="co">#&gt;  [1] 0.7919192 0.7919192 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; [1] 2.000000 0.000000 0.944703</span></span>
+<span><span class="co">#&gt; [1]  2.0000000 10.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  2.0000000 20.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  2.0000000 30.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  2.0000000 40.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  2.0000000 50.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  2.0000000 60.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  2.0000000 70.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  2.0000000 80.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]  2.0000000 90.0000000  0.8121212</span></span>
+<span><span class="co">#&gt; [1]   2.0000000 100.0000000   0.8121212</span></span>
+<span><span class="co">#&gt;  [1] 0.8121212 0.8121212 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
 <span><span class="co">#&gt;  [8] 0.0000000 0.0000000 0.0000000</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rcD</span><span class="op">$</span><span class="va">fieldbook</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                    plot     geno entry row column rep</span></span>
-<span><span class="co">#&gt; 1 KE24ILR-BW-ST01-00001        B     2   1      1   1</span></span>
-<span><span class="co">#&gt; 2 KE24ILR-BW-ST01-00002        D     4   2      1   1</span></span>
-<span><span class="co">#&gt; 3 KE24ILR-BW-ST01-00003  Sagitta     5   3      1   1</span></span>
-<span><span class="co">#&gt; 4 KE24ILR-BW-ST01-00004        A     1   4      1   1</span></span>
-<span><span class="co">#&gt; 5 KE24ILR-BW-ST01-00005        C     3   5      1   1</span></span>
-<span><span class="co">#&gt; 6 KE24ILR-BW-ST01-00006 Sherekea     6   6      1   1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 KE24ILR-BW-ST01-00001        C     3   1      1   1</span></span>
+<span><span class="co">#&gt; 2 KE24ILR-BW-ST01-00002  Sagitta     5   2      1   1</span></span>
+<span><span class="co">#&gt; 3 KE24ILR-BW-ST01-00003        D     4   3      1   1</span></span>
+<span><span class="co">#&gt; 4 KE24ILR-BW-ST01-00004        A     1   1      2   1</span></span>
+<span><span class="co">#&gt; 5 KE24ILR-BW-ST01-00005 Sherekea     6   2      2   1</span></span>
+<span><span class="co">#&gt; 6 KE24ILR-BW-ST01-00006        B     2   3      2   1</span></span></code></pre></div>
 <p>Randomize a resolvable row column of 55 clones replicated once, 4
 checks replicated 4 times and 3 dummies replicated three times.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
@@ -635,6 +685,8 @@ checks replicated 4 times and 3 dummies replicated three times.</p>
 <span>  trtrepP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">55</span>, <span class="fl">4</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  block_lst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>,<span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  rowD <span class="op">=</span> <span class="fl">16</span>,</span>
+<span>  <span class="co"># rowsinR = 4,</span></span>
+<span>  <span class="co"># colsinR = 1,</span></span>
 <span>  n_dummies <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  season <span class="op">=</span> <span class="st">"season-2025"</span>,</span>
 <span>  path <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -694,12 +746,12 @@ sample</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                      plot          geno row col</span></span>
-<span><span class="co">#&gt; 1 KE25MOL-HERL-ST01-00001 CIP319027.003   1   1</span></span>
-<span><span class="co">#&gt; 2 KE25MOL-HERL-ST01-00002 CIP319064.003   2   1</span></span>
-<span><span class="co">#&gt; 3 KE25MOL-HERL-ST01-00003 CIP319008.002   3   1</span></span>
-<span><span class="co">#&gt; 4 KE25MOL-HERL-ST01-00004 CIP319020.004   4   1</span></span>
-<span><span class="co">#&gt; 5 KE25MOL-HERL-ST01-00005 CIP319020.001   5   1</span></span>
-<span><span class="co">#&gt; 6 KE25MOL-HERL-ST01-00006 CIP319052.012   6   1</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 KE25MOL-HERL-ST01-00001 CIP319027.002   1   1</span></span>
+<span><span class="co">#&gt; 2 KE25MOL-HERL-ST01-00002 CIP319027.001   2   1</span></span>
+<span><span class="co">#&gt; 3 KE25MOL-HERL-ST01-00003         Unica   3   1</span></span>
+<span><span class="co">#&gt; 4 KE25MOL-HERL-ST01-00004 CIP319052.006   4   1</span></span>
+<span><span class="co">#&gt; 5 KE25MOL-HERL-ST01-00005 CIP319020.006   5   1</span></span>
+<span><span class="co">#&gt; 6 KE25MOL-HERL-ST01-00006       Sagitta   6   1</span></span></code></pre></div>
 <!-- # Calculate the mean of a vector -->
 <!--
 There can be other functions, examples and tests in your flat template.
@@ -717,6 +769,8 @@ Create a chunk with 'development' actions
 
 These are only included in the present flat template file, their content will not be part of the package anywhere else.
 -->
+<p>Plotting functions</p>
+<p>Data quality checks</p>
 <!-- # Inflate your package -->
 <!-- You're one inflate from paper to box. -->
 <!-- Build your package from this very Rmd using `fusen::inflate()` -->

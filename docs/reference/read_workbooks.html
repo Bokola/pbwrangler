@@ -69,7 +69,8 @@
 <span>  sheet_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  skip <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  file_to_read <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  merge <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  merge <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  update_plot <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -120,7 +121,12 @@
 
 
 <dt>merge</dt>
-<dd><p>clogical. whether or not to merge data from multiple sheets</p></dd>
+<dd><p>logical. whether or not to merge data from multiple sheets</p></dd>
+
+
+<dt>update_plot</dt>
+<dd><p>logical. whether or not to update plot column to conform
+to SOP. This applies to trials preceeding season 2025.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -144,12 +150,12 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Specify the column types or set `show_col_types = FALSE` to quiet this message.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">d</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`UON-TRIAL-1`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           unique plot          geno entry row</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1CIP317004.001    1 CIP317004.001    12   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2CIP317005.036    2 CIP317005.036    14   2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3CIP317007.103    3 CIP317007.103    20   3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 4CIP317013.120    4 CIP317013.120    23   4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 5CIP317026.004    5 CIP317026.004    28   5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           unique              plot          geno entry row</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1CIP317004.001 UON-TRIAL-1-00001 CIP317004.001    12   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2CIP317005.036 UON-TRIAL-1-00002 CIP317005.036    14   2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 3CIP317007.103 UON-TRIAL-1-00003 CIP317007.103    20   3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 4CIP317013.120 UON-TRIAL-1-00004 CIP317013.120    23   4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 5CIP317026.004 UON-TRIAL-1-00005 CIP317026.004    28   5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

@@ -3050,6 +3050,7 @@ head(rrc80$fieldbook)
 #' @export
 #'
 #' @examples
+#' 
 randomize_noRep <-
   function(rowD = 23,
            tot = 207,

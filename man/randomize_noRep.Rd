@@ -40,6 +40,7 @@ randomize trials for multiplication without replication
 }
 \examples{
 
+
 data("ilri")
 dat <- ilri \%>\% dplyr::select(geno) 
 

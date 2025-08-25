@@ -16,6 +16,7 @@
 #' @export
 #'
 #' @examples
+#'
 randomize_noRep <-
 #'
 #' data("ilri")

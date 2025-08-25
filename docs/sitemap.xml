@@ -40,6 +40,9 @@
     <loc>/reference/check_geno.html</loc>
   </url>
   <url>
+    <loc>/reference/check_vars.html</loc>
+  </url>
+  <url>
     <loc>/reference/clean_clone_name.html</loc>
   </url>
   <url>
@@ -133,6 +136,9 @@
     <loc>/reference/gen_location.html</loc>
   </url>
   <url>
+    <loc>/reference/gen_row_col.html</loc>
+  </url>
+  <url>
     <loc>/reference/gen_uniqueid.html</loc>
   </url>
   <url>
@@ -160,6 +166,9 @@
     <loc>/reference/join_by_keys.html</loc>
   </url>
   <url>
+    <loc>/reference/join_data_meta.html</loc>
+  </url>
+  <url>
     <loc>/reference/keep_geno.html</loc>
   </url>
   <url>
@@ -184,6 +193,9 @@
     <loc>/reference/my_right.html</loc>
   </url>
   <url>
+    <loc>/reference/my_theme.html</loc>
+  </url>
+  <url>
     <loc>/reference/names_df.html</loc>
   </url>
   <url>
@@ -191,6 +203,9 @@
   </url>
   <url>
     <loc>/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>/reference/plot_weather.html</loc>
   </url>
   <url>
     <loc>/reference/pre_process_trials.html</loc>
@@ -251,6 +266,9 @@
   </url>
   <url>
     <loc>/reference/write_data.html</loc>
+  </url>
+  <url>
+    <loc>/reference/write_outliers.html</loc>
   </url>
   <url>
     <loc>/reference/write_season_data.html</loc>
